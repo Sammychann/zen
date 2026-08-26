@@ -17,12 +17,11 @@ class App {
       fireflies: document.getElementById('view-fireflies')
     };
 
-    // User Mood Selection State
+    // User Mood Selection State (3 inputs)
     this.songSelections = {
-      mood: 'Chill & vibing',
-      vibe: 'Niche, trendy & aesthetic indie groove',
-      energy: 'Medium - Smooth groove',
-      style: 'Niche & underground hidden gems'
+      mood: 'Exhausted & overwhelmed',
+      genre: 'Indie & Alt Rock',
+      discovery: 'Niche Underground Gem'
     };
   }
 
@@ -57,9 +56,8 @@ class App {
 
           const val = chip.getAttribute('data-value');
           if (inputName === 'song-mood') this.songSelections.mood = val;
-          if (inputName === 'song-vibe') this.songSelections.vibe = val;
-          if (inputName === 'song-energy') this.songSelections.energy = val;
-          if (inputName === 'song-style') this.songSelections.style = val;
+          if (inputName === 'song-genre') this.songSelections.genre = val;
+          if (inputName === 'song-discovery') this.songSelections.discovery = val;
 
           sound.playChime(329.63, 1.5);
         });
@@ -289,15 +287,14 @@ class App {
     discoverSongBtn?.addEventListener('click', async (e) => {
       e.stopPropagation();
       const mood = this.songSelections.mood;
-      const vibe = this.songSelections.vibe;
-      const energy = this.songSelections.energy;
-      const preference = this.songSelections.style;
+      const genre = this.songSelections.genre;
+      const discovery = this.songSelections.discovery;
 
       discoverSongBtn.textContent = "Finding your song... ✨";
       discoverSongBtn.disabled = true;
 
       try {
-        const rec = await recommendSong({ mood, vibe, energy, preference });
+        const rec = await recommendSong({ mood, genre, discovery });
 
         const resultCard = document.getElementById('song-result-card');
         const titleEl = document.getElementById('song-result-title');
@@ -311,7 +308,7 @@ class App {
         if (artistEl) artistEl.textContent = `by ${rec.artist}`;
         if (whyEl) whyEl.textContent = rec.why;
         if (lyricsEl) lyricsEl.textContent = rec.lyrics ? `“${rec.lyrics}”` : '';
-        if (genreEl) genreEl.textContent = rec.genre || 'Comfort Song';
+        if (genreEl) genreEl.textContent = rec.genre || 'Song Match';
         if (linkEl) {
           linkEl.href = `https://open.spotify.com/search/${encodeURIComponent(rec.title + ' ' + rec.artist)}`;
           linkEl.textContent = `🎧 Listen to "${rec.title}" on Spotify`;

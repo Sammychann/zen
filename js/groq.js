@@ -146,26 +146,25 @@ Return pure JSON:
 }
 
 /**
- * Recommend any music genre (trendy, niche, underground, indie, electronic, r&b, etc.)
+ * Recommend a song based on: 1. Feeling, 2. Genre, 3. Niche vs Trendy
  */
-export async function recommendSong({ mood, vibe, energy, preference }) {
-  const prompt = `User mood: "${mood}".
-Desired vibe: "${vibe}".
-Energy level: "${energy}".
-Preferred style / flavor: "${preference}".
+export async function recommendSong({ mood, genre, discovery }) {
+  const prompt = `User Feeling: "${mood}".
+Desired Genre: "${genre}".
+Discovery Preference: "${discovery}".
 
-Recommend ONE real, awesome song that matches this mood & vibe.
-It can be ANY genre (Indie Rock, Synthwave / Dreampop, R&B / Neo-Soul, Electronic / French House, Shoegaze, Hyperpop, Hip-Hop, Alt-Pop, Japanese City Pop, etc.).
-If preference mentions "Niche / Trendy" or "Underground", pick an acclaimed, cool, aesthetic, or viral gem (e.g. Men I Trust, Beach House, PinkPantheress, Fred again.., Laufey, Magdalena Bay, Frank Ocean, Kaytranada, boygenius, Clairo, Steve Lacy, etc.).
+Recommend ONE real, exceptional song matching these 3 criteria.
+If "${discovery}" is "Niche Underground Gem", pick an acclaimed, critically-loved hidden gem or indie cult track.
+If "${discovery}" is "Trendy & Viral", pick a current viral, aesthetic, or popular trendy hit.
 
 Return pure JSON in this format:
 {
   "title": "Song Title",
   "artist": "Artist Name",
   "album": "Album Name or Year",
-  "why": "1-2 engaging sentences on why this song fits their exact vibe and energy right now",
+  "why": "1-2 sentences on why this track fits their exact mood and genre choice",
   "lyrics": "1 memorable line from the song",
-  "genre": "Genre tag (e.g. Dreampop, Indie Pop, French Touch, Neo-Soul, Alt-R&B)"
+  "genre": "Exact genre label"
 }`;
 
   try {
@@ -178,7 +177,7 @@ Return pure JSON in this format:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are a tastemaker music curator with deep knowledge across all modern, indie, trendy, underground, and classic genres. Output pure JSON." },
+          { role: "system", content: "You are a music curator with encyclopedic taste across all genres, underground gems, and viral trends. Output pure JSON." },
           { role: "user", content: prompt }
         ],
         temperature: 0.85
@@ -191,11 +190,21 @@ Return pure JSON in this format:
     return song;
   } catch (err) {
     console.warn("Song recommendation fallback:", err);
+    if (discovery && discovery.includes("Trendy")) {
+      return {
+        title: "Birds of a Feather",
+        artist: "Billie Eilish",
+        album: "HIT ME HARD AND SOFT",
+        why: "A breezy, infectious dream-pop anthem with shimmering synths and soaring vocals.",
+        lyrics: "Birds of a feather, we should stick together...",
+        genre: "Dream Pop"
+      };
+    }
     return {
       title: "Show Me How",
       artist: "Men I Trust",
       album: "Oncle Jazz",
-      why: "A smooth, buttery indie dreampop groove with effortless basslines and warm ethereal vocals.",
+      why: "An irresistible underground indie dreampop groove with effortless basslines and warm ethereal vocals.",
       lyrics: "Show me how you care, tell me how you were loved before...",
       genre: "Indie Dreampop"
     };

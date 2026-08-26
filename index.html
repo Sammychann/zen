@@ -172,55 +172,45 @@
           </p>
         </section>
 
-        <!-- 4. Personalized Song Recommender Card (Any Genre & Niche / Trendy) -->
+        <!-- 4. Personalized Song Recommender Card (3 Simple Inputs) -->
         <section class="sanctuary-card song-hero-card">
           <div class="card-header-row">
             <span class="card-eyebrow">🎵 Song Recommender</span>
             <span class="song-header-icon">🎧</span>
           </div>
 
-          <p class="song-hero-subtitle">
-            Pick your current vibe, and I'll find an awesome track across any genre or niche taste.
-          </p>
-
-          <!-- Interactive Visual Mood & Energy Chips -->
+          <!-- 3 Clean Focused Inputs -->
           <div class="mood-chips-container">
+            <!-- 1. Feeling -->
             <div class="chip-group">
-              <label class="chip-group-label">How are you feeling?</label>
+              <label class="chip-group-label">1. How are you feeling?</label>
               <div class="chips-row" data-input="song-mood">
-                <button class="mood-chip active" data-value="Chill & vibing">✨ Chill & Vibing</button>
-                <button class="mood-chip" data-value="Drained & overwhelmed">🌧️ Exhausted</button>
-                <button class="mood-chip" data-value="Late night thoughts & nostalgic">🌙 Nostalgic</button>
-                <button class="mood-chip" data-value="Need energy & good vibes">⚡ Need Good Vibes</button>
+                <button class="mood-chip active" data-value="Exhausted & overwhelmed">🌧️ Exhausted</button>
+                <button class="mood-chip" data-value="Chill & vibing">✨ Chill</button>
+                <button class="mood-chip" data-value="High energy & upbeat">⚡ Energetic</button>
+                <button class="mood-chip" data-value="Late night & nostalgic">🌙 Late Night</button>
               </div>
             </div>
 
+            <!-- 2. Genre -->
             <div class="chip-group">
-              <label class="chip-group-label">What vibe do you want?</label>
-              <div class="chips-row" data-input="song-vibe">
-                <button class="mood-chip active" data-value="Niche, trendy & aesthetic indie groove">🔥 Trendy & Aesthetic</button>
-                <button class="mood-chip" data-value="Dreamy dreampop & synthwave">🌌 Dreamy Synth / Pop</button>
-                <button class="mood-chip" data-value="Smooth R&B / Neo-Soul & chillhop">🍸 Smooth R&B / Soul</button>
-                <button class="mood-chip" data-value="Warm acoustic indie & folk">🌿 Warm Indie Folk</button>
+              <label class="chip-group-label">2. Pick a Genre</label>
+              <div class="chips-row" data-input="song-genre">
+                <button class="mood-chip active" data-value="Indie & Alt Rock">🎸 Indie / Alt</button>
+                <button class="mood-chip" data-value="R&B, Soul & Chillhop">🍸 R&B / Soul</button>
+                <button class="mood-chip" data-value="Pop & Dreampop">🌌 Pop / Dreampop</button>
+                <button class="mood-chip" data-value="Electronic & House">🎧 Electronic</button>
+                <button class="mood-chip" data-value="Acoustic & Folk">🌿 Acoustic</button>
+                <button class="mood-chip" data-value="City Pop & World">🗾 City Pop</button>
               </div>
             </div>
 
+            <!-- 3. Niche vs Trendy -->
             <div class="chip-group">
-              <label class="chip-group-label">Energy Level?</label>
-              <div class="chips-row" data-input="song-energy">
-                <button class="mood-chip" data-value="Low - Mellow & cozy">Low • Mellow</button>
-                <button class="mood-chip active" data-value="Medium - Smooth groove">Medium • Groovy</button>
-                <button class="mood-chip" data-value="High - Upbeat & rhythmic">High • Upbeat</button>
-              </div>
-            </div>
-
-            <div class="chip-group">
-              <label class="chip-group-label">Flavor / Discovery?</label>
-              <div class="chips-row" data-input="song-style">
-                <button class="mood-chip active" data-value="Niche & underground hidden gems">✨ Niche & Underground</button>
-                <button class="mood-chip" data-value="Trendy viral hits & modern alt">🔥 Modern Alt / Viral</button>
-                <button class="mood-chip" data-value="Electronic & House / French Touch">🎧 Electronic / House</button>
-                <button class="mood-chip" data-value="Japanese City Pop & Global Grooves">🗾 City Pop / World</button>
+              <label class="chip-group-label">3. Niche or Trendy?</label>
+              <div class="chips-row" data-input="song-discovery">
+                <button class="mood-chip active" data-value="Niche Underground Gem">✨ Niche Gem</button>
+                <button class="mood-chip" data-value="Trendy & Viral">🔥 Trendy / Viral</button>
               </div>
             </div>
           </div>
