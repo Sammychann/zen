@@ -1,0 +1,514 @@
+/* =========================================================
+   A Little Place to Breathe - Aesthetic Stylesheet
+   Themes: Light (Sakura) & Dark (Deep Midnight Ocean)
+   ========================================================= */
+
+:root {
+  /* Light Theme (Sakura) */
+  --bg-gradient: linear-gradient(135deg, #faf7f2 0%, #f5eee6 50%, #faeef2 100%);
+  --text-primary: #3d342d;
+  --text-secondary: #7d7065;
+  --text-muted: #a39588;
+  --accent: #e5989b;
+  --accent-soft: rgba(229, 152, 155, 0.18);
+  --accent-glow: rgba(229, 152, 155, 0.4);
+  --card-bg: rgba(255, 253, 250, 0.82);
+  --card-border: rgba(255, 255, 255, 0.9);
+  --card-shadow: 0 16px 40px rgba(180, 160, 150, 0.12);
+  --btn-bg: rgba(255, 255, 255, 0.9);
+  --btn-hover: rgba(229, 152, 155, 0.16);
+  --btn-border: rgba(229, 152, 155, 0.32);
+  --divider: rgba(180, 160, 150, 0.2);
+  --glass-blur: blur(20px);
+}
+
+[data-theme="dark"] {
+  /* Extra Deep Dark Theme (Midnight Ocean Abyss) */
+  --bg-gradient: linear-gradient(135deg, #010204 0%, #030712 50%, #020408 100%);
+  --text-primary: #f1f5f9;
+  --text-secondary: #94a3b8;
+  --text-muted: #64748b;
+  --accent: #38bdf8;
+  --accent-soft: rgba(56, 189, 248, 0.15);
+  --accent-glow: rgba(56, 189, 248, 0.4);
+  --card-bg: rgba(4, 8, 16, 0.86);
+  --card-border: rgba(56, 189, 248, 0.16);
+  --card-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
+  --btn-bg: rgba(8, 14, 28, 0.85);
+  --btn-hover: rgba(56, 189, 248, 0.18);
+  --btn-border: rgba(56, 189, 248, 0.28);
+  --divider: rgba(56, 189, 248, 0.14);
+  --glass-blur: blur(24px);
+}
+
+/* Base Reset */
+*, *::before, *::after {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  min-height: 100dvh;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+  color: var(--text-primary);
+  background: var(--bg-gradient);
+  transition: background 1.2s ease, color 0.6s ease;
+  user-select: none;
+  overflow-x: hidden;
+}
+
+/* Background 3D Canvas */
+#bg-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 1;
+  pointer-events: none;
+  transition: opacity 0.8s ease;
+}
+
+/* Quick Controls */
+.controls-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.icon-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.1rem;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.25s ease;
+  color: var(--text-primary);
+}
+
+.icon-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.icon-btn:active {
+  transform: scale(0.94);
+}
+
+[data-theme="light"] .dark-icon,
+[data-theme="dark"] .light-icon {
+  display: none;
+}
+
+.hidden {
+  display: none !important;
+}
+
+/* Views Navigation */
+.view {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  height: 100dvh;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  overflow-y: auto;
+  opacity: 0;
+  pointer-events: none;
+  transform: scale(0.98);
+  transition: opacity 0.6s cubic-bezier(0.2, 1, 0.3, 1), transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+}
+
+.view.active {
+  opacity: 1;
+  pointer-events: auto;
+  transform: scale(1);
+}
+
+/* Main Sanctuary Card */
+.sanctuary-card {
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--card-border);
+  border-radius: 26px;
+  padding: 30px 24px;
+  max-width: 520px;
+  width: 100%;
+  box-shadow: var(--card-shadow);
+  text-align: center;
+  animation: cardIn 0.8s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  z-index: 20;
+  margin: auto;
+}
+
+@keyframes cardIn {
+  from { opacity: 0; transform: translateY(16px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.sanctuary-top-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 14px;
+}
+
+.sanctuary-badge {
+  font-size: 0.8rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  font-weight: 600;
+}
+
+.gentle-line {
+  font-size: 1.42rem;
+  font-weight: 350;
+  line-height: 1.4;
+  color: var(--text-primary);
+  margin-bottom: 18px;
+  letter-spacing: -0.01em;
+}
+
+/* Dividers */
+.soft-divider {
+  border: none;
+  height: 1px;
+  background: var(--divider);
+  margin: 16px 0;
+}
+
+/* Daily Thought / Quote */
+.section-label {
+  display: block;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--text-muted);
+  font-weight: 600;
+  margin-bottom: 8px;
+}
+
+.quote-text {
+  font-size: 1.02rem;
+  font-weight: 400;
+  line-height: 1.55;
+  font-style: italic;
+  color: var(--text-primary);
+  margin: 0 0 6px;
+}
+
+.quote-meta {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+
+.quote-author {
+  font-weight: 600;
+}
+
+.quote-source {
+  font-style: italic;
+  opacity: 0.85;
+}
+
+.quote-source::before {
+  content: "•";
+  margin-right: 8px;
+  opacity: 0.5;
+}
+
+.text-link-btn {
+  background: none;
+  border: none;
+  color: var(--accent);
+  font-size: 0.78rem;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 6px;
+  margin-top: 4px;
+  font-weight: 500;
+}
+
+.quote-reflection {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-secondary);
+  background: var(--accent-soft);
+  padding: 10px 14px;
+  border-radius: 12px;
+  margin-top: 8px;
+  animation: fadeIn 0.3s ease;
+}
+
+/* Today in History Fun Fact Card */
+.funfact-card {
+  background: var(--accent-soft);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 12px 14px;
+  text-align: left;
+  margin-top: 8px;
+}
+
+.funfact-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.funfact-tag {
+  font-size: 0.74rem;
+  font-weight: 600;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.btn-next-fact {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 0.74rem;
+  cursor: pointer;
+  padding: 2px 6px;
+  border-radius: 4px;
+  transition: color 0.2s ease;
+}
+
+.btn-next-fact:hover {
+  color: var(--accent);
+}
+
+.funfact-text {
+  font-size: 0.84rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+}
+
+/* 5 Activities Grid */
+.games-nav-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.games-nav-grid .game-card-btn:nth-child(4),
+.games-nav-grid .game-card-btn:nth-child(5) {
+  /* Span evenly across the bottom row */
+}
+
+.game-card-btn {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 14px;
+  padding: 12px 6px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  cursor: pointer;
+  transition: all 0.22s cubic-bezier(0.2, 0.8, 0.2, 1);
+  color: var(--text-primary);
+}
+
+.game-card-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+  box-shadow: 0 6px 14px var(--accent-soft);
+}
+
+.game-icon {
+  font-size: 1.35rem;
+  line-height: 1;
+}
+
+.game-title {
+  font-size: 0.78rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.game-desc {
+  font-size: 0.62rem;
+  color: var(--text-muted);
+  line-height: 1.15;
+}
+
+/* Game Views */
+.game-view {
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: stretch;
+  background: transparent;
+}
+
+.game-top-bar {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  z-index: 50;
+  pointer-events: auto;
+}
+
+.back-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--text-primary);
+  padding: 8px 16px;
+  border-radius: 999px;
+  font-size: 0.85rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+}
+
+.back-btn:hover {
+  border-color: var(--accent);
+  transform: translateX(-2px);
+}
+
+.game-mode-title {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 6px 16px;
+  border-radius: 999px;
+  letter-spacing: 0.04em;
+}
+
+.game-actions {
+  display: flex;
+  gap: 8px;
+}
+
+.tool-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  color: var(--text-secondary);
+  padding: 8px 14px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.tool-btn:hover {
+  color: var(--text-primary);
+  border-color: var(--accent);
+}
+
+.game-hint-overlay {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--card-bg);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  border: 1px solid var(--card-border);
+  padding: 8px 18px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  pointer-events: none;
+  z-index: 40;
+  box-shadow: var(--card-shadow);
+  white-space: nowrap;
+}
+
+.game-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  height: 100dvh;
+  z-index: 10;
+  touch-action: none;
+}
+
+/* Mobile Screens */
+@media (max-width: 600px) {
+  .sanctuary-card {
+    padding: 20px 16px;
+    border-radius: 20px;
+  }
+
+  .gentle-line {
+    font-size: 1.2rem;
+    margin-bottom: 14px;
+  }
+
+  .games-nav-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 6px;
+  }
+
+  .games-nav-grid .game-card-btn:nth-child(5) {
+    grid-column: span 2;
+  }
+
+  .game-card-btn {
+    padding: 8px 6px;
+  }
+
+  .game-top-bar {
+    padding: 12px 14px;
+  }
+
+  .game-mode-title {
+    display: none;
+  }
+
+  .game-hint-overlay {
+    bottom: 14px;
+    font-size: 0.74rem;
+    padding: 6px 12px;
+    max-width: 92%;
+    white-space: normal;
+    text-align: center;
+  }
+}

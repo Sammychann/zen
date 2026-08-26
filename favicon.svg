@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+  <defs>
+    <linearGradient id="sakuraGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#ffb4a2" />
+      <stop offset="100%" stop-color="#e5989b" />
+    </linearGradient>
+    <linearGradient id="waveGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#64dfdf" />
+      <stop offset="100%" stop-color="#48cae4" />
+    </linearGradient>
+  </defs>
+  <circle cx="32" cy="32" r="30" fill="#fdfbf7" />
+  <!-- Sakura Petals -->
+  <g transform="translate(32, 28)">
+    <path d="M0 -14 C6 -14 10 -6 0 0 C-10 -6 -6 -14 0 -14 Z" fill="url(#sakuraGrad)" opacity="0.9"/>
+    <path d="M12 -4 C16 1 12 10 0 0 C12 -10 16 1 12 -4 Z" fill="url(#sakuraGrad)" opacity="0.85"/>
+    <path d="M-12 -4 C-16 1 -12 10 0 0 C-12 -10 -16 1 -12 -4 Z" fill="url(#sakuraGrad)" opacity="0.85"/>
+    <circle cx="0" cy="0" r="3" fill="#ffb4a2" />
+  </g>
+  <!-- Calm Wave Underneath -->
+  <path d="M12 44 Q 22 38, 32 44 T 52 44" fill="none" stroke="url(#waveGrad)" stroke-width="3" stroke-linecap="round"/>
+</svg>
