@@ -27,29 +27,27 @@
   <main id="view-home" class="view active">
     <div class="sanctuary-scroll-container">
       
-      <!-- Top Sticky App Bar -->
-      <header class="app-header">
-        <div class="header-brand">
-          <span class="brand-sparkle">🌸</span>
-          <span class="brand-name">Sanctuary</span>
-        </div>
-        <div class="header-controls">
-          <!-- Rain Sound Toggle -->
-          <button id="toggle-rain-sound" class="header-pill-btn" aria-label="Toggle Rain Sound" title="Toggle Procedural Rain">
-            <span class="pill-icon">🌧️</span>
-            <span class="pill-text">Rain</span>
-          </button>
-
-          <!-- Waves Sound Toggle -->
-          <button id="toggle-waves-sound" class="header-pill-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
-            <span class="pill-icon">🌊</span>
-            <span class="pill-text">Waves</span>
-          </button>
-
-          <!-- Theme Toggle -->
-          <button id="theme-toggle" class="header-icon-btn" aria-label="Toggle Theme" title="Toggle Sakura / Midnight Theme">
+      <!-- Minimalist Floating Control Bar (Clean & Decluttered) -->
+      <header class="top-floating-bar-wrapper">
+        <div class="floating-control-pill">
+          <!-- Theme Switcher -->
+          <button id="theme-toggle" class="ctrl-icon-btn" aria-label="Toggle Theme" title="Toggle Theme (🌸 Sakura / 🌌 Midnight)">
             <span class="theme-icon light-icon">🌸</span>
             <span class="theme-icon dark-icon">🌌</span>
+          </button>
+
+          <span class="ctrl-bar-divider"></span>
+
+          <!-- Rain Sound -->
+          <button id="toggle-rain-sound" class="ctrl-sound-btn" aria-label="Toggle Rain Sound" title="Toggle Gentle Rain">
+            <span class="ctrl-sound-icon">🌧️</span>
+            <span class="ctrl-sound-text">Rain</span>
+          </button>
+
+          <!-- Waves Sound -->
+          <button id="toggle-waves-sound" class="ctrl-sound-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
+            <span class="ctrl-sound-icon">🌊</span>
+            <span class="ctrl-sound-text">Waves</span>
           </button>
         </div>
       </header>
@@ -268,7 +266,6 @@
           </div>
 
           <div class="daily-games-grid">
-            <!-- Game 1 Card -->
             <button class="game-launch-card" data-game="highway">
               <div class="game-card-bg-glow glow-highway"></div>
               <div class="game-launch-icon">🚗</div>
@@ -279,7 +276,6 @@
               <div class="game-launch-badge">Daily Scenery 🌟</div>
             </button>
 
-            <!-- Game 2 Card -->
             <button class="game-launch-card" data-game="fireflies">
               <div class="game-card-bg-glow glow-fireflies"></div>
               <div class="game-launch-icon">✨</div>
