@@ -2,15 +2,15 @@ import * as THREE from 'three';
 import { sound } from './sound.js';
 
 /**
- * Daily Constellations for every day of the week
+ * Daily Constellations with mobile-responsive normalized coordinates
  */
 const DAILY_CONSTELLATIONS = [
   {
     day: "Sunday",
-    name: "Corona Borealis (The Northern Crown)",
+    name: "Corona Borealis (Northern Crown)",
     stars: [
-      { x: -5.0, y: 1.0 }, { x: -3.0, y: 3.2 }, { x: -0.5, y: 4.0 },
-      { x: 2.0, y: 3.5 }, { x: 4.2, y: 1.8 }, { x: 5.5, y: -0.5 }, { x: 3.0, y: -2.5 }
+      { x: -0.7, y: 0.2 }, { x: -0.4, y: 0.65 }, { x: -0.05, y: 0.8 },
+      { x: 0.35, y: 0.7 }, { x: 0.65, y: 0.35 }, { x: 0.75, y: -0.1 }, { x: 0.45, y: -0.5 }
     ],
     affirmation: "The golden crown of stars shines for you. Your peace is your greatest power."
   },
@@ -18,17 +18,17 @@ const DAILY_CONSTELLATIONS = [
     day: "Monday",
     name: "Cassiopeia (The Queen's Throne)",
     stars: [
-      { x: -6.5, y: 3.5 }, { x: -3.5, y: 1.5 }, { x: -0.5, y: 3.0 },
-      { x: 2.8, y: 0.8 }, { x: 5.8, y: 2.5 }, { x: 4.2, y: -2.8 }, { x: -2.0, y: -2.5 }
+      { x: -0.8, y: 0.6 }, { x: -0.45, y: 0.25 }, { x: -0.05, y: 0.55 },
+      { x: 0.4, y: 0.15 }, { x: 0.8, y: 0.45 }, { x: 0.5, y: -0.45 }, { x: -0.3, y: -0.45 }
     ],
     affirmation: "Cassiopeia glimmers in quiet majesty. You have guided every light home."
   },
   {
     day: "Tuesday",
-    name: "Ursa Major (The Great Celestial Dipper)",
+    name: "Ursa Major (The Great Dipper)",
     stars: [
-      { x: -6.0, y: -1.0 }, { x: -4.0, y: 0.5 }, { x: -1.5, y: 0.8 },
-      { x: 1.0, y: 1.2 }, { x: 1.5, y: 3.8 }, { x: 4.8, y: 4.0 }, { x: 4.5, y: 1.5 }
+      { x: -0.75, y: -0.15 }, { x: -0.5, y: 0.1 }, { x: -0.2, y: 0.15 },
+      { x: 0.15, y: 0.2 }, { x: 0.2, y: 0.65 }, { x: 0.65, y: 0.7 }, { x: 0.6, y: 0.25 }
     ],
     affirmation: "The Great Dipper pours stillness across the night sky. Breathe and rest."
   },
@@ -36,8 +36,8 @@ const DAILY_CONSTELLATIONS = [
     day: "Wednesday",
     name: "Orion's Radiant Belt",
     stars: [
-      { x: -5.0, y: 4.0 }, { x: 5.0, y: 3.8 }, { x: -2.0, y: 0.5 },
-      { x: 0.0, y: 0.0 }, { x: 2.0, y: -0.5 }, { x: -4.5, y: -4.0 }, { x: 4.5, y: -3.8 }
+      { x: -0.65, y: 0.65 }, { x: 0.65, y: 0.6 }, { x: -0.3, y: 0.1 },
+      { x: 0.0, y: 0.0 }, { x: 0.3, y: -0.1 }, { x: -0.6, y: -0.65 }, { x: 0.6, y: -0.6 }
     ],
     affirmation: "The celestial hunter rests. The night is gentle, quiet, and warm."
   },
@@ -45,8 +45,8 @@ const DAILY_CONSTELLATIONS = [
     day: "Thursday",
     name: "Pleiades (The Seven Sisters)",
     stars: [
-      { x: -4.2, y: 2.5 }, { x: -2.2, y: 3.2 }, { x: -0.5, y: 1.8 },
-      { x: 1.5, y: 2.2 }, { x: 3.5, y: 1.0 }, { x: 1.0, y: -1.5 }, { x: -1.8, y: -0.8 }
+      { x: -0.6, y: 0.4 }, { x: -0.3, y: 0.55 }, { x: -0.08, y: 0.3 },
+      { x: 0.25, y: 0.35 }, { x: 0.55, y: 0.15 }, { x: 0.15, y: -0.25 }, { x: -0.25, y: -0.15 }
     ],
     affirmation: "Seven sister stars watch over you in gentle harmony. Sleep peacefully."
   },
@@ -54,8 +54,8 @@ const DAILY_CONSTELLATIONS = [
     day: "Friday",
     name: "Cygnus (The Swan of Starlight)",
     stars: [
-      { x: 0.0, y: 4.5 }, { x: 0.0, y: 1.5 }, { x: 0.0, y: -2.0 },
-      { x: 0.0, y: -4.5 }, { x: -4.5, y: 1.5 }, { x: 4.5, y: 1.5 }, { x: 2.5, y: -1.0 }
+      { x: 0.0, y: 0.75 }, { x: 0.0, y: 0.25 }, { x: 0.0, y: -0.3 },
+      { x: 0.0, y: -0.75 }, { x: -0.65, y: 0.25 }, { x: 0.65, y: 0.25 }, { x: 0.35, y: -0.15 }
     ],
     affirmation: "The star swan glides across the cosmic ocean. Let your mind drift into dreamland."
   },
@@ -63,8 +63,8 @@ const DAILY_CONSTELLATIONS = [
     day: "Saturday",
     name: "Pegasus (The Winged Stardust)",
     stars: [
-      { x: -4.0, y: 3.0 }, { x: 3.5, y: 3.2 }, { x: 4.0, y: -2.5 },
-      { x: -3.8, y: -2.8 }, { x: -6.0, y: 0.5 }, { x: 6.0, y: 0.8 }, { x: 0.0, y: 4.2 }
+      { x: -0.55, y: 0.5 }, { x: 0.5, y: 0.55 }, { x: 0.6, y: -0.4 },
+      { x: -0.55, y: -0.45 }, { x: -0.8, y: 0.1 }, { x: 0.8, y: 0.15 }, { x: 0.0, y: 0.7 }
     ],
     affirmation: "Wings of stardust carry away every worry from this week. You are completely safe."
   }
@@ -104,8 +104,12 @@ export class FireflyGame {
     this.currentConstellation = DAILY_CONSTELLATIONS[new Date().getDay()];
 
     this.scene = new THREE.Scene();
+    
+    // Dynamic Mobile Viewport Distance
+    const isMobile = window.innerWidth < 640;
+    const camZ = isMobile ? 22 : 18;
     this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
-    this.camera.position.set(0, 0, 18);
+    this.camera.position.set(0, 0, camZ);
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -122,20 +126,26 @@ export class FireflyGame {
     // Setup Daily Constellation Star Nodes
     this.setupConstellation();
 
-    // Spawn 22 gentle fireflies
-    this.spawnFireflies(22);
+    // Spawn gentle fireflies
+    this.spawnFireflies(isMobile ? 26 : 22);
 
     this.setupEvents();
     this.isInitialized = true;
   }
 
   setupConstellation() {
+    const isMobile = window.innerWidth < 640;
+    const scaleX = isMobile ? 4.2 : 6.8;
+    const scaleY = isMobile ? 7.2 : 4.8;
+
     const starCoords = this.currentConstellation.stars;
 
     starCoords.forEach((c) => {
       const group = new THREE.Group();
+      const x = c.x * scaleX;
+      const y = c.y * scaleY;
 
-      const ringGeo = new THREE.RingGeometry(0.5, 0.65, 32);
+      const ringGeo = new THREE.RingGeometry(0.55, 0.72, 32);
       const ringMat = new THREE.MeshBasicMaterial({
         color: 0x475569,
         transparent: true,
@@ -145,7 +155,7 @@ export class FireflyGame {
       const ring = new THREE.Mesh(ringGeo, ringMat);
       group.add(ring);
 
-      const coreGeo = new THREE.SphereGeometry(0.35, 16, 16);
+      const coreGeo = new THREE.SphereGeometry(0.38, 16, 16);
       const coreMat = new THREE.MeshBasicMaterial({
         color: 0xfef08a,
         transparent: true,
@@ -154,14 +164,14 @@ export class FireflyGame {
       const core = new THREE.Mesh(coreGeo, coreMat);
       group.add(core);
 
-      group.position.set(c.x, c.y, 0);
+      group.position.set(x, y, 0);
       this.scene.add(group);
 
       this.constellationNodes.push({
         group,
         ring,
         core,
-        pos: new THREE.Vector3(c.x, c.y, 0),
+        pos: new THREE.Vector3(x, y, 0),
         isLit: false
       });
     });
@@ -185,12 +195,12 @@ export class FireflyGame {
   createFireflyMesh() {
     const group = new THREE.Group();
 
-    const coreGeo = new THREE.SphereGeometry(0.14, 12, 12);
+    const coreGeo = new THREE.SphereGeometry(0.15, 12, 12);
     const coreMat = new THREE.MeshBasicMaterial({ color: 0xfff9db });
     const core = new THREE.Mesh(coreGeo, coreMat);
     group.add(core);
 
-    const haloGeo = new THREE.RingGeometry(0.1, 0.8, 16);
+    const haloGeo = new THREE.RingGeometry(0.1, 0.85, 16);
     const haloMat = new THREE.MeshBasicMaterial({
       color: 0x67e8f9,
       transparent: true,
@@ -204,10 +214,14 @@ export class FireflyGame {
   }
 
   spawnFireflies(count) {
+    const isMobile = window.innerWidth < 640;
+    const spreadX = isMobile ? 12 : 24;
+    const spreadY = isMobile ? 18 : 14;
+
     for (let i = 0; i < count; i++) {
       const mesh = this.createFireflyMesh();
-      const x = (Math.random() - 0.5) * 24;
-      const y = (Math.random() - 0.5) * 16;
+      const x = (Math.random() - 0.5) * spreadX;
+      const y = (Math.random() - 0.5) * spreadY;
       const z = (Math.random() - 0.5) * 4;
       mesh.position.set(x, y, z);
       this.scene.add(mesh);
@@ -251,6 +265,7 @@ export class FireflyGame {
     this.litStarsCount++;
 
     sound.playChime(329.63 + this.litStarsCount * 45, 5);
+    if (navigator.vibrate) navigator.vibrate(18);
     this.updateUI();
 
     if (this.litStarsCount >= this.totalStars) {
@@ -260,6 +275,7 @@ export class FireflyGame {
         l.material.color.setHex(0xfef08a);
       });
       sound.playChime(523.25, 8);
+      if (navigator.vibrate) navigator.vibrate([30, 50, 40]);
       setTimeout(() => this.showCompletionModal(), 600);
     }
   }
@@ -273,7 +289,7 @@ export class FireflyGame {
     if (modal && titleEl && descEl) {
       titleEl.textContent = `✨ ${this.currentConstellation.name} Awakened!`;
       descEl.textContent = this.currentConstellation.affirmation;
-      if (badgeEl) badgeEl.textContent = `✨ ${this.currentConstellation.day} Constellation Completed • All 7 Stars Lit`;
+      if (badgeEl) badgeEl.textContent = `✨ ${this.currentConstellation.day} Constellation Completed • 7 Stars Lit`;
       modal.classList.remove('hidden');
     }
   }
@@ -290,7 +306,7 @@ export class FireflyGame {
       if (this.isCompleted) {
         this.statusText.textContent = `✨ ${this.currentConstellation.name} awakened!`;
       } else {
-        this.statusText.textContent = `${this.currentConstellation.name} • ${this.litStarsCount}/${this.totalStars} stars lit`;
+        this.statusText.textContent = `${this.currentConstellation.name} • ${this.litStarsCount}/${this.totalStars} lit`;
       }
     }
   }
@@ -309,29 +325,32 @@ export class FireflyGame {
     this.rafId = requestAnimationFrame(() => this.animate());
 
     const time = this.clock.getElapsedTime();
+    const isMobile = window.innerWidth < 640;
+    const boundX = isMobile ? 7 : 13;
+    const boundY = isMobile ? 11 : 9;
 
     this.fireflies.forEach(f => {
       f.pos.x += f.vel.x + Math.sin(time * 0.8 + f.seed) * 0.01;
       f.pos.y += f.vel.y + Math.cos(time * 0.6 + f.seed) * 0.01;
 
       const distToPointer = f.pos.distanceTo(this.pointer);
-      if (distToPointer < 5.0) {
+      if (distToPointer < 5.5) {
         const pullDir = new THREE.Vector3().subVectors(this.pointer, f.pos).normalize();
-        f.pos.add(pullDir.multiplyScalar(0.04));
+        f.pos.add(pullDir.multiplyScalar(0.045));
       }
 
       this.constellationNodes.forEach(node => {
-        if (!node.isLit && f.pos.distanceTo(node.pos) < 1.1) {
+        if (!node.isLit && f.pos.distanceTo(node.pos) < 1.2) {
           this.igniteStar(node);
         }
       });
 
-      if (Math.abs(f.pos.x) > 13) f.pos.x *= -0.95;
-      if (Math.abs(f.pos.y) > 9) f.pos.y *= -0.95;
+      if (Math.abs(f.pos.x) > boundX) f.pos.x *= -0.95;
+      if (Math.abs(f.pos.y) > boundY) f.pos.y *= -0.95;
 
       const pulse = 0.6 + 0.4 * Math.sin(time * f.pulseSpeed + f.pulseOffset);
       f.mesh.position.copy(f.pos);
-      f.mesh.scale.setScalar(0.8 + pulse * 0.5);
+      f.mesh.scale.setScalar(0.85 + pulse * 0.45);
     });
 
     this.constellationNodes.forEach(node => {
@@ -347,7 +366,9 @@ export class FireflyGame {
 
   resize() {
     if (!this.camera || !this.renderer) return;
+    const isMobile = window.innerWidth < 640;
     this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.position.z = isMobile ? 22 : 18;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }

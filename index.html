@@ -309,7 +309,14 @@
     <div class="game-progress-bar-container">
       <div id="highway-progress-fill" class="game-progress-bar-fill"></div>
     </div>
-    <div class="game-hint-overlay">Swipe or tap sides to glide across lanes smoothly.</div>
+
+    <!-- On-Screen Thumb Steering Controls for Mobile -->
+    <div class="mobile-game-touch-dock">
+      <button id="btn-highway-left" class="thumb-control-btn" aria-label="Steer Left">◀ Glide Left</button>
+      <button id="btn-highway-right" class="thumb-control-btn" aria-label="Steer Right">Glide Right ▶</button>
+    </div>
+
+    <div class="game-hint-overlay">Tap sides or thumb buttons to glide smoothly.</div>
     <canvas id="highway-canvas" class="game-canvas"></canvas>
   </section>
 

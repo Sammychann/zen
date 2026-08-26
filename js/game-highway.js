@@ -50,9 +50,19 @@ export class HighwayGame {
     this.currentScenery = DAILY_SCENERY[new Date().getDay()];
 
     this.scene = new THREE.Scene();
-    this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
-    this.camera.position.set(0, 3.5, 7.5);
-    this.camera.lookAt(0, 1.2, -10);
+    
+    // Mobile-First Dynamic Camera & FOV
+    const isMobile = window.innerWidth < 640;
+    const fov = isMobile ? 72 : 58;
+    this.camera = new THREE.PerspectiveCamera(fov, window.innerWidth / window.innerHeight, 0.1, 100);
+    
+    if (isMobile) {
+      this.camera.position.set(0, 4.2, 9.0);
+      this.camera.lookAt(0, 1.0, -12);
+    } else {
+      this.camera.position.set(0, 3.5, 7.5);
+      this.camera.lookAt(0, 1.2, -10);
+    }
 
     this.renderer = new THREE.WebGLRenderer({
       canvas: this.canvas,
@@ -70,8 +80,9 @@ export class HighwayGame {
     moon.position.set(0, 15, 10);
     this.scene.add(moon);
 
-    // Road Surface
-    const roadGeo = new THREE.PlaneGeometry(12, 120);
+    // Road Surface (Optimized for Mobile Portrait Width)
+    const roadWidth = isMobile ? 9 : 12;
+    const roadGeo = new THREE.PlaneGeometry(roadWidth, 120);
     roadGeo.rotateX(-Math.PI / 2);
     const roadMat = new THREE.MeshStandardMaterial({
       color: this.currentScenery.roadColor,
@@ -83,7 +94,7 @@ export class HighwayGame {
 
     // Dashed Road Markings
     for (let i = 0; i < 20; i++) {
-      const lineGeo = new THREE.PlaneGeometry(0.25, 3.5);
+      const lineGeo = new THREE.PlaneGeometry(0.22, 3.5);
       lineGeo.rotateX(-Math.PI / 2);
       const lineMat = new THREE.MeshBasicMaterial({ color: this.currentScenery.lightColor });
       const line = new THREE.Mesh(lineGeo, lineMat);
@@ -93,9 +104,10 @@ export class HighwayGame {
     }
 
     // Streetlights
+    const lightDist = isMobile ? 5.2 : 6.5;
     for (let i = 0; i < 10; i++) {
-      this.createStreetlight(-6.5, -i * 12);
-      this.createStreetlight(6.5, -i * 12);
+      this.createStreetlight(-lightDist, -i * 12);
+      this.createStreetlight(lightDist, -i * 12);
     }
 
     // Cruiser Car
@@ -131,27 +143,30 @@ export class HighwayGame {
   createCar() {
     this.car = new THREE.Group();
 
-    const bodyGeo = new THREE.BoxGeometry(1.6, 0.6, 3.2);
+    const isMobile = window.innerWidth < 640;
+    const bodyScale = isMobile ? 0.85 : 1.0;
+
+    const bodyGeo = new THREE.BoxGeometry(1.6 * bodyScale, 0.6 * bodyScale, 3.2 * bodyScale);
     const bodyMat = new THREE.MeshStandardMaterial({
       color: this.currentScenery.carColor,
       metalness: 0.85,
       roughness: 0.2
     });
     const body = new THREE.Mesh(bodyGeo, bodyMat);
-    body.position.y = 0.5;
+    body.position.y = 0.5 * bodyScale;
     this.car.add(body);
 
-    const cabinGeo = new THREE.BoxGeometry(1.3, 0.5, 1.6);
+    const cabinGeo = new THREE.BoxGeometry(1.3 * bodyScale, 0.5 * bodyScale, 1.6 * bodyScale);
     const cabinMat = new THREE.MeshStandardMaterial({ color: 0x030712, roughness: 0.1 });
     const cabin = new THREE.Mesh(cabinGeo, cabinMat);
-    cabin.position.set(0, 0.95, -0.2);
+    cabin.position.set(0, 0.95 * bodyScale, -0.2 * bodyScale);
     this.car.add(cabin);
 
     const tailMat = new THREE.MeshBasicMaterial({ color: 0xf43f5e });
-    const tail1 = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
-    tail1.position.set(-0.55, 0.55, 1.62);
+    const tail1 = new THREE.Mesh(new THREE.BoxGeometry(0.35 * bodyScale, 0.15 * bodyScale, 0.05), tailMat);
+    tail1.position.set(-0.55 * bodyScale, 0.55 * bodyScale, 1.62 * bodyScale);
     const tail2 = tail1.clone();
-    tail2.position.set(0.55, 0.55, 1.62);
+    tail2.position.set(0.55 * bodyScale, 0.55 * bodyScale, 1.62 * bodyScale);
     this.car.add(tail1);
     this.car.add(tail2);
 
@@ -160,7 +175,9 @@ export class HighwayGame {
   }
 
   spawnOrbs() {
-    const lanes = [-3, 0, 3];
+    const isMobile = window.innerWidth < 640;
+    const lanes = isMobile ? [-2.4, 0, 2.4] : [-3, 0, 3];
+
     for (let i = 0; i < 25; i++) {
       const lane = lanes[Math.floor(Math.random() * lanes.length)];
       const z = -20 - i * 18;
@@ -176,14 +193,41 @@ export class HighwayGame {
   }
 
   setupControls() {
+    const maxBound = window.innerWidth < 640 ? 2.6 : 3.5;
+    const step = window.innerWidth < 640 ? 2.4 : 3.2;
+
+    // Keyboard controls
     window.addEventListener('keydown', (e) => {
       if (e.key === 'ArrowLeft' || e.key.toLowerCase() === 'a') {
-        this.targetCarX = Math.max(-3.5, this.targetCarX - 3.2);
+        this.targetCarX = Math.max(-maxBound, this.targetCarX - step);
       } else if (e.key === 'ArrowRight' || e.key.toLowerCase() === 'd') {
-        this.targetCarX = Math.min(3.5, this.targetCarX + 3.2);
+        this.targetCarX = Math.min(maxBound, this.targetCarX + step);
       }
     });
 
+    // Mobile On-Screen Thumb Buttons
+    const leftBtn = document.getElementById('btn-highway-left');
+    const rightBtn = document.getElementById('btn-highway-right');
+
+    leftBtn?.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      this.targetCarX = Math.max(-maxBound, this.targetCarX - step);
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+
+    rightBtn?.addEventListener('pointerdown', (e) => {
+      e.stopPropagation();
+      this.targetCarX = Math.min(maxBound, this.targetCarX + step);
+      if (navigator.vibrate) navigator.vibrate(10);
+    });
+
+    // Tap Left / Right Half of Screen on Mobile
+    this.canvas.addEventListener('pointerdown', (e) => {
+      const xRatio = (e.clientX / window.innerWidth) * 2 - 1;
+      this.targetCarX = xRatio * maxBound;
+    });
+
+    // Swipe / Drag controls
     let startX = 0;
     this.canvas.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
@@ -191,17 +235,13 @@ export class HighwayGame {
 
     this.canvas.addEventListener('touchmove', (e) => {
       const diff = e.touches[0].clientX - startX;
-      if (Math.abs(diff) > 25) {
-        if (diff > 0) this.targetCarX = Math.min(3.5, this.targetCarX + 3.2);
-        else this.targetCarX = Math.max(-3.5, this.targetCarX - 3.2);
+      if (Math.abs(diff) > 20) {
+        if (diff > 0) this.targetCarX = Math.min(maxBound, this.targetCarX + step);
+        else this.targetCarX = Math.max(-maxBound, this.targetCarX - step);
         startX = e.touches[0].clientX;
+        if (navigator.vibrate) navigator.vibrate(10);
       }
     }, { passive: true });
-
-    this.canvas.addEventListener('pointerdown', (e) => {
-      const xRatio = (e.clientX / window.innerWidth) * 2 - 1;
-      this.targetCarX = xRatio * 3.5;
-    });
   }
 
   showCompletionModal() {
@@ -244,7 +284,7 @@ export class HighwayGame {
         this.statusText.textContent = `✨ Overlook reached • ${this.currentScenery.name}`;
       } else {
         const remaining = Math.max(0, Math.floor(this.maxDistance - this.distance));
-        this.statusText.textContent = `${this.currentScenery.name} • ${remaining}m to overlook`;
+        this.statusText.textContent = `${this.currentScenery.name} • ${remaining}m`;
       }
     }
   }
@@ -258,10 +298,10 @@ export class HighwayGame {
     if (!this.isCompleted) {
       this.distance += speed * 2.5;
 
-      this.carX += (this.targetCarX - this.carX) * 0.15;
+      this.carX += (this.targetCarX - this.carX) * 0.18;
       if (this.car) {
         this.car.position.x = this.carX;
-        this.car.rotation.z = (this.targetCarX - this.carX) * -0.05;
+        this.car.rotation.z = (this.targetCarX - this.carX) * -0.06;
       }
 
       this.roadLines.forEach(l => {
@@ -286,6 +326,7 @@ export class HighwayGame {
             o.mesh.visible = false;
             this.collectedOrbs++;
             sound.playChime(392 + this.collectedOrbs * 30, 4);
+            if (navigator.vibrate) navigator.vibrate(15);
             this.updateUI();
           }
 
@@ -300,6 +341,7 @@ export class HighwayGame {
       if (this.distance >= this.maxDistance && this.collectedOrbs >= this.targetOrbs) {
         this.isCompleted = true;
         sound.playChime(523.25, 8);
+        if (navigator.vibrate) navigator.vibrate([30, 50, 30]);
         setTimeout(() => this.showCompletionModal(), 600);
       }
 
@@ -311,7 +353,9 @@ export class HighwayGame {
 
   resize() {
     if (!this.camera || !this.renderer) return;
+    const isMobile = window.innerWidth < 640;
     this.camera.aspect = window.innerWidth / window.innerHeight;
+    this.camera.fov = isMobile ? 72 : 58;
     this.camera.updateProjectionMatrix();
     this.renderer.setSize(window.innerWidth, window.innerHeight);
   }
