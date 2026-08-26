@@ -16,6 +16,14 @@ class App {
       highway: document.getElementById('view-highway'),
       fireflies: document.getElementById('view-fireflies')
     };
+
+    // User Mood Selection State
+    this.songSelections = {
+      mood: 'Drained & overwhelmed',
+      vibe: 'Soft acoustic guitar & gentle warmth',
+      energy: '10% - Barely keeping eyes open',
+      style: 'Any / Atmospheric & Calm'
+    };
   }
 
   init() {
@@ -25,11 +33,38 @@ class App {
     // 2. Initialize Worldwide Radio Tuner & Interactive Map
     this.initRadio();
 
-    // 3. Immediately Bind All Event Listeners & Modals (Synchronously)
+    // 3. Initialize Interactive Mood Chip Pickers
+    this.initMoodChips();
+
+    // 4. Immediately Bind All Event Listeners & Modals (Synchronously)
     this.bindEvents();
 
-    // 4. Asynchronously Load Groq AI Daily Quote & Historical Fun Fact in background
+    // 5. Asynchronously Load Groq AI Daily Quote & Historical Fun Fact in background
     this.loadGroqContent();
+  }
+
+  initMoodChips() {
+    const chipGroups = document.querySelectorAll('.chips-row');
+    chipGroups.forEach(row => {
+      const inputName = row.getAttribute('data-input');
+      const chips = row.querySelectorAll('.mood-chip');
+
+      chips.forEach(chip => {
+        chip.addEventListener('click', (e) => {
+          e.stopPropagation();
+          chips.forEach(c => c.classList.remove('active'));
+          chip.classList.add('active');
+
+          const val = chip.getAttribute('data-value');
+          if (inputName === 'song-mood') this.songSelections.mood = val;
+          if (inputName === 'song-vibe') this.songSelections.vibe = val;
+          if (inputName === 'song-energy') this.songSelections.energy = val;
+          if (inputName === 'song-style') this.songSelections.style = val;
+
+          sound.playChime(329.63, 1.5);
+        });
+      });
+    });
   }
 
   async loadGroqContent() {
@@ -55,7 +90,10 @@ class App {
     if (textEl && quote.text) textEl.textContent = `“${quote.text}”`;
     if (authorEl && quote.author) authorEl.textContent = quote.author;
     if (sourceEl && quote.source) sourceEl.textContent = quote.source;
-    if (reflectionEl && quote.reflection) reflectionEl.textContent = quote.reflection;
+    if (reflectionEl && quote.reflection) {
+      const p = reflectionEl.querySelector('.reflection-text') || reflectionEl;
+      p.textContent = quote.reflection;
+    }
   }
 
   renderFunFact(fact) {
@@ -78,6 +116,7 @@ class App {
     const volSlider = document.getElementById('radio-volume');
     const countrySelect = document.getElementById('radio-country-select');
     const pinsContainer = document.getElementById('map-pins-container');
+    const waveBars = document.getElementById('audio-wave-visualizer');
 
     // Create Clickable Map Pins
     if (pinsContainer) {
@@ -108,6 +147,11 @@ class App {
       if (emojiEl) emojiEl.textContent = station.emoji;
       if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
       if (countrySelect) countrySelect.value = station.id;
+
+      if (waveBars) {
+        if (isPlaying) waveBars.classList.add('playing');
+        else waveBars.classList.remove('playing');
+      }
 
       const pins = document.querySelectorAll('.map-pin');
       pins.forEach(pin => {
@@ -220,11 +264,11 @@ class App {
       const isHidden = reflectionEl?.classList.contains('hidden');
       if (isHidden) {
         reflectionEl?.classList.remove('hidden');
-        whyThisBtn.textContent = 'Why this? ▴';
+        whyThisBtn.querySelector('.toggle-arrow').textContent = '▴';
         whyThisBtn.setAttribute('aria-expanded', 'true');
       } else {
         reflectionEl?.classList.add('hidden');
-        whyThisBtn.textContent = 'Why this? ▾';
+        whyThisBtn.querySelector('.toggle-arrow').textContent = '▾';
         whyThisBtn.setAttribute('aria-expanded', 'false');
       }
     });
@@ -233,10 +277,10 @@ class App {
     const nextFactBtn = document.getElementById('btn-next-fact');
     nextFactBtn?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      nextFactBtn.textContent = "Fetching... ✨";
+      nextFactBtn.querySelector('span:first-child').textContent = "Fetching...";
       const fact = await fetchAnotherFunFact();
       this.renderFunFact(fact);
-      nextFactBtn.textContent = "Another fact ✨";
+      nextFactBtn.querySelector('span:first-child').textContent = "Another Fact";
       sound.playChime(329.63, 3);
     });
 
@@ -244,10 +288,10 @@ class App {
     const discoverSongBtn = document.getElementById('btn-discover-song');
     discoverSongBtn?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      const mood = document.getElementById('song-mood')?.value || 'Exhausted';
-      const vibe = document.getElementById('song-vibe')?.value || 'Soft acoustic';
-      const energy = document.getElementById('song-energy')?.value || 'Low';
-      const preference = document.getElementById('song-style')?.value || 'Atmospheric';
+      const mood = this.songSelections.mood;
+      const vibe = this.songSelections.vibe;
+      const energy = this.songSelections.energy;
+      const preference = this.songSelections.style;
 
       discoverSongBtn.textContent = "Finding your song... ✨";
       discoverSongBtn.disabled = true;
@@ -274,6 +318,7 @@ class App {
         }
 
         resultCard?.classList.remove('hidden');
+        resultCard?.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
         sound.playChime(392.00, 4);
       } catch (err) {
         console.warn("Song recommendation error:", err);
@@ -283,8 +328,8 @@ class App {
       }
     });
 
-    // Activity Navigation Cards
-    const gameButtons = document.querySelectorAll('.game-card-btn');
+    // Game Launch Cards
+    const gameButtons = document.querySelectorAll('.game-launch-card');
     gameButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
         e.stopPropagation();

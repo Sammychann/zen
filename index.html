@@ -2,9 +2,9 @@
 <html lang="en" data-theme="light">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
   <title>A Little Place to Breathe 🌸</title>
-  <meta name="description" content="A digital sanctuary with worldwide radio map, procedural rain and waves, AI daily quotes, song recommendations, and calming games." />
+  <meta name="description" content="A digital sanctuary for deep calm, worldwide radio, daily wisdom, comfort music, and gentle flow games." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -21,225 +21,287 @@
 <body>
   <!-- Background 3D Canvas -->
   <canvas id="bg-canvas"></canvas>
+  <div class="vignette-overlay"></div>
 
   <!-- Main Sanctuary View (Home) -->
   <main id="view-home" class="view active">
-    <div class="sanctuary-card">
-      <!-- Top Row with Theme & Dual Rain / Waves Sound Toggles -->
-      <div class="sanctuary-top-row">
-        <span class="sanctuary-badge">🌸 Digital Sanctuary</span>
-        <div class="controls-group">
-          <!-- Theme Toggle -->
-          <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme" title="Toggle Sakura / Midnight Theme">
-            <span class="theme-icon light-icon">🌸</span>
-            <span class="theme-icon dark-icon">🌊</span>
-          </button>
-
+    <div class="sanctuary-scroll-container">
+      
+      <!-- Top Sticky App Bar -->
+      <header class="app-header">
+        <div class="header-brand">
+          <span class="brand-sparkle">🌸</span>
+          <span class="brand-name">Sanctuary</span>
+        </div>
+        <div class="header-controls">
           <!-- Rain Sound Toggle -->
-          <button id="toggle-rain-sound" class="sound-pill-btn" aria-label="Toggle Rain Sound" title="Toggle Procedural Rain">
-            <span class="sound-emoji">🌧️</span>
-            <span class="sound-label">Rain</span>
+          <button id="toggle-rain-sound" class="header-pill-btn" aria-label="Toggle Rain Sound" title="Toggle Procedural Rain">
+            <span class="pill-icon">🌧️</span>
+            <span class="pill-text">Rain</span>
           </button>
 
           <!-- Waves Sound Toggle -->
-          <button id="toggle-waves-sound" class="sound-pill-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
-            <span class="sound-emoji">🌊</span>
-            <span class="sound-label">Waves</span>
+          <button id="toggle-waves-sound" class="header-pill-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
+            <span class="pill-icon">🌊</span>
+            <span class="pill-text">Waves</span>
+          </button>
+
+          <!-- Theme Toggle -->
+          <button id="theme-toggle" class="header-icon-btn" aria-label="Toggle Theme" title="Toggle Sakura / Midnight Theme">
+            <span class="theme-icon light-icon">🌸</span>
+            <span class="theme-icon dark-icon">🌌</span>
           </button>
         </div>
-      </div>
+      </header>
 
-      <!-- Worldwide Radio Tuner & Interactive Map (Radio Garden Style) -->
-      <section class="radio-section">
-        <div class="radio-card">
-          <div class="radio-info">
-            <span id="radio-station-emoji" class="radio-emoji">🗾</span>
-            <div class="radio-text-wrap">
-              <span id="radio-station-name" class="radio-name">Tokyo Midnight Lo-Fi</span>
-              <span id="radio-station-city" class="radio-city">Tokyo, Japan • Lo-Fi Beats & City Pop</span>
-            </div>
+      <!-- Main Content Cards Stream -->
+      <div class="stream-content">
+
+        <!-- 1. Worldwide Ambient Radio Card -->
+        <section class="sanctuary-card radio-hero-card">
+          <div class="card-top-tag">
+            <span class="tag-pulse"></span>
+            <span class="tag-text">Live Worldwide Radio</span>
           </div>
-          <div class="radio-controls">
-            <button id="btn-radio-prev" class="radio-btn" title="Previous Station">⏮</button>
-            <button id="btn-radio-play" class="radio-play-btn" title="Play / Pause Worldwide Radio">
+
+          <div class="radio-main-player">
+            <div class="radio-station-visual">
+              <span id="radio-station-emoji" class="station-emoji-large">🗾</span>
+              <div class="audio-wave-bars" id="audio-wave-visualizer">
+                <span class="bar bar-1"></span>
+                <span class="bar bar-2"></span>
+                <span class="bar bar-3"></span>
+                <span class="bar bar-4"></span>
+              </div>
+            </div>
+            <div class="radio-meta-info">
+              <h3 id="radio-station-name" class="radio-title">Tokyo Midnight Lo-Fi</h3>
+              <p id="radio-station-city" class="radio-subtitle">Tokyo, Japan • Lo-Fi Beats & City Pop</p>
+            </div>
+            <button id="btn-radio-play" class="radio-hero-play-btn" aria-label="Play Radio" title="Play / Pause Radio">
               <span id="radio-play-icon">▶</span>
             </button>
-            <button id="btn-radio-next" class="radio-btn" title="Next Station">⏭</button>
-            <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.85" class="volume-slider" title="Radio Volume" />
-          </div>
-        </div>
-
-        <!-- Interactive World Map Pin Selector -->
-        <div class="world-map-container">
-          <div class="map-header">
-            <span class="map-title">🌍 Select Country & Station</span>
-            <select id="radio-country-select" class="country-dropdown" title="Choose country station">
-              <option value="tokyo">🇯🇵 Japan (Tokyo Lo-Fi)</option>
-              <option value="paris">🇫🇷 France (Parisian Cafe)</option>
-              <option value="london">🇬🇧 UK (London Chillhop)</option>
-              <option value="sf">🇺🇸 USA (SF Lounge)</option>
-              <option value="ny">🇺🇸 USA (NY Drone Zone)</option>
-              <option value="reykjavik">🇮🇸 Iceland (Reykjavik Sleep)</option>
-              <option value="rio">🇧🇷 Brazil (Rio Bossa Nova)</option>
-              <option value="berlin">🇩🇪 Germany (Berlin Chill)</option>
-              <option value="goa">🇮🇳 India (Goa Sunset)</option>
-              <option value="sydney">🇦🇺 Australia (Sydney Breeze)</option>
-            </select>
           </div>
 
-          <div class="world-map-svg-wrap" id="world-map-wrap">
-            <svg class="world-map-svg" viewBox="0 0 800 400">
-              <path class="map-land" d="M120,80 Q160,60 220,90 Q260,140 230,190 Q180,220 120,180 Q80,130 120,80 Z" />
-              <path class="map-land" d="M220,220 Q260,240 280,310 Q240,360 200,320 Q190,260 220,220 Z" />
-              <path class="map-land" d="M380,70 Q430,50 480,90 Q470,160 410,170 Q370,120 380,70 Z" />
-              <path class="map-land" d="M380,180 Q450,190 470,280 Q430,350 370,290 Q360,220 380,180 Z" />
-              <path class="map-land" d="M500,60 Q650,40 720,100 Q740,190 640,210 Q540,190 500,120 Z" />
-              <path class="map-land" d="M560,170 Q620,160 630,230 Q580,260 550,220 Z" />
-              <path class="map-land" d="M640,260 Q720,250 740,320 Q680,360 630,310 Z" />
-            </svg>
-            <div id="map-pins-container" class="map-pins-overlay"></div>
+          <div class="radio-sub-controls">
+            <div class="station-nav-group">
+              <button id="btn-radio-prev" class="radio-nav-btn" title="Previous Station">⏮ Prev</button>
+              <button id="btn-radio-next" class="radio-nav-btn" title="Next Station">Next ⏭</button>
+            </div>
+            <div class="radio-vol-group">
+              <span class="vol-icon">🔉</span>
+              <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.85" class="volume-slider" title="Radio Volume" />
+            </div>
           </div>
-        </div>
-      </section>
 
-      <!-- Daily Quote Section (Groq AI Powered) -->
-      <section class="daily-thought-section">
-        <span class="section-label">Today's little thought</span>
-        <blockquote id="quote-text" class="quote-text">
-          “And now that you don't have to be perfect, you can be good.”
-        </blockquote>
-        <div class="quote-meta">
-          <span id="quote-author" class="quote-author">John Steinbeck</span>
-          <span id="quote-source" class="quote-source">East of Eden</span>
-        </div>
-        <div class="reflection-container">
-          <button id="btn-why-this" class="text-link-btn" aria-expanded="false">
-            Why this? ▾
-          </button>
-          <p id="quote-reflection" class="quote-reflection hidden">
-            Letting go of perfection makes room for genuine goodness, breath, and peace.
+          <!-- Interactive World Map Selector -->
+          <div class="map-interactive-section">
+            <div class="map-section-header">
+              <span class="map-label">🌍 Tap a City on the Globe</span>
+              <select id="radio-country-select" class="country-dropdown-select" title="Choose Country">
+                <option value="tokyo">🇯🇵 Tokyo, Japan</option>
+                <option value="paris">🇫🇷 Paris, France</option>
+                <option value="london">🇬🇧 London, UK</option>
+                <option value="sf">🇺🇸 San Francisco, USA</option>
+                <option value="ny">🇺🇸 New York, USA</option>
+                <option value="reykjavik">🇮🇸 Reykjavik, Iceland</option>
+                <option value="rio">🇧🇷 Rio de Janeiro, Brazil</option>
+                <option value="berlin">🇩🇪 Berlin, Germany</option>
+                <option value="goa">🇮🇳 Goa, India</option>
+                <option value="sydney">🇦🇺 Sydney, Australia</option>
+              </select>
+            </div>
+
+            <div class="world-map-svg-wrap" id="world-map-wrap">
+              <svg class="world-map-svg" viewBox="0 0 800 400">
+                <path class="map-land" d="M120,80 Q160,60 220,90 Q260,140 230,190 Q180,220 120,180 Q80,130 120,80 Z" />
+                <path class="map-land" d="M220,220 Q260,240 280,310 Q240,360 200,320 Q190,260 220,220 Z" />
+                <path class="map-land" d="M380,70 Q430,50 480,90 Q470,160 410,170 Q370,120 380,70 Z" />
+                <path class="map-land" d="M380,180 Q450,190 470,280 Q430,350 370,290 Q360,220 380,180 Z" />
+                <path class="map-land" d="M500,60 Q650,40 720,100 Q740,190 640,210 Q540,190 500,120 Z" />
+                <path class="map-land" d="M560,170 Q620,160 630,230 Q580,260 550,220 Z" />
+                <path class="map-land" d="M640,260 Q720,250 740,320 Q680,360 630,310 Z" />
+              </svg>
+              <div id="map-pins-container" class="map-pins-overlay"></div>
+            </div>
+          </div>
+        </section>
+
+        <!-- 2. Today's Literary Wisdom Card (Groq AI) -->
+        <section class="sanctuary-card quote-hero-card">
+          <div class="card-header-row">
+            <span class="card-eyebrow">📖 Daily Wisdom</span>
+            <span class="quote-watermark">“</span>
+          </div>
+
+          <blockquote id="quote-text" class="quote-main-text">
+            “And now that you don't have to be perfect, you can be good.”
+          </blockquote>
+
+          <div class="quote-author-badge">
+            <span id="quote-author" class="quote-author-name">John Steinbeck</span>
+            <span id="quote-source" class="quote-book-title">East of Eden</span>
+          </div>
+
+          <div class="reflection-drawer">
+            <button id="btn-why-this" class="btn-reflection-toggle" aria-expanded="false">
+              <span>Why this quote for you?</span>
+              <span class="toggle-arrow">▾</span>
+            </button>
+            <div id="quote-reflection" class="quote-reflection-panel hidden">
+              <p class="reflection-text">
+                Letting go of perfection makes room for genuine goodness, breath, and peace.
+              </p>
+            </div>
+          </div>
+        </section>
+
+        <!-- 3. On This Day in History Card (Groq AI) -->
+        <section class="sanctuary-card history-hero-card">
+          <div class="card-header-row">
+            <div class="history-badge-group">
+              <span class="card-eyebrow">📅 On This Day</span>
+              <span id="funfact-tag" class="funfact-year-pill">🚀 Space • 1977</span>
+            </div>
+            <button id="btn-next-fact" class="btn-spin-fact" title="Discover another milestone">
+              <span>Another Fact</span>
+              <span class="spin-icon">✨</span>
+            </button>
+          </div>
+
+          <p id="funfact-text" class="history-main-text">
+            NASA's Voyager 2 spacecraft launched on its grand tour of the outer solar system, carrying the Golden Record of Earth's music.
           </p>
-        </div>
-      </section>
+        </section>
 
-      <hr class="soft-divider" />
-
-      <!-- Today in History Fun Fact (Groq AI Powered) -->
-      <section class="funfact-section">
-        <span class="section-label">📅 On this day in history</span>
-        <div class="funfact-card">
-          <div class="funfact-header">
-            <span id="funfact-tag" class="funfact-tag">Milestone • 1920</span>
-            <button id="btn-next-fact" class="btn-next-fact" title="Fetch another historical fact via Groq AI">Another fact ✨</button>
+        <!-- 4. Personalized Comfort Song Recommender Card -->
+        <section class="sanctuary-card song-hero-card">
+          <div class="card-header-row">
+            <span class="card-eyebrow">🎵 Music Sanctuary</span>
+            <span class="song-header-icon">🎧</span>
           </div>
-          <p id="funfact-text" class="funfact-text">
-            The 19th Amendment was officially certified, guaranteeing American women the right to vote.
+
+          <p class="song-hero-subtitle">
+            Tell me what your heart feels right now, and I'll find the perfect comforting song for you.
           </p>
-        </div>
-      </section>
 
-      <hr class="soft-divider" />
-
-      <!-- AI Personalized Song Recommendation Section -->
-      <section class="song-rec-section">
-        <span class="section-label">🎵 Today's Song Recommendation</span>
-        <div class="song-input-card">
-          <p class="song-input-subtitle">Tell me what your heart feels right now, and I'll find the perfect comforting song.</p>
-          
-          <div class="song-form-grid">
-            <div class="input-group">
-              <label for="song-mood" class="input-label">1. How are you feeling?</label>
-              <select id="song-mood" class="select-field">
-                <option value="Drained & overwhelmed">Exhausted & overwhelmed</option>
-                <option value="Quiet, lonely & contemplative">Quiet & lonely</option>
-                <option value="Restless & anxious">Restless & anxious</option>
-                <option value="Seeking comfort and a warm hug">Seeking comfort & warmth</option>
-              </select>
+          <!-- Interactive Visual Mood & Energy Chips -->
+          <div class="mood-chips-container">
+            <div class="chip-group">
+              <label class="chip-group-label">How are you feeling?</label>
+              <div class="chips-row" data-input="song-mood">
+                <button class="mood-chip active" data-value="Drained & overwhelmed">🌧️ Exhausted</button>
+                <button class="mood-chip" data-value="Quiet, lonely & contemplative">🌙 Quiet</button>
+                <button class="mood-chip" data-value="Restless & anxious">⚡ Anxious</button>
+                <button class="mood-chip" data-value="Seeking comfort and a warm hug">🤍 Need a Hug</button>
+              </div>
             </div>
 
-            <div class="input-group">
-              <label for="song-vibe" class="input-label">2. What vibe do you need?</label>
-              <select id="song-vibe" class="select-field">
-                <option value="Soft acoustic guitar & gentle warmth">Soft acoustic guitar</option>
-                <option value="Dreamy lo-fi & ambient soundscape">Dreamy Lo-Fi & ambient</option>
-                <option value="Gentle soothing piano melody">Gentle piano melody</option>
-                <option value="Warm indie folk & soft vocals">Warm indie folk</option>
-              </select>
+            <div class="chip-group">
+              <label class="chip-group-label">What vibe does your heart need?</label>
+              <div class="chips-row" data-input="song-vibe">
+                <button class="mood-chip active" data-value="Soft acoustic guitar & gentle warmth">🎸 Acoustic</button>
+                <button class="mood-chip" data-value="Dreamy lo-fi & ambient soundscape">🎧 Dreamy Lo-Fi</button>
+                <button class="mood-chip" data-value="Gentle soothing piano melody">🎹 Piano</button>
+                <button class="mood-chip" data-value="Warm indie folk & soft vocals">🌿 Indie Folk</button>
+              </div>
             </div>
 
-            <div class="input-group">
-              <label for="song-energy" class="input-label">3. Energy level?</label>
-              <select id="song-energy" class="select-field">
-                <option value="10% - Barely keeping eyes open">10% • Barely keeping eyes open</option>
-                <option value="30% - Need gentle comfort">30% • Need a gentle hug</option>
-                <option value="50% - Peaceful reflection">50% • Quiet contemplation</option>
-              </select>
+            <div class="chip-group">
+              <label class="chip-group-label">Energy Level?</label>
+              <div class="chips-row" data-input="song-energy">
+                <button class="mood-chip active" data-value="10% - Barely keeping eyes open">10% • Sleepy</button>
+                <button class="mood-chip" data-value="30% - Need gentle comfort">30% • Low</button>
+                <button class="mood-chip" data-value="50% - Peaceful reflection">50% • Restful</button>
+              </div>
             </div>
 
-            <div class="input-group">
-              <label for="song-style" class="input-label">4. Preferred style?</label>
-              <select id="song-style" class="select-field">
-                <option value="Any / Atmospheric & Calm">Atmospheric & Calm</option>
-                <option value="English Indie / Folk">English Indie / Folk</option>
-                <option value="Instrumental only">Instrumental only</option>
-                <option value="Japanese / French / World">World / Acoustic</option>
-              </select>
+            <div class="chip-group">
+              <label class="chip-group-label">Style Preference?</label>
+              <div class="chips-row" data-input="song-style">
+                <button class="mood-chip active" data-value="Any / Atmospheric & Calm">Atmospheric</button>
+                <button class="mood-chip" data-value="English Indie / Folk">Indie / Folk</button>
+                <button class="mood-chip" data-value="Instrumental only">Instrumental</button>
+                <button class="mood-chip" data-value="Japanese / French / World">World</button>
+              </div>
             </div>
           </div>
 
-          <button id="btn-discover-song" class="discover-song-btn">
-            ✨ Find My Comfort Song
+          <button id="btn-discover-song" class="btn-discover-song-primary">
+            <span>✨ Find My Comfort Song</span>
           </button>
 
-          <!-- Song Recommendation Result Card -->
-          <div id="song-result-card" class="song-result-card hidden">
-            <div class="song-result-header">
-              <span class="song-result-badge">✨ Your Comfort Melody</span>
-              <span id="song-result-genre" class="song-genre-tag">Ambient Folk</span>
+          <!-- Song Recommendation Result Preview Card -->
+          <div id="song-result-card" class="song-result-glass-card hidden">
+            <div class="song-card-badge-row">
+              <span class="rec-song-badge">✨ Your Comfort Song</span>
+              <span id="song-result-genre" class="rec-song-genre">Ambient Folk</span>
             </div>
-            <h3 id="song-result-title" class="song-title">Holocene</h3>
-            <span id="song-result-artist" class="song-artist">by Bon Iver</span>
-            <p id="song-result-why" class="song-why">
+
+            <div class="song-player-mockup">
+              <div class="song-disc-icon">💿</div>
+              <div class="song-disc-details">
+                <h4 id="song-result-title" class="rec-song-title">Holocene</h4>
+                <p id="song-result-artist" class="rec-song-artist">by Bon Iver</p>
+              </div>
+            </div>
+
+            <p id="song-result-why" class="rec-song-why">
               Its delicate acoustic fingerpicking and airy horn textures remind you that you are part of something vast and peaceful.
             </p>
-            <blockquote id="song-result-lyrics" class="song-lyrics">
+
+            <blockquote id="song-result-lyrics" class="rec-song-lyrics">
               “And at once I knew I was not magnificent...”
             </blockquote>
-            <a id="song-result-link" href="#" target="_blank" rel="noopener noreferrer" class="song-listen-btn">
-              🎧 Listen on Spotify / Web
+
+            <a id="song-result-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-spotify-direct">
+              <span>🎧 Listen on Spotify / Web</span>
             </a>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <hr class="soft-divider" />
+        <!-- 5. Daily Cortisol-Lowering Flow Games -->
+        <section class="sanctuary-card games-hero-card">
+          <div class="card-header-row">
+            <span class="card-eyebrow">🌙 Daily Flow Games</span>
+            <span class="games-subtitle-pill">Zero Stress • Pure Flow</span>
+          </div>
 
-      <!-- 2 Daily Goal Games -->
-      <section class="activities-section">
-        <span class="section-label">🌙 Daily Cortisol-Lowering Games</span>
-        <div class="games-nav-grid two-cards">
-          <button class="game-card-btn" data-game="highway">
-            <span class="game-icon">🚗</span>
-            <div class="game-card-content">
-              <span class="game-title">Midnight Cruise</span>
-              <span class="game-desc">Daily Scenery • Cruise 1000m to ocean overlook</span>
-            </div>
-            <span class="card-badge">Daily Goal 🌟</span>
-          </button>
-          <button class="game-card-btn" data-game="fireflies">
-            <span class="game-icon">✨</span>
-            <div class="game-card-content">
-              <span class="game-title">Constellation Weaver</span>
-              <span class="game-desc">Daily Constellation • Ignite 7 celestial stars</span>
-            </div>
-            <span class="card-badge">Daily Goal ⭐</span>
-          </button>
-        </div>
-      </section>
+          <div class="daily-games-grid">
+            <!-- Game 1 Card -->
+            <button class="game-launch-card" data-game="highway">
+              <div class="game-card-bg-glow glow-highway"></div>
+              <div class="game-launch-icon">🚗</div>
+              <div class="game-launch-meta">
+                <span class="game-launch-title">Midnight Cruise</span>
+                <span class="game-launch-desc">Glide smoothly to the 1000m ocean overlook</span>
+              </div>
+              <div class="game-launch-badge">Daily Scenery 🌟</div>
+            </button>
+
+            <!-- Game 2 Card -->
+            <button class="game-launch-card" data-game="fireflies">
+              <div class="game-card-bg-glow glow-fireflies"></div>
+              <div class="game-launch-icon">✨</div>
+              <div class="game-launch-meta">
+                <span class="game-launch-title">Constellation Weaver</span>
+                <span class="game-launch-desc">Guide fireflies to ignite 7 celestial stars</span>
+              </div>
+              <div class="game-launch-badge">Daily Stars ⭐</div>
+            </button>
+          </div>
+        </section>
+
+        <!-- Gentle Footer Note -->
+        <footer class="sanctuary-footer">
+          <p class="footer-quote">Take all the time you need. 🌸</p>
+        </footer>
+
+      </div>
     </div>
   </main>
 
-  <!-- Game 1: Midnight Highway Glide -->
+  <!-- Game 1: Midnight Highway Glide Screen -->
   <section id="view-highway" class="view game-view hidden">
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
@@ -251,11 +313,11 @@
     <div class="game-progress-bar-container">
       <div id="highway-progress-fill" class="game-progress-bar-fill"></div>
     </div>
-    <div class="game-hint-overlay">Swipe or press A/D (Left/Right) to glide lanes smoothly.</div>
+    <div class="game-hint-overlay">Swipe or tap sides to glide across lanes smoothly.</div>
     <canvas id="highway-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Game 2: Firefly Constellation Weaver -->
+  <!-- Game 2: Firefly Constellation Weaver Screen -->
   <section id="view-fireflies" class="view game-view hidden">
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
