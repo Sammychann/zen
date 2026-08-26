@@ -44,6 +44,17 @@ class SoundEngine {
     this.isInitialized = true;
   }
 
+  setTheme(theme) {
+    // Optional ambient tone adaptation when theme switches
+    if (this.isInitialized && this.ctx) {
+      if (theme === 'dark') {
+        this.playChime(220, 2);
+      } else {
+        this.playChime(329.63, 2);
+      }
+    }
+  }
+
   createNoiseBuffer(type = 'pink', durationSeconds = 4) {
     const bufferSize = this.ctx.sampleRate * durationSeconds;
     const buffer = this.ctx.createBuffer(1, bufferSize, this.ctx.sampleRate);
