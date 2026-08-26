@@ -18,18 +18,18 @@ class App {
     };
   }
 
-  async init() {
+  init() {
     // 1. Initialize 3D Theme System
     themeManager.init();
 
     // 2. Initialize Worldwide Radio Tuner & Interactive Map
     this.initRadio();
 
-    // 3. Load Groq AI Daily Quote & Historical Fun Fact
-    await this.loadGroqContent();
-
-    // 4. Setup Event Listeners & Modals
+    // 3. Immediately Bind All Event Listeners & Modals (Synchronously)
     this.bindEvents();
+
+    // 4. Asynchronously Load Groq AI Daily Quote & Historical Fun Fact in background
+    this.loadGroqContent();
   }
 
   async loadGroqContent() {
@@ -52,10 +52,10 @@ class App {
     const sourceEl = document.getElementById('quote-source');
     const reflectionEl = document.getElementById('quote-reflection');
 
-    if (textEl) textEl.textContent = `“${quote.text}”`;
-    if (authorEl) authorEl.textContent = quote.author;
-    if (sourceEl) sourceEl.textContent = quote.source;
-    if (reflectionEl) reflectionEl.textContent = quote.reflection;
+    if (textEl && quote.text) textEl.textContent = `“${quote.text}”`;
+    if (authorEl && quote.author) authorEl.textContent = quote.author;
+    if (sourceEl && quote.source) sourceEl.textContent = quote.source;
+    if (reflectionEl && quote.reflection) reflectionEl.textContent = quote.reflection;
   }
 
   renderFunFact(fact) {
@@ -63,8 +63,8 @@ class App {
     const tagEl = document.getElementById('funfact-tag');
     const textEl = document.getElementById('funfact-text');
 
-    if (tagEl) tagEl.textContent = `${fact.emoji || '✨'} ${fact.category} • ${fact.year}`;
-    if (textEl) textEl.textContent = fact.text;
+    if (tagEl) tagEl.textContent = `${fact.emoji || '✨'} ${fact.category || 'Milestone'} • ${fact.year || '1920'}`;
+    if (textEl && fact.text) textEl.textContent = fact.text;
   }
 
   initRadio() {
@@ -90,7 +90,8 @@ class App {
         pin.title = `${station.emoji} ${station.city}, ${station.country} (${station.name})`;
         pin.setAttribute('data-station-id', station.id);
 
-        pin.addEventListener('click', () => {
+        pin.addEventListener('click', (e) => {
+          e.stopPropagation();
           worldRadio.selectStation(idx);
           worldRadio.play();
           sound.playChime(329.63, 2);
@@ -101,6 +102,7 @@ class App {
     }
 
     const updateRadioUI = (station, isPlaying) => {
+      if (!station) return;
       if (nameEl) nameEl.textContent = station.name;
       if (cityEl) cityEl.textContent = `${station.city}, ${station.country} • ${station.genre}`;
       if (emojiEl) emojiEl.textContent = station.emoji;
@@ -125,16 +127,19 @@ class App {
       updateRadioUI(station, isPlaying);
     };
 
-    playBtn?.addEventListener('click', () => {
+    playBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       worldRadio.toggle();
     });
 
-    prevBtn?.addEventListener('click', () => {
+    prevBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       const s = worldRadio.prevStation();
       updateRadioUI(s, worldRadio.isPlaying);
     });
 
-    nextBtn?.addEventListener('click', () => {
+    nextBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       const s = worldRadio.nextStation();
       updateRadioUI(s, worldRadio.isPlaying);
     });
@@ -184,13 +189,15 @@ class App {
   bindEvents() {
     // Theme Toggle
     const themeBtn = document.getElementById('theme-toggle');
-    themeBtn?.addEventListener('click', () => {
+    themeBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       themeManager.toggleTheme();
     });
 
     // Rain Sound Toggle
     const rainBtn = document.getElementById('toggle-rain-sound');
-    rainBtn?.addEventListener('click', async () => {
+    rainBtn?.addEventListener('click', async (e) => {
+      e.stopPropagation();
       const isPlaying = await sound.toggleRain();
       if (isPlaying) rainBtn.classList.add('active');
       else rainBtn.classList.remove('active');
@@ -198,7 +205,8 @@ class App {
 
     // Waves Sound Toggle
     const wavesBtn = document.getElementById('toggle-waves-sound');
-    wavesBtn?.addEventListener('click', async () => {
+    wavesBtn?.addEventListener('click', async (e) => {
+      e.stopPropagation();
       const isPlaying = await sound.toggleWaves();
       if (isPlaying) wavesBtn.classList.add('active');
       else wavesBtn.classList.remove('active');
@@ -207,7 +215,8 @@ class App {
     // Why This Quote Accordion
     const whyThisBtn = document.getElementById('btn-why-this');
     const reflectionEl = document.getElementById('quote-reflection');
-    whyThisBtn?.addEventListener('click', () => {
+    whyThisBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       const isHidden = reflectionEl?.classList.contains('hidden');
       if (isHidden) {
         reflectionEl?.classList.remove('hidden');
@@ -222,7 +231,8 @@ class App {
 
     // Next Fun Fact Button (Groq AI Powered)
     const nextFactBtn = document.getElementById('btn-next-fact');
-    nextFactBtn?.addEventListener('click', async () => {
+    nextFactBtn?.addEventListener('click', async (e) => {
+      e.stopPropagation();
       nextFactBtn.textContent = "Fetching... ✨";
       const fact = await fetchAnotherFunFact();
       this.renderFunFact(fact);
@@ -232,7 +242,8 @@ class App {
 
     // Song Recommendation Form
     const discoverSongBtn = document.getElementById('btn-discover-song');
-    discoverSongBtn?.addEventListener('click', async () => {
+    discoverSongBtn?.addEventListener('click', async (e) => {
+      e.stopPropagation();
       const mood = document.getElementById('song-mood')?.value || 'Exhausted';
       const vibe = document.getElementById('song-vibe')?.value || 'Soft acoustic';
       const energy = document.getElementById('song-energy')?.value || 'Low';
@@ -275,7 +286,8 @@ class App {
     // Activity Navigation Cards
     const gameButtons = document.querySelectorAll('.game-card-btn');
     gameButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         const game = btn.getAttribute('data-game');
         if (game) this.switchView(game);
       });
@@ -284,7 +296,8 @@ class App {
     // Universal Back to Sanctuary Buttons
     const backButtons = document.querySelectorAll('.back-btn[data-back="home"]');
     backButtons.forEach(btn => {
-      btn.addEventListener('click', () => {
+      btn.addEventListener('click', (e) => {
+        e.stopPropagation();
         this.switchView('home');
       });
     });
@@ -294,12 +307,14 @@ class App {
     const modalAgainBtn = document.getElementById('btn-modal-again');
     const modal = document.getElementById('completion-modal');
 
-    modalReturnBtn?.addEventListener('click', () => {
+    modalReturnBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       modal?.classList.add('hidden');
       this.switchView('home');
     });
 
-    modalAgainBtn?.addEventListener('click', () => {
+    modalAgainBtn?.addEventListener('click', (e) => {
+      e.stopPropagation();
       modal?.classList.add('hidden');
       if (this.currentView === 'highway') highwayGame.start();
       if (this.currentView === 'fireflies') fireflyGame.start();
@@ -322,8 +337,14 @@ class App {
   }
 }
 
-// Start application on DOM ready
-window.addEventListener('DOMContentLoaded', () => {
+// Start application immediately
+const startApp = () => {
   const app = new App();
   app.init();
-});
+};
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', startApp);
+} else {
+  startApp();
+}
