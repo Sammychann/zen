@@ -6,36 +6,40 @@ A minimalist digital sanctuary designed for deep rest, lowering cortisol, and em
 
 ## ✨ Features
 
-### 1. 🤖 Groq AI Dynamic Daily Wisdom & Milestones
+### 1. 📻 Worldwide Interactive Radio Map (Radio.Garden Style)
+- Interactive world map with clickable glowing pins to tune into live ambient, lo-fi, chill, and acoustic radio stations across the globe:
+  - 🇯🇵 **Tokyo, Japan**: Tokyo Midnight Lo-Fi & City Pop
+  - 🇫🇷 **Paris, France**: Parisian Dream Cafe & Smooth Jazz
+  - 🇬🇧 **London, UK**: London Rainy Downtempo Chillhop
+  - 🇺🇸 **San Francisco, USA**: Groove Salad Lounge
+  - 🇺🇸 **New York, USA**: Drone Zone Atmospheric Space
+  - 🇮🇸 **Reykjavik, Iceland**: Nordic Glacial Sleep Ambient
+  - 🇧🇷 **Rio de Janeiro, Brazil**: Sunset Bossa Nova & Acoustic
+  - 🇩🇪 **Berlin, Germany**: Deep Lounge & Minimal Chill
+  - 🇮🇳 **Goa, India**: Peaceful Sitar & Meditative Beats
+  - 🇦🇺 **Sydney, Australia**: Coastal Breeze Acoustic
+- High-clarity streams, volume slider, station switcher (`⏮` / `⏭`), and country dropdown.
+
+### 2. 🤖 Groq AI Dynamic Daily Quotes & Historical Milestones
 - Powered by Groq's `llama-3.3-70b-versatile` API.
 - **Daily Literary Quotes**: Verified, uplifting passages from world literature (*John Steinbeck, Mary Oliver, Camus, etc.*) with soothing reflections.
 - **On This Day in History**: Heartwarming historical wonders that occurred on today's calendar date, with an interactive **"Another fact ✨"** button to explore more milestones.
 
-### 2. 📻 Everyday Anywhere Worldwide Radio
-- Live streaming ambient, lo-fi, chill, and acoustic radio stations across the globe (inspired by Radio Garden):
-  - 🌌 **Deep Drone Zone** (San Francisco, USA)
-  - 🥗 **Groove Salad Lounge** (San Francisco, USA)
-  - 🗾 **Tokyo Midnight Chill** (Tokyo, Japan)
-  - 🥐 **Parisian Dream Jazz** (Paris, France)
-  - 🌧️ **Lush Vocals & Calm** (London, UK)
-  - 🎋 **Synaptic Chill** (Kyoto, Japan)
-  - ❄️ **Fluid Soundwaves** (Reykjavik, Iceland)
-- Seamless in-app player with station dial, play/pause, and volume control.
-
-### 3. 🌿 5 Cortisol-Lowering Goal Games
-Designed with satisfying, pressure-free completion targets to induce flow state and lower stress:
-1. 🚗 **Midnight Highway Cruise**: Smooth, relaxing night drive with zero crashes. Glide through 1000m and collect 10 star orbs to reach the scenic ocean overlook.
-2. 🪴 **Sanctuary Plant Nursery**: Water and nourish 3 botanical plants (Bonsai, Lavender, Sakura seedling) until they reach 100% hydration and bloom.
-3. ✨ **Firefly Constellation Weaver**: Move your touch/cursor to guide glowing fireflies and ignite all 7 stars of the celestial constellation.
-4. 🍵 **Matcha Zen Tea Ceremony**: Mindfully scoop fine green matcha, pour 80°C spring water, and whisk in circular motions to produce frothy jade foam.
-5. 🧩 **Golden Kintsugi Pottery**: Piece together 4 scattered ceramic shards into a whole bowl sealed with radiant gold lacquer seams.
+### 3. 🌙 2 Daily Cortisol-Lowering Goal Games
+Designed with satisfying, pressure-free completion targets that change daily:
+1. 🚗 **Midnight Highway Cruise**: Smooth, relaxing night drive with zero crashes or hazards. Swipe/arrow keys to glide across 3 lanes, collecting 10 star orbs along 1000m to reach the scenic ocean overlook.
+   - *Daily Scenery*: Monday Midnight Coast, Tuesday Tokyo Neon, Wednesday Sakura Forest, Thursday Emerald Aurora, Friday Desert Starlight, Saturday Moonlit Glacier, Sunday Golden Sunset.
+   - *Daily Completion Celebration*: Popup celebration with personalized daily affirmations.
+2. ✨ **Firefly Constellation Weaver**: Move your touch/cursor to guide glowing fireflies and ignite all 7 celestial star nodes to awaken the night constellation.
+   - *Daily Constellations*: Monday Cassiopeia, Tuesday Ursa Major, Wednesday Orion's Belt, Thursday Pleiades, Friday Cygnus Swan, Saturday Pegasus, Sunday Corona Borealis.
+   - *Daily Completion Celebration*: Popup celebration upon awakening the full constellation.
 
 ### 4. 🎨 Dual Three.js 3D Atmospheric Themes
 - **🌸 Sakura (Light Mode)**: Instanced 3D falling cherry blossom petals swaying with physics drift and warm sunlight.
 - **🌊 Blue Hour (Dark Mode)**: Inky midnight abyss with glowing bioluminescent aquatic sparkles.
 
 ### 5. 🔊 Procedural Web Audio Sound Engine
-- Procedural ocean swells, soft rain, wind gusts, and Tibetan singing bowl chimes generated directly in the browser with zero audio files.
+- Procedural ocean swells, soft rain, wind gusts, and Tibetan singing bowl chimes generated directly in the browser with zero external audio files.
 
 ---
 
@@ -44,17 +48,6 @@ Designed with satisfying, pressure-free completion targets to induce flow state 
 Open `index.html` in any modern web browser or serve locally:
 ```bash
 # Using Python
-python -m http.server 8080
-
-# Or Node.js
-npx serve .
+python -m http.server 3000 --bind 127.0.0.1
 ```
-
----
-
-## 🛠️ Tech Stack
-- **Frontend**: Vanilla JavaScript (ES Modules), HTML5, CSS3 Glassmorphism
-- **3D Graphics**: Three.js (r185+)
-- **AI Intelligence**: Groq API (`llama-3.3-70b-versatile`)
-- **Audio**: Web Audio API (procedural synthesis) + Live Worldwide Audio Streams
-- **Storage**: Local-First (`localStorage` caching)
+Open **[http://127.0.0.1:3000](http://127.0.0.1:3000)**.

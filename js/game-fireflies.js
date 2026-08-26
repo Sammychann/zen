@@ -2,10 +2,74 @@ import * as THREE from 'three';
 import { sound } from './sound.js';
 
 /**
- * Firefly Constellation Weaver Game
- * Guide peaceful floating fireflies to ignite the 7 star nodes of the night sky constellation.
- * Goal: Light all 7 celestial stars to awaken the cosmic constellation.
+ * Daily Constellations for every day of the week
  */
+const DAILY_CONSTELLATIONS = [
+  {
+    day: "Sunday",
+    name: "Corona Borealis (The Northern Crown)",
+    stars: [
+      { x: -5.0, y: 1.0 }, { x: -3.0, y: 3.2 }, { x: -0.5, y: 4.0 },
+      { x: 2.0, y: 3.5 }, { x: 4.2, y: 1.8 }, { x: 5.5, y: -0.5 }, { x: 3.0, y: -2.5 }
+    ],
+    affirmation: "The golden crown of stars shines for you. Your peace is your greatest power."
+  },
+  {
+    day: "Monday",
+    name: "Cassiopeia (The Queen's Throne)",
+    stars: [
+      { x: -6.5, y: 3.5 }, { x: -3.5, y: 1.5 }, { x: -0.5, y: 3.0 },
+      { x: 2.8, y: 0.8 }, { x: 5.8, y: 2.5 }, { x: 4.2, y: -2.8 }, { x: -2.0, y: -2.5 }
+    ],
+    affirmation: "Cassiopeia glimmers in quiet majesty. You have guided every light home."
+  },
+  {
+    day: "Tuesday",
+    name: "Ursa Major (The Great Celestial Dipper)",
+    stars: [
+      { x: -6.0, y: -1.0 }, { x: -4.0, y: 0.5 }, { x: -1.5, y: 0.8 },
+      { x: 1.0, y: 1.2 }, { x: 1.5, y: 3.8 }, { x: 4.8, y: 4.0 }, { x: 4.5, y: 1.5 }
+    ],
+    affirmation: "The Great Dipper pours stillness across the night sky. Breathe and rest."
+  },
+  {
+    day: "Wednesday",
+    name: "Orion's Radiant Belt",
+    stars: [
+      { x: -5.0, y: 4.0 }, { x: 5.0, y: 3.8 }, { x: -2.0, y: 0.5 },
+      { x: 0.0, y: 0.0 }, { x: 2.0, y: -0.5 }, { x: -4.5, y: -4.0 }, { x: 4.5, y: -3.8 }
+    ],
+    affirmation: "The celestial hunter rests. The night is gentle, quiet, and warm."
+  },
+  {
+    day: "Thursday",
+    name: "Pleiades (The Seven Sisters)",
+    stars: [
+      { x: -4.2, y: 2.5 }, { x: -2.2, y: 3.2 }, { x: -0.5, y: 1.8 },
+      { x: 1.5, y: 2.2 }, { x: 3.5, y: 1.0 }, { x: 1.0, y: -1.5 }, { x: -1.8, y: -0.8 }
+    ],
+    affirmation: "Seven sister stars watch over you in gentle harmony. Sleep peacefully."
+  },
+  {
+    day: "Friday",
+    name: "Cygnus (The Swan of Starlight)",
+    stars: [
+      { x: 0.0, y: 4.5 }, { x: 0.0, y: 1.5 }, { x: 0.0, y: -2.0 },
+      { x: 0.0, y: -4.5 }, { x: -4.5, y: 1.5 }, { x: 4.5, y: 1.5 }, { x: 2.5, y: -1.0 }
+    ],
+    affirmation: "The star swan glides across the cosmic ocean. Let your mind drift into dreamland."
+  },
+  {
+    day: "Saturday",
+    name: "Pegasus (The Winged Stardust)",
+    stars: [
+      { x: -4.0, y: 3.0 }, { x: 3.5, y: 3.2 }, { x: 4.0, y: -2.5 },
+      { x: -3.8, y: -2.8 }, { x: -6.0, y: 0.5 }, { x: 6.0, y: 0.8 }, { x: 0.0, y: 4.2 }
+    ],
+    affirmation: "Wings of stardust carry away every worry from this week. You are completely safe."
+  }
+];
+
 export class FireflyGame {
   constructor() {
     this.canvas = document.getElementById('fireflies-canvas');
@@ -21,6 +85,7 @@ export class FireflyGame {
     this.lines = [];
     this.pointer = new THREE.Vector3(999, 999, 0);
 
+    this.currentConstellation = DAILY_CONSTELLATIONS[new Date().getDay()];
     this.litStarsCount = 0;
     this.totalStars = 7;
     this.isCompleted = false;
@@ -35,6 +100,8 @@ export class FireflyGame {
 
   init() {
     if (this.isInitialized) return;
+
+    this.currentConstellation = DAILY_CONSTELLATIONS[new Date().getDay()];
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -52,7 +119,7 @@ export class FireflyGame {
     const ambient = new THREE.AmbientLight(0x060f1e, 2.5);
     this.scene.add(ambient);
 
-    // Setup 7 Constellation Star Nodes (Cassiopeia / Big Dipper shape)
+    // Setup Daily Constellation Star Nodes
     this.setupConstellation();
 
     // Spawn 22 gentle fireflies
@@ -63,20 +130,11 @@ export class FireflyGame {
   }
 
   setupConstellation() {
-    const starCoords = [
-      { x: -6.5, y: 3.5, name: "Alpha" },
-      { x: -3.5, y: 1.5, name: "Beta" },
-      { x: -0.5, y: 3.0, name: "Gamma" },
-      { x: 2.8, y: 0.8, name: "Delta" },
-      { x: 5.8, y: 2.5, name: "Epsilon" },
-      { x: 4.2, y: -2.8, name: "Zeta" },
-      { x: -2.0, y: -2.5, name: "Eta" }
-    ];
+    const starCoords = this.currentConstellation.stars;
 
     starCoords.forEach((c) => {
       const group = new THREE.Group();
 
-      // Outer unlit star ring
       const ringGeo = new THREE.RingGeometry(0.5, 0.65, 32);
       const ringMat = new THREE.MeshBasicMaterial({
         color: 0x475569,
@@ -87,7 +145,6 @@ export class FireflyGame {
       const ring = new THREE.Mesh(ringGeo, ringMat);
       group.add(ring);
 
-      // Inner glowing core (hidden until lit)
       const coreGeo = new THREE.SphereGeometry(0.35, 16, 16);
       const coreMat = new THREE.MeshBasicMaterial({
         color: 0xfef08a,
@@ -109,7 +166,6 @@ export class FireflyGame {
       });
     });
 
-    // Constellation lines connecting stars
     for (let i = 0; i < this.constellationNodes.length - 1; i++) {
       const lineGeo = new THREE.BufferGeometry().setFromPoints([
         this.constellationNodes[i].pos,
@@ -197,7 +253,6 @@ export class FireflyGame {
     sound.playChime(329.63 + this.litStarsCount * 45, 5);
     this.updateUI();
 
-    // Check if whole constellation completed
     if (this.litStarsCount >= this.totalStars) {
       this.isCompleted = true;
       this.lines.forEach(l => {
@@ -205,12 +260,27 @@ export class FireflyGame {
         l.material.color.setHex(0xfef08a);
       });
       sound.playChime(523.25, 8);
+      setTimeout(() => this.showCompletionModal(), 600);
+    }
+  }
+
+  showCompletionModal() {
+    const modal = document.getElementById('completion-modal');
+    const titleEl = document.getElementById('modal-title');
+    const descEl = document.getElementById('modal-desc');
+    const badgeEl = document.getElementById('modal-badge');
+
+    if (modal && titleEl && descEl) {
+      titleEl.textContent = `✨ ${this.currentConstellation.name} Awakened!`;
+      descEl.textContent = this.currentConstellation.affirmation;
+      if (badgeEl) badgeEl.textContent = `✨ ${this.currentConstellation.day} Constellation Completed • All 7 Stars Lit`;
+      modal.classList.remove('hidden');
     }
   }
 
   updateUI() {
     if (this.starCountEl) {
-      this.starCountEl.textContent = `${this.litStarsCount}/${this.totalStars}`;
+      this.starCountEl.textContent = `${this.litStarsCount}/${this.totalStars} ⭐`;
     }
     if (this.progressBar) {
       const pct = (this.litStarsCount / this.totalStars) * 100;
@@ -218,9 +288,9 @@ export class FireflyGame {
     }
     if (this.statusText) {
       if (this.isCompleted) {
-        this.statusText.textContent = "✨ Constellation awakened! The cosmos shines upon you.";
+        this.statusText.textContent = `✨ ${this.currentConstellation.name} awakened!`;
       } else {
-        this.statusText.textContent = `Guide fireflies to ignite stars (${this.litStarsCount}/${this.totalStars} lit)`;
+        this.statusText.textContent = `${this.currentConstellation.name} • ${this.litStarsCount}/${this.totalStars} stars lit`;
       }
     }
   }
@@ -240,26 +310,22 @@ export class FireflyGame {
 
     const time = this.clock.getElapsedTime();
 
-    // Update Fireflies
     this.fireflies.forEach(f => {
       f.pos.x += f.vel.x + Math.sin(time * 0.8 + f.seed) * 0.01;
       f.pos.y += f.vel.y + Math.cos(time * 0.6 + f.seed) * 0.01;
 
-      // Follow touch/pointer
       const distToPointer = f.pos.distanceTo(this.pointer);
       if (distToPointer < 5.0) {
         const pullDir = new THREE.Vector3().subVectors(this.pointer, f.pos).normalize();
         f.pos.add(pullDir.multiplyScalar(0.04));
       }
 
-      // Check collision with constellation star nodes
       this.constellationNodes.forEach(node => {
         if (!node.isLit && f.pos.distanceTo(node.pos) < 1.1) {
           this.igniteStar(node);
         }
       });
 
-      // Bounds
       if (Math.abs(f.pos.x) > 13) f.pos.x *= -0.95;
       if (Math.abs(f.pos.y) > 9) f.pos.y *= -0.95;
 
@@ -268,7 +334,6 @@ export class FireflyGame {
       f.mesh.scale.setScalar(0.8 + pulse * 0.5);
     });
 
-    // Star node pulsing
     this.constellationNodes.forEach(node => {
       if (node.isLit) {
         node.group.rotation.z += 0.01;

@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>A Little Place to Breathe 🌸</title>
-  <meta name="description" content="A digital sanctuary with worldwide ambient radio, Groq AI daily quotes, and 5 cortisol-lowering goal games." />
+  <meta name="description" content="A digital sanctuary with worldwide interactive radio map, Groq AI daily quotes, and daily cortisol-lowering goal games." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -41,14 +41,14 @@
 
       <h1 class="gentle-line">You don't have to fix everything today.</h1>
 
-      <!-- Worldwide Radio Tuner (Everyday Anywhere Radio) -->
+      <!-- Worldwide Radio Tuner & Interactive Map (Radio Garden Style) -->
       <section class="radio-section">
         <div class="radio-card">
           <div class="radio-info">
-            <span id="radio-station-emoji" class="radio-emoji">🌌</span>
+            <span id="radio-station-emoji" class="radio-emoji">🗾</span>
             <div class="radio-text-wrap">
-              <span id="radio-station-name" class="radio-name">Deep Drone Zone</span>
-              <span id="radio-station-city" class="radio-city">San Francisco, USA • Ambient Space</span>
+              <span id="radio-station-name" class="radio-name">Tokyo Midnight Lo-Fi</span>
+              <span id="radio-station-city" class="radio-city">Tokyo, Japan • Lo-Fi Beats & City Pop</span>
             </div>
           </div>
           <div class="radio-controls">
@@ -57,7 +57,42 @@
               <span id="radio-play-icon">▶</span>
             </button>
             <button id="btn-radio-next" class="radio-btn" title="Next Station">⏭</button>
-            <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.6" class="volume-slider" title="Radio Volume" />
+            <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.85" class="volume-slider" title="Radio Volume" />
+          </div>
+        </div>
+
+        <!-- Interactive World Map Pin Selector -->
+        <div class="world-map-container">
+          <div class="map-header">
+            <span class="map-title">🌍 Select Country & Station</span>
+            <select id="radio-country-select" class="country-dropdown" title="Choose country station">
+              <option value="tokyo">🇯🇵 Japan (Tokyo Lo-Fi)</option>
+              <option value="paris">🇫🇷 France (Parisian Cafe)</option>
+              <option value="london">🇬🇧 UK (London Chillhop)</option>
+              <option value="sf">🇺🇸 USA (SF Lounge)</option>
+              <option value="ny">🇺🇸 USA (NY Drone Zone)</option>
+              <option value="reykjavik">🇮🇸 Iceland (Reykjavik Sleep)</option>
+              <option value="rio">🇧🇷 Brazil (Rio Bossa Nova)</option>
+              <option value="berlin">🇩🇪 Germany (Berlin Chill)</option>
+              <option value="goa">🇮🇳 India (Goa Sunset)</option>
+              <option value="sydney">🇦🇺 Australia (Sydney Breeze)</option>
+            </select>
+          </div>
+
+          <div class="world-map-svg-wrap" id="world-map-wrap">
+            <!-- Stylized World Map SVG with interactive clickable station pins -->
+            <svg class="world-map-svg" viewBox="0 0 800 400">
+              <path class="map-land" d="M120,80 Q160,60 220,90 Q260,140 230,190 Q180,220 120,180 Q80,130 120,80 Z" />
+              <path class="map-land" d="M220,220 Q260,240 280,310 Q240,360 200,320 Q190,260 220,220 Z" />
+              <path class="map-land" d="M380,70 Q430,50 480,90 Q470,160 410,170 Q370,120 380,70 Z" />
+              <path class="map-land" d="M380,180 Q450,190 470,280 Q430,350 370,290 Q360,220 380,180 Z" />
+              <path class="map-land" d="M500,60 Q650,40 720,100 Q740,190 640,210 Q540,190 500,120 Z" />
+              <path class="map-land" d="M560,170 Q620,160 630,230 Q580,260 550,220 Z" />
+              <path class="map-land" d="M640,260 Q720,250 740,320 Q680,360 630,310 Z" />
+            </svg>
+
+            <!-- Clickable Interactive Radio Pins -->
+            <div id="map-pins-container" class="map-pins-overlay"></div>
           </div>
         </div>
       </section>
@@ -100,34 +135,25 @@
 
       <hr class="soft-divider" />
 
-      <!-- 5 Cortisol-Lowering Goal Games -->
+      <!-- 2 Cortisol-Lowering Goal Games -->
       <section class="activities-section">
-        <span class="section-label">🌿 5 Cortisol-Lowering Games</span>
-        <div class="games-nav-grid">
+        <span class="section-label">🌙 Daily Cortisol-Lowering Games</span>
+        <div class="games-nav-grid two-cards">
           <button class="game-card-btn" data-game="highway">
             <span class="game-icon">🚗</span>
-            <span class="game-title">Night Cruise</span>
-            <span class="game-desc">Glide to 1000m overlook</span>
-          </button>
-          <button class="game-card-btn" data-game="plants">
-            <span class="game-icon">🪴</span>
-            <span class="game-title">Plant Nursery</span>
-            <span class="game-desc">Water & bloom 3 plants</span>
+            <div class="game-card-content">
+              <span class="game-title">Midnight Cruise</span>
+              <span class="game-desc">Daily Scenery • Cruise 1000m to ocean overlook</span>
+            </div>
+            <span class="card-badge">Daily Goal 🌟</span>
           </button>
           <button class="game-card-btn" data-game="fireflies">
             <span class="game-icon">✨</span>
-            <span class="game-title">Fireflies</span>
-            <span class="game-desc">Ignite 7 celestial stars</span>
-          </button>
-          <button class="game-card-btn" data-game="tea">
-            <span class="game-icon">🍵</span>
-            <span class="game-title">Matcha Tea</span>
-            <span class="game-desc">Whisk frothy jade tea</span>
-          </button>
-          <button class="game-card-btn" data-game="kintsugi">
-            <span class="game-icon">🧩</span>
-            <span class="game-title">Gold Kintsugi</span>
-            <span class="game-desc">Repair broken pottery</span>
+            <div class="game-card-content">
+              <span class="game-title">Constellation Weaver</span>
+              <span class="game-desc">Daily Constellation • Ignite 7 celestial stars</span>
+            </div>
+            <span class="card-badge">Daily Goal ⭐</span>
           </button>
         </div>
       </section>
@@ -139,7 +165,7 @@
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
       <div class="game-goal-badge">
-        <span id="highway-status-text">Cruising smoothly • 1000m to scenic overlook</span>
+        <span id="highway-status-text">Cruising smoothly • 1000m to overlook</span>
         <span id="highway-orb-count" class="badge-count">0/10 ⭐</span>
       </div>
     </div>
@@ -150,27 +176,7 @@
     <canvas id="highway-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Game 2: Sanctuary Plant Nursery -->
-  <section id="view-plants" class="view game-view hidden">
-    <div class="game-top-bar">
-      <button class="back-btn" data-back="home">← Sanctuary</button>
-      <div class="plant-tabs">
-        <button class="plant-tab-btn active" data-plant="0">Bonsai</button>
-        <button class="plant-tab-btn" data-plant="1">Lavender</button>
-        <button class="plant-tab-btn" data-plant="2">Sakura</button>
-      </div>
-      <div class="game-actions">
-        <button id="btn-water-plant" class="tool-btn">🚿 Water Plant</button>
-      </div>
-    </div>
-    <div class="game-progress-bar-container">
-      <div id="plants-progress-fill" class="game-progress-bar-fill"></div>
-    </div>
-    <div class="game-hint-overlay" id="plants-status-text">Hold button or tap screen to water plant to full bloom.</div>
-    <canvas id="plants-canvas" class="game-canvas"></canvas>
-  </section>
-
-  <!-- Game 3: Firefly Constellation Weaver -->
+  <!-- Game 2: Firefly Constellation Weaver -->
   <section id="view-fireflies" class="view game-view hidden">
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
@@ -186,36 +192,21 @@
     <canvas id="fireflies-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Game 4: Matcha Zen Tea Ceremony -->
-  <section id="view-tea" class="view game-view hidden">
-    <div class="game-top-bar">
-      <button class="back-btn" data-back="home">← Sanctuary</button>
-      <div class="game-actions">
-        <button id="btn-tea-action" class="tool-btn">🍃 Scoop Matcha</button>
+  <!-- Completion Popup Modal -->
+  <div id="completion-modal" class="modal-backdrop hidden">
+    <div class="completion-modal-card">
+      <div class="modal-sparkle-icon">🌟</div>
+      <span id="modal-badge" class="modal-badge-tag">Daily Goal Completed</span>
+      <h2 id="modal-title" class="modal-title">✨ Overlook Reached!</h2>
+      <p id="modal-desc" class="modal-desc">
+        You navigated today with quiet resilience. Rest deeply now, nothing is demanded of you.
+      </p>
+      <div class="modal-actions">
+        <button id="btn-modal-return" class="modal-btn-primary">🌸 Return to Sanctuary</button>
+        <button id="btn-modal-again" class="modal-btn-secondary">🔄 Play Again</button>
       </div>
     </div>
-    <div class="game-progress-bar-container">
-      <div id="tea-progress-fill" class="game-progress-bar-fill"></div>
-    </div>
-    <div class="game-hint-overlay" id="tea-status-text">Step 1: Sift fresh matcha powder into the ceramic bowl.</div>
-    <canvas id="tea-canvas" class="game-canvas"></canvas>
-  </section>
-
-  <!-- Game 5: Golden Kintsugi Pottery Repair -->
-  <section id="view-kintsugi" class="view game-view hidden">
-    <div class="game-top-bar">
-      <button class="back-btn" data-back="home">← Sanctuary</button>
-      <div class="game-goal-badge">
-        <span id="kintsugi-status-text">Tap ceramic shards to set them in gold</span>
-        <span id="kintsugi-shard-count" class="badge-count">0/4 🏺</span>
-      </div>
-    </div>
-    <div class="game-progress-bar-container">
-      <div id="kintsugi-progress-fill" class="game-progress-bar-fill"></div>
-    </div>
-    <div class="game-hint-overlay">Tap each scattered shard to reassemble the bowl with glowing gold.</div>
-    <canvas id="kintsugi-canvas" class="game-canvas"></canvas>
-  </section>
+  </div>
 
   <!-- Master Application Script -->
   <script type="module" src="js/app.js"></script>

@@ -1,12 +1,9 @@
 import { themeManager } from './themes.js';
 import { sound } from './sound.js';
-import { worldRadio } from './radio.js';
+import { worldRadio, WORLD_STATIONS } from './radio.js';
 import { fetchGroqContent, fetchAnotherFunFact } from './groq.js';
 import { highwayGame } from './game-highway.js';
-import { plantGame } from './game-plants.js';
 import { fireflyGame } from './game-fireflies.js';
-import { teaGame } from './game-tea.js';
-import { kintsugiGame } from './game-kintsugi.js';
 
 /**
  * Master Sanctuary Application Orchestrator
@@ -17,10 +14,7 @@ class App {
     this.views = {
       home: document.getElementById('view-home'),
       highway: document.getElementById('view-highway'),
-      plants: document.getElementById('view-plants'),
-      fireflies: document.getElementById('view-fireflies'),
-      tea: document.getElementById('view-tea'),
-      kintsugi: document.getElementById('view-kintsugi')
+      fireflies: document.getElementById('view-fireflies')
     };
   }
 
@@ -28,13 +22,13 @@ class App {
     // 1. Initialize 3D Theme System
     themeManager.init();
 
-    // 2. Initialize Worldwide Radio Tuner
+    // 2. Initialize Worldwide Radio Tuner & Interactive Map
     this.initRadio();
 
     // 3. Load Groq AI Daily Quote & Historical Fun Fact
     await this.loadGroqContent();
 
-    // 4. Setup Event Listeners
+    // 4. Setup Event Listeners & Modals
     this.bindEvents();
   }
 
@@ -82,12 +76,46 @@ class App {
     const cityEl = document.getElementById('radio-station-city');
     const emojiEl = document.getElementById('radio-station-emoji');
     const volSlider = document.getElementById('radio-volume');
+    const countrySelect = document.getElementById('radio-country-select');
+    const pinsContainer = document.getElementById('map-pins-container');
+
+    // Create Clickable Map Pins
+    if (pinsContainer) {
+      pinsContainer.innerHTML = '';
+      WORLD_STATIONS.forEach((station, idx) => {
+        const pin = document.createElement('div');
+        pin.className = `map-pin ${idx === 0 ? 'active' : ''}`;
+        pin.style.left = `${station.mapX}%`;
+        pin.style.top = `${station.mapY}%`;
+        pin.title = `${station.emoji} ${station.city}, ${station.country} (${station.name})`;
+        pin.setAttribute('data-station-id', station.id);
+
+        pin.addEventListener('click', () => {
+          worldRadio.selectStation(idx);
+          worldRadio.play();
+          sound.playChime(329.63, 2);
+        });
+
+        pinsContainer.appendChild(pin);
+      });
+    }
 
     const updateRadioUI = (station, isPlaying) => {
       if (nameEl) nameEl.textContent = station.name;
       if (cityEl) cityEl.textContent = `${station.city}, ${station.country} • ${station.genre}`;
       if (emojiEl) emojiEl.textContent = station.emoji;
       if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
+      if (countrySelect) countrySelect.value = station.id;
+
+      // Update active map pin
+      const pins = document.querySelectorAll('.map-pin');
+      pins.forEach(pin => {
+        if (pin.getAttribute('data-station-id') === station.id) {
+          pin.classList.add('active');
+        } else {
+          pin.classList.remove('active');
+        }
+      });
     };
 
     updateRadioUI(worldRadio.getCurrentStation(), false);
@@ -115,6 +143,13 @@ class App {
     volSlider?.addEventListener('input', (e) => {
       worldRadio.setVolume(parseFloat(e.target.value));
     });
+
+    countrySelect?.addEventListener('change', (e) => {
+      const s = worldRadio.selectStationById(e.target.value);
+      worldRadio.play();
+      updateRadioUI(s, true);
+      sound.playChime(392.00, 2);
+    });
   }
 
   switchView(viewName) {
@@ -122,10 +157,11 @@ class App {
 
     // Stop currently running active activity
     if (this.currentView === 'highway') highwayGame.stop();
-    if (this.currentView === 'plants') plantGame.stop();
     if (this.currentView === 'fireflies') fireflyGame.stop();
-    if (this.currentView === 'tea') teaGame.stop();
-    if (this.currentView === 'kintsugi') kintsugiGame.stop();
+
+    // Close any open completion modal
+    const modal = document.getElementById('completion-modal');
+    if (modal) modal.classList.add('hidden');
 
     // Hide old view
     const oldViewEl = this.views[this.currentView];
@@ -148,10 +184,7 @@ class App {
 
     // Start target activity
     if (viewName === 'highway') highwayGame.start();
-    if (viewName === 'plants') plantGame.start();
     if (viewName === 'fireflies') fireflyGame.start();
-    if (viewName === 'tea') teaGame.start();
-    if (viewName === 'kintsugi') kintsugiGame.start();
   }
 
   bindEvents() {
@@ -220,6 +253,22 @@ class App {
       });
     });
 
+    // Completion Modal Buttons
+    const modalReturnBtn = document.getElementById('btn-modal-return');
+    const modalAgainBtn = document.getElementById('btn-modal-again');
+    const modal = document.getElementById('completion-modal');
+
+    modalReturnBtn?.addEventListener('click', () => {
+      modal?.classList.add('hidden');
+      this.switchView('home');
+    });
+
+    modalAgainBtn?.addEventListener('click', () => {
+      modal?.classList.add('hidden');
+      if (this.currentView === 'highway') highwayGame.start();
+      if (this.currentView === 'fireflies') fireflyGame.start();
+    });
+
     // Keyboard Shortcuts (Escape to return to Sanctuary, T for Theme, M for Mute)
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
@@ -234,10 +283,7 @@ class App {
     // Window Resize Handler
     window.addEventListener('resize', () => {
       if (this.currentView === 'highway') highwayGame.resize();
-      if (this.currentView === 'plants') plantGame.resize();
       if (this.currentView === 'fireflies') fireflyGame.resize();
-      if (this.currentView === 'tea') teaGame.resize();
-      if (this.currentView === 'kintsugi') kintsugiGame.resize();
     });
   }
 }

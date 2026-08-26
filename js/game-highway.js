@@ -2,10 +2,18 @@ import * as THREE from 'three';
 import { sound } from './sound.js';
 
 /**
- * Midnight Highway Glide Game
- * Smooth, relaxing night cruise with no crashes or hazards.
- * Goal: Cruise 1000m and collect 10 star orbs to reach the scenic ocean overlook.
+ * Daily Scenery Configs based on day of the week
  */
+const DAILY_SCENERY = [
+  { day: "Sunday", name: "Golden Sunset Coast", skyColor: 0x451a03, roadColor: 0x0f0b14, lightColor: 0xfbbf24, carColor: 0xf59e0b, goalAffirmation: "The sun sets on today. You did wonderful, and tomorrow brings fresh light." },
+  { day: "Monday", name: "Midnight Coastal Highway", skyColor: 0x020617, roadColor: 0x070d1a, lightColor: 0x38bdf8, carColor: 0x0284c7, goalAffirmation: "You navigated through everything with quiet resilience. Rest deeply now." },
+  { day: "Tuesday", name: "Tokyo Neon Cyber Glide", skyColor: 0x090514, roadColor: 0x0e0720, lightColor: 0xf43f5e, carColor: 0xec4899, goalAffirmation: "Let go of all the noise and demands. You are safe and peaceful right here." },
+  { day: "Wednesday", name: "Sakura Forest Highway", skyColor: 0x14050b, roadColor: 0x1a0a12, lightColor: 0xfbcfe8, carColor: 0xf472b6, goalAffirmation: "Like petals in the breeze, let your thoughts gently float away into stillness." },
+  { day: "Thursday", name: "Emerald Aurora Pass", skyColor: 0x02140d, roadColor: 0x051a12, lightColor: 0x34d399, carColor: 0x10b981, goalAffirmation: "Breathe in the calm night air. Your mind is quiet, steady, and clear." },
+  { day: "Friday", name: "Desert Starlight Ridge", skyColor: 0x05081c, roadColor: 0x0b1026, lightColor: 0xa78bfa, carColor: 0x8b5cf6, goalAffirmation: "You carried so much this week. It is finally time to lay it all down and sleep." },
+  { day: "Saturday", name: "Moonlit Glacial Route", skyColor: 0x040e1a, roadColor: 0x071524, lightColor: 0x67e8f9, carColor: 0x38bdf8, goalAffirmation: "A gentle stillness surrounds you. Nothing is expected of you now." }
+];
+
 export class HighwayGame {
   constructor() {
     this.canvas = document.getElementById('highway-canvas');
@@ -29,6 +37,8 @@ export class HighwayGame {
     this.targetOrbs = 10;
     this.isCompleted = false;
 
+    this.currentScenery = DAILY_SCENERY[new Date().getDay()];
+
     this.clock = new THREE.Clock();
     this.isInitialized = false;
     this.rafId = null;
@@ -36,6 +46,8 @@ export class HighwayGame {
 
   init() {
     if (this.isInitialized) return;
+
+    this.currentScenery = DAILY_SCENERY[new Date().getDay()];
 
     this.scene = new THREE.Scene();
     this.camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -50,11 +62,11 @@ export class HighwayGame {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Night lighting
-    const ambient = new THREE.AmbientLight(0x0a1428, 2.5);
+    // Daily ambient lighting
+    const ambient = new THREE.AmbientLight(this.currentScenery.skyColor, 2.8);
     this.scene.add(ambient);
 
-    const moon = new THREE.DirectionalLight(0x60a5fa, 1.5);
+    const moon = new THREE.DirectionalLight(this.currentScenery.lightColor, 1.6);
     moon.position.set(0, 15, 10);
     this.scene.add(moon);
 
@@ -62,7 +74,7 @@ export class HighwayGame {
     const roadGeo = new THREE.PlaneGeometry(12, 120);
     roadGeo.rotateX(-Math.PI / 2);
     const roadMat = new THREE.MeshStandardMaterial({
-      color: 0x070d1a,
+      color: this.currentScenery.roadColor,
       roughness: 0.8
     });
     const road = new THREE.Mesh(roadGeo, roadMat);
@@ -73,7 +85,7 @@ export class HighwayGame {
     for (let i = 0; i < 20; i++) {
       const lineGeo = new THREE.PlaneGeometry(0.25, 3.5);
       lineGeo.rotateX(-Math.PI / 2);
-      const lineMat = new THREE.MeshBasicMaterial({ color: 0x38bdf8 });
+      const lineMat = new THREE.MeshBasicMaterial({ color: this.currentScenery.lightColor });
       const line = new THREE.Mesh(lineGeo, lineMat);
       line.position.set(0, 0.02, -i * 6);
       this.scene.add(line);
@@ -86,10 +98,10 @@ export class HighwayGame {
       this.createStreetlight(6.5, -i * 12);
     }
 
-    // Sleek Minimalist Cruiser Car
+    // Cruiser Car
     this.createCar();
 
-    // Spawn Star Orbs along highway
+    // Spawn Star Orbs
     this.spawnOrbs();
 
     this.setupControls();
@@ -106,7 +118,7 @@ export class HighwayGame {
     group.add(pole);
 
     const lampGeo = new THREE.SphereGeometry(0.35, 12, 12);
-    const lampMat = new THREE.MeshBasicMaterial({ color: 0xfef08a });
+    const lampMat = new THREE.MeshBasicMaterial({ color: this.currentScenery.lightColor });
     const lamp = new THREE.Mesh(lampGeo, lampMat);
     lamp.position.set(x > 0 ? -0.8 : 0.8, 5.8, 0);
     group.add(lamp);
@@ -119,10 +131,9 @@ export class HighwayGame {
   createCar() {
     this.car = new THREE.Group();
 
-    // Body
     const bodyGeo = new THREE.BoxGeometry(1.6, 0.6, 3.2);
     const bodyMat = new THREE.MeshStandardMaterial({
-      color: 0x38bdf8,
+      color: this.currentScenery.carColor,
       metalness: 0.85,
       roughness: 0.2
     });
@@ -130,17 +141,12 @@ export class HighwayGame {
     body.position.y = 0.5;
     this.car.add(body);
 
-    // Cabin
     const cabinGeo = new THREE.BoxGeometry(1.3, 0.5, 1.6);
-    const cabinMat = new THREE.MeshStandardMaterial({
-      color: 0x030712,
-      roughness: 0.1
-    });
+    const cabinMat = new THREE.MeshStandardMaterial({ color: 0x030712, roughness: 0.1 });
     const cabin = new THREE.Mesh(cabinGeo, cabinMat);
     cabin.position.set(0, 0.95, -0.2);
     this.car.add(cabin);
 
-    // Taillights
     const tailMat = new THREE.MeshBasicMaterial({ color: 0xf43f5e });
     const tail1 = new THREE.Mesh(new THREE.BoxGeometry(0.35, 0.15, 0.05), tailMat);
     tail1.position.set(-0.55, 0.55, 1.62);
@@ -165,10 +171,7 @@ export class HighwayGame {
       orb.position.set(lane, 0.8, z);
       this.scene.add(orb);
 
-      this.starOrbs.push({
-        mesh: orb,
-        collected: false
-      });
+      this.starOrbs.push({ mesh: orb, collected: false });
     }
   }
 
@@ -181,7 +184,6 @@ export class HighwayGame {
       }
     });
 
-    // Touch / Mouse dragging across highway lanes
     let startX = 0;
     this.canvas.addEventListener('touchstart', (e) => {
       startX = e.touches[0].clientX;
@@ -200,6 +202,20 @@ export class HighwayGame {
       const xRatio = (e.clientX / window.innerWidth) * 2 - 1;
       this.targetCarX = xRatio * 3.5;
     });
+  }
+
+  showCompletionModal() {
+    const modal = document.getElementById('completion-modal');
+    const titleEl = document.getElementById('modal-title');
+    const descEl = document.getElementById('modal-desc');
+    const badgeEl = document.getElementById('modal-badge');
+
+    if (modal && titleEl && descEl) {
+      titleEl.textContent = `✨ ${this.currentScenery.name} Overlook Reached!`;
+      descEl.textContent = this.currentScenery.goalAffirmation;
+      if (badgeEl) badgeEl.textContent = `🚗 ${this.currentScenery.day} Journey Completed • 1000m Cruised`;
+      modal.classList.remove('hidden');
+    }
   }
 
   start() {
@@ -221,14 +237,14 @@ export class HighwayGame {
       this.progressBar.style.width = `${pct}%`;
     }
     if (this.orbCountEl) {
-      this.orbCountEl.textContent = `${this.collectedOrbs}/${this.targetOrbs}`;
+      this.orbCountEl.textContent = `${this.collectedOrbs}/${this.targetOrbs} ⭐`;
     }
     if (this.statusText) {
       if (this.isCompleted) {
-        this.statusText.textContent = "✨ Overlook reached. Take a peaceful breath.";
+        this.statusText.textContent = `✨ Overlook reached • ${this.currentScenery.name}`;
       } else {
         const remaining = Math.max(0, Math.floor(this.maxDistance - this.distance));
-        this.statusText.textContent = `Cruising smoothly • ${remaining}m to scenic overlook`;
+        this.statusText.textContent = `${this.currentScenery.name} • ${remaining}m to overlook`;
       }
     }
   }
@@ -242,14 +258,12 @@ export class HighwayGame {
     if (!this.isCompleted) {
       this.distance += speed * 2.5;
 
-      // Smooth car steering interpolation
       this.carX += (this.targetCarX - this.carX) * 0.15;
       if (this.car) {
         this.car.position.x = this.carX;
         this.car.rotation.z = (this.targetCarX - this.carX) * -0.05;
       }
 
-      // Move road lines & streetlights backward
       this.roadLines.forEach(l => {
         l.position.z += speed;
         if (l.position.z > 5) l.position.z -= 120;
@@ -260,13 +274,11 @@ export class HighwayGame {
         if (s.position.z > 5) s.position.z -= 120;
       });
 
-      // Move star orbs & check collision
       this.starOrbs.forEach(o => {
         if (!o.collected) {
           o.mesh.position.z += speed;
           o.mesh.rotation.y += 0.05;
 
-          // Check proximity
           const dx = o.mesh.position.x - this.carX;
           const dz = o.mesh.position.z - this.car.position.z;
           if (Math.abs(dx) < 1.4 && Math.abs(dz) < 1.4) {
@@ -288,6 +300,7 @@ export class HighwayGame {
       if (this.distance >= this.maxDistance && this.collectedOrbs >= this.targetOrbs) {
         this.isCompleted = true;
         sound.playChime(523.25, 8);
+        setTimeout(() => this.showCompletionModal(), 600);
       }
 
       this.updateUI();
