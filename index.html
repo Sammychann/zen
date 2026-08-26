@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>A Little Place to Breathe 🌸</title>
-  <meta name="description" content="A gentle digital sanctuary with calming sleep activities, daily book wisdom, and ambient sounds." />
+  <meta name="description" content="A digital sanctuary with worldwide ambient radio, Groq AI daily quotes, and 5 cortisol-lowering goal games." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -32,7 +32,7 @@
             <span class="theme-icon light-icon">🌸</span>
             <span class="theme-icon dark-icon">🌊</span>
           </button>
-          <button id="sound-toggle" class="icon-btn" aria-label="Toggle Zen Sound" title="Toggle Zen Ambient Sound">
+          <button id="sound-toggle" class="icon-btn" aria-label="Toggle Zen Ambient Sound" title="Toggle Zen Soundscape">
             <span class="sound-icon sound-off">🔇</span>
             <span class="sound-icon sound-on hidden">🔊</span>
           </button>
@@ -41,7 +41,28 @@
 
       <h1 class="gentle-line">You don't have to fix everything today.</h1>
 
-      <!-- Daily Quote Section -->
+      <!-- Worldwide Radio Tuner (Everyday Anywhere Radio) -->
+      <section class="radio-section">
+        <div class="radio-card">
+          <div class="radio-info">
+            <span id="radio-station-emoji" class="radio-emoji">🌌</span>
+            <div class="radio-text-wrap">
+              <span id="radio-station-name" class="radio-name">Deep Drone Zone</span>
+              <span id="radio-station-city" class="radio-city">San Francisco, USA • Ambient Space</span>
+            </div>
+          </div>
+          <div class="radio-controls">
+            <button id="btn-radio-prev" class="radio-btn" title="Previous Station">⏮</button>
+            <button id="btn-radio-play" class="radio-play-btn" title="Play / Pause Worldwide Radio">
+              <span id="radio-play-icon">▶</span>
+            </button>
+            <button id="btn-radio-next" class="radio-btn" title="Next Station">⏭</button>
+            <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.6" class="volume-slider" title="Radio Volume" />
+          </div>
+        </div>
+      </section>
+
+      <!-- Daily Quote Section (Groq AI Powered) -->
       <section class="daily-thought-section">
         <span class="section-label">Today's little thought</span>
         <blockquote id="quote-text" class="quote-text">
@@ -63,132 +84,140 @@
 
       <hr class="soft-divider" />
 
-      <!-- Today in History Fun Fact -->
+      <!-- Today in History Fun Fact (Groq AI Powered) -->
       <section class="funfact-section">
         <span class="section-label">📅 On this day in history</span>
         <div class="funfact-card">
           <div class="funfact-header">
             <span id="funfact-tag" class="funfact-tag">Milestone • 1920</span>
-            <button id="btn-next-fact" class="btn-next-fact" title="Show another event from this day">Another fact ✨</button>
+            <button id="btn-next-fact" class="btn-next-fact" title="Fetch another historical fact via Groq AI">Another fact ✨</button>
           </div>
           <p id="funfact-text" class="funfact-text">
-            The 19th Amendment was officially certified, guaranteeing women the right to vote.
+            The 19th Amendment was officially certified, guaranteeing American women the right to vote.
           </p>
         </div>
       </section>
 
       <hr class="soft-divider" />
 
-      <!-- 5 Gentle Bedtime Calming Activities -->
+      <!-- 5 Cortisol-Lowering Goal Games -->
       <section class="activities-section">
-        <span class="section-label">🌙 5 Gentle Bedtime Activities</span>
+        <span class="section-label">🌿 5 Cortisol-Lowering Games</span>
         <div class="games-nav-grid">
+          <button class="game-card-btn" data-game="highway">
+            <span class="game-icon">🚗</span>
+            <span class="game-title">Night Cruise</span>
+            <span class="game-desc">Glide to 1000m overlook</span>
+          </button>
+          <button class="game-card-btn" data-game="plants">
+            <span class="game-icon">🪴</span>
+            <span class="game-title">Plant Nursery</span>
+            <span class="game-desc">Water & bloom 3 plants</span>
+          </button>
           <button class="game-card-btn" data-game="fireflies">
             <span class="game-icon">✨</span>
-            <span class="game-title">Firefly Catch</span>
-            <span class="game-desc">Drift softly & bloom stars</span>
+            <span class="game-title">Fireflies</span>
+            <span class="game-desc">Ignite 7 celestial stars</span>
           </button>
-          <button class="game-card-btn" data-game="rain-window">
-            <span class="game-icon">🌧️</span>
-            <span class="game-title">Rainy Glass</span>
-            <span class="game-desc">Wipe cozy window mist</span>
+          <button class="game-card-btn" data-game="tea">
+            <span class="game-icon">🍵</span>
+            <span class="game-title">Matcha Tea</span>
+            <span class="game-desc">Whisk frothy jade tea</span>
           </button>
-          <button class="game-card-btn" data-game="lotus-pond">
-            <span class="game-icon">🪷</span>
-            <span class="game-title">Lotus Pond</span>
-            <span class="game-desc">Float glowing lanterns</span>
-          </button>
-          <button class="game-card-btn" data-game="aurora">
-            <span class="game-icon">🌌</span>
-            <span class="game-title">Aurora Weaver</span>
-            <span class="game-desc">Wave Northern Lights</span>
-          </button>
-          <button class="game-card-btn" data-game="cloud-drift">
-            <span class="game-icon">☁️</span>
-            <span class="game-title">Dream Clouds</span>
-            <span class="game-desc">Sculpt pastel stardust</span>
+          <button class="game-card-btn" data-game="kintsugi">
+            <span class="game-icon">🧩</span>
+            <span class="game-title">Gold Kintsugi</span>
+            <span class="game-desc">Repair broken pottery</span>
           </button>
         </div>
       </section>
     </div>
   </main>
 
-  <!-- Activity 1: Firefly Catch View -->
-  <section id="view-fireflies" class="view game-view hidden">
+  <!-- Game 1: Midnight Highway Glide -->
+  <section id="view-highway" class="view game-view hidden">
     <div class="game-top-bar">
-      <button class="back-btn" data-back="home" aria-label="Return home">
-        ← Sanctuary
-      </button>
-      <span class="game-mode-title">Firefly Constellations</span>
-      <div class="game-actions">
-        <span class="tool-btn">✨ Drift softly</span>
+      <button class="back-btn" data-back="home">← Sanctuary</button>
+      <div class="game-goal-badge">
+        <span id="highway-status-text">Cruising smoothly • 1000m to scenic overlook</span>
+        <span id="highway-orb-count" class="badge-count">0/10 ⭐</span>
       </div>
     </div>
-    <div class="game-hint-overlay">Move gently near the glowing lights to bloom constellations.</div>
+    <div class="game-progress-bar-container">
+      <div id="highway-progress-fill" class="game-progress-bar-fill"></div>
+    </div>
+    <div class="game-hint-overlay">Swipe or press A/D (Left/Right) to glide lanes smoothly.</div>
+    <canvas id="highway-canvas" class="game-canvas"></canvas>
+  </section>
+
+  <!-- Game 2: Sanctuary Plant Nursery -->
+  <section id="view-plants" class="view game-view hidden">
+    <div class="game-top-bar">
+      <button class="back-btn" data-back="home">← Sanctuary</button>
+      <div class="plant-tabs">
+        <button class="plant-tab-btn active" data-plant="0">Bonsai</button>
+        <button class="plant-tab-btn" data-plant="1">Lavender</button>
+        <button class="plant-tab-btn" data-plant="2">Sakura</button>
+      </div>
+      <div class="game-actions">
+        <button id="btn-water-plant" class="tool-btn">🚿 Water Plant</button>
+      </div>
+    </div>
+    <div class="game-progress-bar-container">
+      <div id="plants-progress-fill" class="game-progress-bar-fill"></div>
+    </div>
+    <div class="game-hint-overlay" id="plants-status-text">Hold button or tap screen to water plant to full bloom.</div>
+    <canvas id="plants-canvas" class="game-canvas"></canvas>
+  </section>
+
+  <!-- Game 3: Firefly Constellation Weaver -->
+  <section id="view-fireflies" class="view game-view hidden">
+    <div class="game-top-bar">
+      <button class="back-btn" data-back="home">← Sanctuary</button>
+      <div class="game-goal-badge">
+        <span id="fireflies-status-text">Guide fireflies to ignite stars</span>
+        <span id="fireflies-star-count" class="badge-count">0/7 ⭐</span>
+      </div>
+    </div>
+    <div class="game-progress-bar-container">
+      <div id="fireflies-progress-fill" class="game-progress-bar-fill"></div>
+    </div>
+    <div class="game-hint-overlay">Move finger/cursor to guide fireflies into unlit star rings.</div>
     <canvas id="fireflies-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Activity 2: Rainy Windowpane View -->
-  <section id="view-rain-window" class="view game-view hidden">
+  <!-- Game 4: Matcha Zen Tea Ceremony -->
+  <section id="view-tea" class="view game-view hidden">
     <div class="game-top-bar">
-      <button class="back-btn" data-back="home" aria-label="Return home">
-        ← Sanctuary
-      </button>
-      <span class="game-mode-title">Cozy Rain on Glass</span>
+      <button class="back-btn" data-back="home">← Sanctuary</button>
       <div class="game-actions">
-        <button id="btn-rain-re-fog" class="tool-btn" title="Re-fog Window">🌫️ Re-mist</button>
+        <button id="btn-tea-action" class="tool-btn">🍃 Scoop Matcha</button>
       </div>
     </div>
-    <div class="game-hint-overlay">Drag your finger to wipe away the window mist.</div>
-    <canvas id="rain-canvas" class="game-canvas"></canvas>
+    <div class="game-progress-bar-container">
+      <div id="tea-progress-fill" class="game-progress-bar-fill"></div>
+    </div>
+    <div class="game-hint-overlay" id="tea-status-text">Step 1: Sift fresh matcha powder into the ceramic bowl.</div>
+    <canvas id="tea-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Activity 3: Lotus & Lantern Pond View -->
-  <section id="view-lotus-pond" class="view game-view hidden">
+  <!-- Game 5: Golden Kintsugi Pottery Repair -->
+  <section id="view-kintsugi" class="view game-view hidden">
     <div class="game-top-bar">
-      <button class="back-btn" data-back="home" aria-label="Return home">
-        ← Sanctuary
-      </button>
-      <span class="game-mode-title">Midnight Lotus Pond</span>
-      <div class="game-actions">
-        <span class="tool-btn">🪷 Tap to float</span>
+      <button class="back-btn" data-back="home">← Sanctuary</button>
+      <div class="game-goal-badge">
+        <span id="kintsugi-status-text">Tap ceramic shards to set them in gold</span>
+        <span id="kintsugi-shard-count" class="badge-count">0/4 🏺</span>
       </div>
     </div>
-    <div class="game-hint-overlay">Tap or glide across the water to float glowing lanterns.</div>
-    <canvas id="lotus-canvas" class="game-canvas"></canvas>
-  </section>
-
-  <!-- Activity 4: Aurora Weaver View -->
-  <section id="view-aurora" class="view game-view hidden">
-    <div class="game-top-bar">
-      <button class="back-btn" data-back="home" aria-label="Return home">
-        ← Sanctuary
-      </button>
-      <span class="game-mode-title">Aurora Weaver</span>
-      <div class="game-actions">
-        <span class="tool-btn">🌌 Glide the sky</span>
-      </div>
+    <div class="game-progress-bar-container">
+      <div id="kintsugi-progress-fill" class="game-progress-bar-fill"></div>
     </div>
-    <div class="game-hint-overlay">Glide across the sky to weave shimmering Northern Lights.</div>
-    <canvas id="aurora-canvas" class="game-canvas"></canvas>
+    <div class="game-hint-overlay">Tap each scattered shard to reassemble the bowl with glowing gold.</div>
+    <canvas id="kintsugi-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Activity 5: Dream Cloud Sculptor View -->
-  <section id="view-cloud-drift" class="view game-view hidden">
-    <div class="game-top-bar">
-      <button class="back-btn" data-back="home" aria-label="Return home">
-        ← Sanctuary
-      </button>
-      <span class="game-mode-title">Dream Cloud Sculptor</span>
-      <div class="game-actions">
-        <span class="tool-btn">☁️ Sculpt mist</span>
-      </div>
-    </div>
-    <div class="game-hint-overlay">Glide your finger to part and shape soft pastel stardust clouds.</div>
-    <canvas id="cloud-canvas" class="game-canvas"></canvas>
-  </section>
-
-  <!-- Application Module Script -->
+  <!-- Master Application Script -->
   <script type="module" src="js/app.js"></script>
 </body>
 </html>

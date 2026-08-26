@@ -12,8 +12,8 @@
   --accent: #e5989b;
   --accent-soft: rgba(229, 152, 155, 0.18);
   --accent-glow: rgba(229, 152, 155, 0.4);
-  --card-bg: rgba(255, 253, 250, 0.82);
-  --card-border: rgba(255, 255, 255, 0.9);
+  --card-bg: rgba(255, 253, 250, 0.85);
+  --card-border: rgba(255, 255, 255, 0.95);
   --card-shadow: 0 16px 40px rgba(180, 160, 150, 0.12);
   --btn-bg: rgba(255, 255, 255, 0.9);
   --btn-hover: rgba(229, 152, 155, 0.16);
@@ -31,10 +31,10 @@
   --accent: #38bdf8;
   --accent-soft: rgba(56, 189, 248, 0.15);
   --accent-glow: rgba(56, 189, 248, 0.4);
-  --card-bg: rgba(4, 8, 16, 0.86);
+  --card-bg: rgba(4, 8, 16, 0.88);
   --card-border: rgba(56, 189, 248, 0.16);
-  --card-shadow: 0 20px 48px rgba(0, 0, 0, 0.7);
-  --btn-bg: rgba(8, 14, 28, 0.85);
+  --card-shadow: 0 20px 48px rgba(0, 0, 0, 0.75);
+  --btn-bg: rgba(8, 14, 28, 0.88);
   --btn-hover: rgba(56, 189, 248, 0.18);
   --btn-border: rgba(56, 189, 248, 0.28);
   --divider: rgba(56, 189, 248, 0.14);
@@ -74,7 +74,7 @@ html, body {
   transition: opacity 0.8s ease;
 }
 
-/* Quick Controls */
+/* Controls Header */
 .controls-group {
   display: flex;
   align-items: center;
@@ -129,7 +129,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 24px 16px;
+  padding: 20px 16px;
   overflow-y: auto;
   opacity: 0;
   pointer-events: none;
@@ -150,7 +150,7 @@ html, body {
   -webkit-backdrop-filter: var(--glass-blur);
   border: 1px solid var(--card-border);
   border-radius: 26px;
-  padding: 30px 24px;
+  padding: 28px 22px;
   max-width: 520px;
   width: 100%;
   box-shadow: var(--card-shadow);
@@ -169,7 +169,7 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 14px;
+  margin-bottom: 12px;
 }
 
 .sanctuary-badge {
@@ -181,12 +181,111 @@ html, body {
 }
 
 .gentle-line {
-  font-size: 1.42rem;
+  font-size: 1.38rem;
   font-weight: 350;
-  line-height: 1.4;
+  line-height: 1.35;
   color: var(--text-primary);
-  margin-bottom: 18px;
+  margin-bottom: 16px;
   letter-spacing: -0.01em;
+}
+
+/* Worldwide Ambient Radio Tuner */
+.radio-section {
+  margin-bottom: 14px;
+}
+
+.radio-card {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 16px;
+  padding: 10px 14px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  box-shadow: 0 4px 14px var(--accent-soft);
+}
+
+.radio-info {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  text-align: left;
+  overflow: hidden;
+}
+
+.radio-emoji {
+  font-size: 1.5rem;
+}
+
+.radio-text-wrap {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.radio-name {
+  font-size: 0.84rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.radio-city {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+}
+
+.radio-controls {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.radio-btn {
+  background: none;
+  border: none;
+  font-size: 0.95rem;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 4px;
+  transition: color 0.2s;
+}
+
+.radio-btn:hover {
+  color: var(--accent);
+}
+
+.radio-play-btn {
+  background: var(--accent);
+  border: none;
+  color: #ffffff;
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.85rem;
+  cursor: pointer;
+  box-shadow: 0 2px 8px var(--accent-glow);
+  transition: transform 0.2s ease;
+}
+
+.radio-play-btn:hover {
+  transform: scale(1.06);
+}
+
+.volume-slider {
+  width: 48px;
+  accent-color: var(--accent);
+  cursor: pointer;
 }
 
 /* Dividers */
@@ -194,13 +293,13 @@ html, body {
   border: none;
   height: 1px;
   background: var(--divider);
-  margin: 16px 0;
+  margin: 14px 0;
 }
 
 /* Daily Thought / Quote */
 .section-label {
   display: block;
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   text-transform: uppercase;
   letter-spacing: 0.14em;
   color: var(--text-muted);
@@ -209,7 +308,7 @@ html, body {
 }
 
 .quote-text {
-  font-size: 1.02rem;
+  font-size: 0.98rem;
   font-weight: 400;
   line-height: 1.55;
   font-style: italic;
@@ -218,7 +317,7 @@ html, body {
 }
 
 .quote-meta {
-  font-size: 0.84rem;
+  font-size: 0.82rem;
   color: var(--text-secondary);
   display: flex;
   align-items: center;
@@ -245,7 +344,7 @@ html, body {
   background: none;
   border: none;
   color: var(--accent);
-  font-size: 0.78rem;
+  font-size: 0.76rem;
   cursor: pointer;
   padding: 4px 8px;
   border-radius: 6px;
@@ -254,8 +353,8 @@ html, body {
 }
 
 .quote-reflection {
-  font-size: 0.82rem;
-  line-height: 1.5;
+  font-size: 0.8rem;
+  line-height: 1.45;
   color: var(--text-secondary);
   background: var(--accent-soft);
   padding: 10px 14px;
@@ -278,11 +377,11 @@ html, body {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 6px;
+  margin-bottom: 4px;
 }
 
 .funfact-tag {
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   font-weight: 600;
   color: var(--accent);
   letter-spacing: 0.05em;
@@ -293,7 +392,7 @@ html, body {
   background: none;
   border: none;
   color: var(--text-secondary);
-  font-size: 0.74rem;
+  font-size: 0.72rem;
   cursor: pointer;
   padding: 2px 6px;
   border-radius: 4px;
@@ -305,12 +404,12 @@ html, body {
 }
 
 .funfact-text {
-  font-size: 0.84rem;
-  line-height: 1.5;
+  font-size: 0.82rem;
+  line-height: 1.45;
   color: var(--text-primary);
 }
 
-/* 5 Activities Grid */
+/* 5 Games Grid */
 .games-nav-grid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -318,16 +417,11 @@ html, body {
   margin-top: 10px;
 }
 
-.games-nav-grid .game-card-btn:nth-child(4),
-.games-nav-grid .game-card-btn:nth-child(5) {
-  /* Span evenly across the bottom row */
-}
-
 .game-card-btn {
   background: var(--btn-bg);
   border: 1px solid var(--btn-border);
   border-radius: 14px;
-  padding: 12px 6px;
+  padding: 10px 6px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -360,7 +454,7 @@ html, body {
   line-height: 1.15;
 }
 
-/* Game Views */
+/* Game Top Bar & Progress */
 .game-view {
   padding: 0;
   display: flex;
@@ -383,6 +477,25 @@ html, body {
   pointer-events: auto;
 }
 
+.game-goal-badge {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 6px 16px;
+  border-radius: 999px;
+  font-size: 0.82rem;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.badge-count {
+  color: var(--accent);
+  font-weight: 700;
+}
+
 .back-btn {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
@@ -403,22 +516,29 @@ html, body {
   transform: translateX(-2px);
 }
 
-.game-mode-title {
-  font-size: 0.92rem;
-  font-weight: 600;
-  color: var(--text-primary);
+.plant-tabs {
+  display: flex;
+  gap: 6px;
+}
+
+.plant-tab-btn {
   background: var(--card-bg);
   border: 1px solid var(--card-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  padding: 6px 16px;
+  color: var(--text-secondary);
+  padding: 6px 14px;
   border-radius: 999px;
-  letter-spacing: 0.04em;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
 }
 
-.game-actions {
-  display: flex;
-  gap: 8px;
+.plant-tab-btn.active {
+  color: var(--text-primary);
+  border-color: var(--accent);
+  background: var(--accent-soft);
 }
 
 .tool-btn {
@@ -426,8 +546,8 @@ html, body {
   border: 1px solid var(--card-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  color: var(--text-secondary);
-  padding: 8px 14px;
+  color: var(--text-primary);
+  padding: 8px 16px;
   border-radius: 999px;
   font-size: 0.82rem;
   font-weight: 500;
@@ -436,8 +556,28 @@ html, body {
 }
 
 .tool-btn:hover {
-  color: var(--text-primary);
   border-color: var(--accent);
+  background: var(--accent-soft);
+}
+
+.game-progress-bar-container {
+  position: absolute;
+  top: 64px;
+  left: 20px;
+  right: 20px;
+  height: 4px;
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 999px;
+  z-index: 45;
+  overflow: hidden;
+}
+
+.game-progress-bar-fill {
+  height: 100%;
+  width: 0%;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+  transition: width 0.3s ease;
 }
 
 .game-hint-overlay {
@@ -473,13 +613,13 @@ html, body {
 /* Mobile Screens */
 @media (max-width: 600px) {
   .sanctuary-card {
-    padding: 20px 16px;
+    padding: 18px 14px;
     border-radius: 20px;
   }
 
   .gentle-line {
-    font-size: 1.2rem;
-    margin-bottom: 14px;
+    font-size: 1.18rem;
+    margin-bottom: 12px;
   }
 
   .games-nav-grid {
@@ -499,13 +639,14 @@ html, body {
     padding: 12px 14px;
   }
 
-  .game-mode-title {
-    display: none;
+  .game-goal-badge {
+    font-size: 0.72rem;
+    padding: 4px 10px;
   }
 
   .game-hint-overlay {
     bottom: 14px;
-    font-size: 0.74rem;
+    font-size: 0.72rem;
     padding: 6px 12px;
     max-width: 92%;
     white-space: normal;

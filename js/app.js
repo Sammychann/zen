@@ -1,45 +1,58 @@
 import { themeManager } from './themes.js';
 import { sound } from './sound.js';
-import { getDailyQuote } from './quotes.js';
-import { funFacts } from './funfacts.js';
+import { worldRadio } from './radio.js';
+import { fetchGroqContent, fetchAnotherFunFact } from './groq.js';
+import { highwayGame } from './game-highway.js';
+import { plantGame } from './game-plants.js';
 import { fireflyGame } from './game-fireflies.js';
-import { rainWindowGame } from './game-rain-window.js';
-import { lotusPondGame } from './game-lotus-pond.js';
-import { auroraGame } from './game-aurora.js';
-import { cloudDriftGame } from './game-cloud-drift.js';
+import { teaGame } from './game-tea.js';
+import { kintsugiGame } from './game-kintsugi.js';
 
 /**
- * Main Sanctuary Application Orchestrator
+ * Master Sanctuary Application Orchestrator
  */
 class App {
   constructor() {
     this.currentView = 'home';
     this.views = {
       home: document.getElementById('view-home'),
+      highway: document.getElementById('view-highway'),
+      plants: document.getElementById('view-plants'),
       fireflies: document.getElementById('view-fireflies'),
-      'rain-window': document.getElementById('view-rain-window'),
-      'lotus-pond': document.getElementById('view-lotus-pond'),
-      aurora: document.getElementById('view-aurora'),
-      'cloud-drift': document.getElementById('view-cloud-drift')
+      tea: document.getElementById('view-tea'),
+      kintsugi: document.getElementById('view-kintsugi')
     };
   }
 
-  init() {
+  async init() {
     // 1. Initialize 3D Theme System
     themeManager.init();
 
-    // 2. Initialize Daily Literary Comfort Quote
-    this.renderDailyQuote();
+    // 2. Initialize Worldwide Radio Tuner
+    this.initRadio();
 
-    // 3. Initialize Today in History Fun Fact
-    this.renderFunFact(funFacts.getCurrentFact());
+    // 3. Load Groq AI Daily Quote & Historical Fun Fact
+    await this.loadGroqContent();
 
     // 4. Setup Event Listeners
     this.bindEvents();
   }
 
-  renderDailyQuote() {
-    const quote = getDailyQuote();
+  async loadGroqContent() {
+    try {
+      const content = await fetchGroqContent();
+      if (content && content.quote) {
+        this.renderQuote(content.quote);
+      }
+      if (content && content.funfact) {
+        this.renderFunFact(content.funfact);
+      }
+    } catch (e) {
+      console.warn("Error rendering Groq content:", e);
+    }
+  }
+
+  renderQuote(quote) {
     const textEl = document.getElementById('quote-text');
     const authorEl = document.getElementById('quote-author');
     const sourceEl = document.getElementById('quote-source');
@@ -60,15 +73,59 @@ class App {
     if (textEl) textEl.textContent = fact.text;
   }
 
+  initRadio() {
+    const playBtn = document.getElementById('btn-radio-play');
+    const playIcon = document.getElementById('radio-play-icon');
+    const prevBtn = document.getElementById('btn-radio-prev');
+    const nextBtn = document.getElementById('btn-radio-next');
+    const nameEl = document.getElementById('radio-station-name');
+    const cityEl = document.getElementById('radio-station-city');
+    const emojiEl = document.getElementById('radio-station-emoji');
+    const volSlider = document.getElementById('radio-volume');
+
+    const updateRadioUI = (station, isPlaying) => {
+      if (nameEl) nameEl.textContent = station.name;
+      if (cityEl) cityEl.textContent = `${station.city}, ${station.country} • ${station.genre}`;
+      if (emojiEl) emojiEl.textContent = station.emoji;
+      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
+    };
+
+    updateRadioUI(worldRadio.getCurrentStation(), false);
+
+    worldRadio.onStateChange = ({ isPlaying, loading }) => {
+      const station = worldRadio.getCurrentStation();
+      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : (loading ? "⏳" : "▶");
+      updateRadioUI(station, isPlaying);
+    };
+
+    playBtn?.addEventListener('click', () => {
+      worldRadio.toggle();
+    });
+
+    prevBtn?.addEventListener('click', () => {
+      const s = worldRadio.prevStation();
+      updateRadioUI(s, worldRadio.isPlaying);
+    });
+
+    nextBtn?.addEventListener('click', () => {
+      const s = worldRadio.nextStation();
+      updateRadioUI(s, worldRadio.isPlaying);
+    });
+
+    volSlider?.addEventListener('input', (e) => {
+      worldRadio.setVolume(parseFloat(e.target.value));
+    });
+  }
+
   switchView(viewName) {
     if (this.currentView === viewName) return;
 
     // Stop currently running active activity
+    if (this.currentView === 'highway') highwayGame.stop();
+    if (this.currentView === 'plants') plantGame.stop();
     if (this.currentView === 'fireflies') fireflyGame.stop();
-    if (this.currentView === 'rain-window') rainWindowGame.stop();
-    if (this.currentView === 'lotus-pond') lotusPondGame.stop();
-    if (this.currentView === 'aurora') auroraGame.stop();
-    if (this.currentView === 'cloud-drift') cloudDriftGame.stop();
+    if (this.currentView === 'tea') teaGame.stop();
+    if (this.currentView === 'kintsugi') kintsugiGame.stop();
 
     // Hide old view
     const oldViewEl = this.views[this.currentView];
@@ -90,11 +147,11 @@ class App {
     this.currentView = viewName;
 
     // Start target activity
+    if (viewName === 'highway') highwayGame.start();
+    if (viewName === 'plants') plantGame.start();
     if (viewName === 'fireflies') fireflyGame.start();
-    if (viewName === 'rain-window') rainWindowGame.start();
-    if (viewName === 'lotus-pond') lotusPondGame.start();
-    if (viewName === 'aurora') auroraGame.start();
-    if (viewName === 'cloud-drift') cloudDriftGame.start();
+    if (viewName === 'tea') teaGame.start();
+    if (viewName === 'kintsugi') kintsugiGame.start();
   }
 
   bindEvents() {
@@ -136,11 +193,13 @@ class App {
       }
     });
 
-    // Next Fun Fact Button
+    // Next Fun Fact Button (Groq AI Powered)
     const nextFactBtn = document.getElementById('btn-next-fact');
-    nextFactBtn?.addEventListener('click', () => {
-      const fact = funFacts.getNextFact();
+    nextFactBtn?.addEventListener('click', async () => {
+      nextFactBtn.textContent = "Fetching... ✨";
+      const fact = await fetchAnotherFunFact();
       this.renderFunFact(fact);
+      nextFactBtn.textContent = "Another fact ✨";
       sound.playChime(329.63, 3);
     });
 
@@ -174,11 +233,11 @@ class App {
 
     // Window Resize Handler
     window.addEventListener('resize', () => {
+      if (this.currentView === 'highway') highwayGame.resize();
+      if (this.currentView === 'plants') plantGame.resize();
       if (this.currentView === 'fireflies') fireflyGame.resize();
-      if (this.currentView === 'rain-window') rainWindowGame.resize();
-      if (this.currentView === 'lotus-pond') lotusPondGame.resize();
-      if (this.currentView === 'aurora') auroraGame.resize();
-      if (this.currentView === 'cloud-drift') cloudDriftGame.resize();
+      if (this.currentView === 'tea') teaGame.resize();
+      if (this.currentView === 'kintsugi') kintsugiGame.resize();
     });
   }
 }

@@ -2,18 +2,29 @@ import * as THREE from 'three';
 import { sound } from './sound.js';
 
 /**
- * Firefly Constellation Game
- * Gentle floating glowing fireflies that drift toward you and bloom into constellations.
+ * Firefly Constellation Weaver Game
+ * Guide peaceful floating fireflies to ignite the 7 star nodes of the night sky constellation.
+ * Goal: Light all 7 celestial stars to awaken the cosmic constellation.
  */
 export class FireflyGame {
   constructor() {
     this.canvas = document.getElementById('fireflies-canvas');
+    this.statusText = document.getElementById('fireflies-status-text');
+    this.progressBar = document.getElementById('fireflies-progress-fill');
+    this.starCountEl = document.getElementById('fireflies-star-count');
+
     this.renderer = null;
     this.scene = null;
     this.camera = null;
     this.fireflies = [];
-    this.constellations = [];
+    this.constellationNodes = [];
+    this.lines = [];
     this.pointer = new THREE.Vector3(999, 999, 0);
+
+    this.litStarsCount = 0;
+    this.totalStars = 7;
+    this.isCompleted = false;
+
     this.clock = new THREE.Clock();
     this.isInitialized = false;
     this.rafId = null;
@@ -38,43 +49,96 @@ export class FireflyGame {
     this.renderer.setSize(window.innerWidth, window.innerHeight);
     this.renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
-    // Ambient night lighting
-    const ambient = new THREE.AmbientLight(0x0a1424, 2.0);
+    const ambient = new THREE.AmbientLight(0x060f1e, 2.5);
     this.scene.add(ambient);
 
-    this.spawnFireflies(24);
+    // Setup 7 Constellation Star Nodes (Cassiopeia / Big Dipper shape)
+    this.setupConstellation();
+
+    // Spawn 22 gentle fireflies
+    this.spawnFireflies(22);
+
     this.setupEvents();
     this.isInitialized = true;
+  }
+
+  setupConstellation() {
+    const starCoords = [
+      { x: -6.5, y: 3.5, name: "Alpha" },
+      { x: -3.5, y: 1.5, name: "Beta" },
+      { x: -0.5, y: 3.0, name: "Gamma" },
+      { x: 2.8, y: 0.8, name: "Delta" },
+      { x: 5.8, y: 2.5, name: "Epsilon" },
+      { x: 4.2, y: -2.8, name: "Zeta" },
+      { x: -2.0, y: -2.5, name: "Eta" }
+    ];
+
+    starCoords.forEach((c) => {
+      const group = new THREE.Group();
+
+      // Outer unlit star ring
+      const ringGeo = new THREE.RingGeometry(0.5, 0.65, 32);
+      const ringMat = new THREE.MeshBasicMaterial({
+        color: 0x475569,
+        transparent: true,
+        opacity: 0.6,
+        side: THREE.DoubleSide
+      });
+      const ring = new THREE.Mesh(ringGeo, ringMat);
+      group.add(ring);
+
+      // Inner glowing core (hidden until lit)
+      const coreGeo = new THREE.SphereGeometry(0.35, 16, 16);
+      const coreMat = new THREE.MeshBasicMaterial({
+        color: 0xfef08a,
+        transparent: true,
+        opacity: 0.0
+      });
+      const core = new THREE.Mesh(coreGeo, coreMat);
+      group.add(core);
+
+      group.position.set(c.x, c.y, 0);
+      this.scene.add(group);
+
+      this.constellationNodes.push({
+        group,
+        ring,
+        core,
+        pos: new THREE.Vector3(c.x, c.y, 0),
+        isLit: false
+      });
+    });
+
+    // Constellation lines connecting stars
+    for (let i = 0; i < this.constellationNodes.length - 1; i++) {
+      const lineGeo = new THREE.BufferGeometry().setFromPoints([
+        this.constellationNodes[i].pos,
+        this.constellationNodes[i + 1].pos
+      ]);
+      const lineMat = new THREE.LineBasicMaterial({
+        color: 0x38bdf8,
+        transparent: true,
+        opacity: 0.15
+      });
+      const line = new THREE.Line(lineGeo, lineMat);
+      this.scene.add(line);
+      this.lines.push(line);
+    }
   }
 
   createFireflyMesh() {
     const group = new THREE.Group();
 
-    // Soft glowing core
-    const coreGeo = new THREE.SphereGeometry(0.12, 12, 12);
+    const coreGeo = new THREE.SphereGeometry(0.14, 12, 12);
     const coreMat = new THREE.MeshBasicMaterial({ color: 0xfff9db });
     const core = new THREE.Mesh(coreGeo, coreMat);
     group.add(core);
 
-    // Glowing halo ring
-    const haloGeo = new THREE.PlaneGeometry(0.9, 0.9);
-    const haloCanvas = document.createElement('canvas');
-    haloCanvas.width = 128;
-    haloCanvas.height = 128;
-    const hCtx = haloCanvas.getContext('2d');
-    const grad = hCtx.createRadialGradient(64, 64, 0, 64, 64, 64);
-    grad.addColorStop(0, 'rgba(255, 230, 109, 0.85)');
-    grad.addColorStop(0.3, 'rgba(100, 223, 223, 0.45)');
-    grad.addColorStop(1, 'rgba(0, 0, 0, 0)');
-    hCtx.fillStyle = grad;
-    hCtx.fillRect(0, 0, 128, 128);
-
-    const haloTexture = new THREE.CanvasTexture(haloCanvas);
+    const haloGeo = new THREE.RingGeometry(0.1, 0.8, 16);
     const haloMat = new THREE.MeshBasicMaterial({
-      map: haloTexture,
+      color: 0x67e8f9,
       transparent: true,
-      depthWrite: false,
-      blending: THREE.AdditiveBlending,
+      opacity: 0.45,
       side: THREE.DoubleSide
     });
     const halo = new THREE.Mesh(haloGeo, haloMat);
@@ -86,76 +150,21 @@ export class FireflyGame {
   spawnFireflies(count) {
     for (let i = 0; i < count; i++) {
       const mesh = this.createFireflyMesh();
-      const x = (Math.random() - 0.5) * 26;
-      const y = (Math.random() - 0.5) * 18;
-      const z = (Math.random() - 0.5) * 6;
+      const x = (Math.random() - 0.5) * 24;
+      const y = (Math.random() - 0.5) * 16;
+      const z = (Math.random() - 0.5) * 4;
       mesh.position.set(x, y, z);
       this.scene.add(mesh);
 
       this.fireflies.push({
         mesh,
         pos: new THREE.Vector3(x, y, z),
-        vel: new THREE.Vector3((Math.random() - 0.5) * 0.015, (Math.random() - 0.5) * 0.015, 0),
+        vel: new THREE.Vector3((Math.random() - 0.5) * 0.02, (Math.random() - 0.5) * 0.02, 0),
         pulseSpeed: 1.5 + Math.random() * 2.0,
         pulseOffset: Math.random() * Math.PI * 2,
         seed: Math.random() * 100
       });
     }
-  }
-
-  triggerBloom(x, y, z) {
-    const starCount = 7;
-    const starGroup = new THREE.Group();
-    const sparks = [];
-
-    const chimePitches = [329.63, 392.00, 440.00, 523.25, 587.33, 659.25];
-    const pitch = chimePitches[Math.floor(Math.random() * chimePitches.length)];
-    sound.playChime(pitch, 6);
-
-    for (let i = 0; i < starCount; i++) {
-      const angle = (i / starCount) * Math.PI * 2 + (Math.random() * 0.2);
-      const dist = 0.8 + Math.random() * 1.4;
-
-      const starGeo = new THREE.SphereGeometry(0.08, 8, 8);
-      const starMat = new THREE.MeshBasicMaterial({
-        color: Math.random() > 0.4 ? 0xffe66d : 0x64dfdf,
-        transparent: true,
-        opacity: 1
-      });
-      const star = new THREE.Mesh(starGeo, starMat);
-      star.position.set(0, 0, 0);
-      starGroup.add(star);
-
-      // Line connecting to center
-      const lineMat = new THREE.LineBasicMaterial({
-        color: 0x64dfdf,
-        transparent: true,
-        opacity: 0.75
-      });
-      const lineGeo = new THREE.BufferGeometry().setFromPoints([
-        new THREE.Vector3(0, 0, 0),
-        new THREE.Vector3(0, 0, 0)
-      ]);
-      const line = new THREE.Line(lineGeo, lineMat);
-      starGroup.add(line);
-
-      sparks.push({
-        mesh: star,
-        line,
-        targetPos: new THREE.Vector3(Math.cos(angle) * dist, Math.sin(angle) * dist, (Math.random() - 0.5) * 0.4),
-        currPos: new THREE.Vector3(0, 0, 0)
-      });
-    }
-
-    starGroup.position.set(x, y, z);
-    this.scene.add(starGroup);
-
-    this.constellations.push({
-      group: starGroup,
-      sparks,
-      progress: 0,
-      life: 1.0
-    });
   }
 
   setupEvents() {
@@ -178,8 +187,47 @@ export class FireflyGame {
     this.canvas.addEventListener('touchstart', handleMove, { passive: false });
   }
 
+  igniteStar(node) {
+    node.isLit = true;
+    node.core.material.opacity = 1.0;
+    node.ring.material.color.setHex(0xfef08a);
+    node.ring.material.opacity = 0.9;
+    this.litStarsCount++;
+
+    sound.playChime(329.63 + this.litStarsCount * 45, 5);
+    this.updateUI();
+
+    // Check if whole constellation completed
+    if (this.litStarsCount >= this.totalStars) {
+      this.isCompleted = true;
+      this.lines.forEach(l => {
+        l.material.opacity = 0.9;
+        l.material.color.setHex(0xfef08a);
+      });
+      sound.playChime(523.25, 8);
+    }
+  }
+
+  updateUI() {
+    if (this.starCountEl) {
+      this.starCountEl.textContent = `${this.litStarsCount}/${this.totalStars}`;
+    }
+    if (this.progressBar) {
+      const pct = (this.litStarsCount / this.totalStars) * 100;
+      this.progressBar.style.width = `${pct}%`;
+    }
+    if (this.statusText) {
+      if (this.isCompleted) {
+        this.statusText.textContent = "✨ Constellation awakened! The cosmos shines upon you.";
+      } else {
+        this.statusText.textContent = `Guide fireflies to ignite stars (${this.litStarsCount}/${this.totalStars} lit)`;
+      }
+    }
+  }
+
   start() {
     this.init();
+    this.updateUI();
     this.animate();
   }
 
@@ -193,59 +241,41 @@ export class FireflyGame {
     const time = this.clock.getElapsedTime();
 
     // Update Fireflies
-    for (let i = this.fireflies.length - 1; i >= 0; i--) {
-      const f = this.fireflies[i];
+    this.fireflies.forEach(f => {
+      f.pos.x += f.vel.x + Math.sin(time * 0.8 + f.seed) * 0.01;
+      f.pos.y += f.vel.y + Math.cos(time * 0.6 + f.seed) * 0.01;
 
-      // Organic wandering
-      f.pos.x += f.vel.x + Math.sin(time * 0.8 + f.seed) * 0.008;
-      f.pos.y += f.vel.y + Math.cos(time * 0.6 + f.seed) * 0.008;
-
-      // Soft magnetic attraction to cursor/touch
+      // Follow touch/pointer
       const distToPointer = f.pos.distanceTo(this.pointer);
-      if (distToPointer < 4.5) {
+      if (distToPointer < 5.0) {
         const pullDir = new THREE.Vector3().subVectors(this.pointer, f.pos).normalize();
-        f.pos.add(pullDir.multiplyScalar(0.035));
-
-        // Trigger bloom on close contact
-        if (distToPointer < 0.9) {
-          this.triggerBloom(f.pos.x, f.pos.y, f.pos.z);
-          // Respawn firefly smoothly elsewhere
-          f.pos.x = (Math.random() - 0.5) * 24;
-          f.pos.y = (Math.random() - 0.5) * 16;
-        }
+        f.pos.add(pullDir.multiplyScalar(0.04));
       }
 
-      // Keep within bounds
-      if (Math.abs(f.pos.x) > 14) f.pos.x *= -0.95;
-      if (Math.abs(f.pos.y) > 10) f.pos.y *= -0.95;
-
-      // Breathing glow pulse
-      const pulse = 0.5 + 0.5 * Math.sin(time * f.pulseSpeed + f.pulseOffset);
-      f.mesh.position.copy(f.pos);
-      f.mesh.scale.setScalar(0.8 + pulse * 0.4);
-    }
-
-    // Update Bloom Constellations
-    for (let i = this.constellations.length - 1; i >= 0; i--) {
-      const c = this.constellations[i];
-      c.progress += 0.025;
-      c.life -= 0.015;
-
-      c.sparks.forEach(s => {
-        s.currPos.lerp(s.targetPos, 0.08);
-        s.mesh.position.copy(s.currPos);
-        s.mesh.material.opacity = c.life;
-
-        const pts = [new THREE.Vector3(0, 0, 0), s.currPos];
-        s.line.geometry.setFromPoints(pts);
-        s.line.material.opacity = c.life * 0.6;
+      // Check collision with constellation star nodes
+      this.constellationNodes.forEach(node => {
+        if (!node.isLit && f.pos.distanceTo(node.pos) < 1.1) {
+          this.igniteStar(node);
+        }
       });
 
-      if (c.life <= 0) {
-        this.scene.remove(c.group);
-        this.constellations.splice(i, 1);
+      // Bounds
+      if (Math.abs(f.pos.x) > 13) f.pos.x *= -0.95;
+      if (Math.abs(f.pos.y) > 9) f.pos.y *= -0.95;
+
+      const pulse = 0.6 + 0.4 * Math.sin(time * f.pulseSpeed + f.pulseOffset);
+      f.mesh.position.copy(f.pos);
+      f.mesh.scale.setScalar(0.8 + pulse * 0.5);
+    });
+
+    // Star node pulsing
+    this.constellationNodes.forEach(node => {
+      if (node.isLit) {
+        node.group.rotation.z += 0.01;
+        const scale = 1.0 + Math.sin(time * 2.0) * 0.15;
+        node.core.scale.set(scale, scale, scale);
       }
-    }
+    });
 
     this.renderer.render(this.scene, this.camera);
   }
