@@ -78,11 +78,11 @@ html, body {
   transition: opacity 0.8s ease;
 }
 
-/* Controls Header */
+/* Top Header Controls */
 .controls-group {
   display: flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
 }
 
 .icon-btn {
@@ -90,13 +90,13 @@ html, body {
   border: 1px solid var(--card-border);
   backdrop-filter: var(--glass-blur);
   -webkit-backdrop-filter: var(--glass-blur);
-  width: 40px;
-  height: 40px;
+  width: 38px;
+  height: 38px;
   border-radius: 50%;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  font-size: 1.1rem;
+  font-size: 1.05rem;
   cursor: pointer;
   box-shadow: var(--card-shadow);
   transition: all 0.25s ease;
@@ -108,8 +108,33 @@ html, body {
   border-color: var(--accent);
 }
 
-.icon-btn:active {
-  transform: scale(0.94);
+.sound-pill-btn {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  padding: 6px 12px;
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  box-shadow: var(--card-shadow);
+  transition: all 0.22s ease;
+  color: var(--text-secondary);
+}
+
+.sound-pill-btn:hover {
+  transform: translateY(-2px);
+  border-color: var(--accent);
+}
+
+.sound-pill-btn.active {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+  color: var(--text-primary);
 }
 
 [data-theme="light"] .dark-icon,
@@ -506,6 +531,151 @@ html, body {
   color: var(--text-primary);
 }
 
+/* Song Recommendation Section */
+.song-rec-section {
+  margin-top: 10px;
+}
+
+.song-input-card {
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  border-radius: 18px;
+  padding: 14px 16px;
+  text-align: left;
+}
+
+.song-input-subtitle {
+  font-size: 0.76rem;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+  line-height: 1.35;
+}
+
+.song-form-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.input-label {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--text-muted);
+}
+
+.select-field {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 6px 8px;
+  border-radius: 10px;
+  font-size: 0.76rem;
+  outline: none;
+  cursor: pointer;
+}
+
+.discover-song-btn {
+  background: var(--accent);
+  color: #ffffff;
+  border: none;
+  width: 100%;
+  padding: 10px;
+  border-radius: 999px;
+  font-size: 0.84rem;
+  font-weight: 600;
+  cursor: pointer;
+  box-shadow: 0 4px 14px var(--accent-glow);
+  transition: all 0.2s ease;
+  text-align: center;
+}
+
+.discover-song-btn:hover {
+  transform: translateY(-2px);
+}
+
+.song-result-card {
+  background: var(--accent-soft);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 14px 16px;
+  margin-top: 14px;
+  animation: fadeIn 0.4s ease;
+}
+
+.song-result-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 6px;
+}
+
+.song-result-badge {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.song-genre-tag {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+}
+
+.song-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 2px;
+}
+
+.song-artist {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: block;
+  margin-bottom: 8px;
+}
+
+.song-why {
+  font-size: 0.82rem;
+  line-height: 1.5;
+  color: var(--text-primary);
+  margin-bottom: 8px;
+}
+
+.song-lyrics {
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-secondary);
+  border-left: 2px solid var(--accent);
+  padding-left: 8px;
+  margin-bottom: 12px;
+}
+
+.song-listen-btn {
+  display: inline-block;
+  background: var(--btn-bg);
+  border: 1px solid var(--btn-border);
+  color: var(--text-primary);
+  padding: 6px 14px;
+  border-radius: 999px;
+  font-size: 0.76rem;
+  font-weight: 600;
+  text-decoration: none;
+  transition: all 0.2s ease;
+}
+
+.song-listen-btn:hover {
+  border-color: var(--accent);
+  transform: translateY(-2px);
+}
+
 /* 2 Daily Goal Games Cards */
 .games-nav-grid.two-cards {
   display: grid;
@@ -796,6 +966,11 @@ html, body {
   .gentle-line {
     font-size: 1.18rem;
     margin-bottom: 12px;
+  }
+
+  .song-form-grid {
+    grid-template-columns: 1fr;
+    gap: 8px;
   }
 
   .games-nav-grid.two-cards {

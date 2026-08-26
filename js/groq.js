@@ -1,6 +1,6 @@
 /**
- * Groq AI Client for Dynamic Daily Quotes and "On This Day in History" Fun Facts.
- * Supported Active Models: qwen/qwen3.8-27b, openai/gpt-oss-120b
+ * Groq AI Client for Dynamic Daily Quotes, Historical Facts, and Song Recommendations.
+ * Model: qwen/qwen3.8-27b
  */
 
 const _p1 = "gsk_4cN01lsnxkeSj0FFZUB5";
@@ -142,6 +142,60 @@ Return pure JSON:
     console.warn("Groq another fact fallback:", err);
     localFactIndex = (localFactIndex + 1) % CURATED_FACTS.length;
     return CURATED_FACTS[localFactIndex];
+  }
+}
+
+/**
+ * Recommend a personalized comfort song based on user inputs
+ */
+export async function recommendSong({ mood, vibe, energy, preference }) {
+  const prompt = `The user is feeling: "${mood}".
+Their heart needs: "${vibe}".
+Current energy level: "${energy}".
+Preferred musical style: "${preference}".
+
+Recommend ONE real, genuinely comforting, beautiful song that will soothe them and lower their stress.
+Return pure JSON in this structure:
+{
+  "title": "Song Title",
+  "artist": "Artist Name",
+  "album": "Album Name or Year",
+  "why": "1-2 warm, deeply understanding sentences on why this song is perfect for how they feel right now",
+  "lyrics": "1 gentle, heartwarming line from the lyrics",
+  "genre": "Acoustic / Ambient / Lo-Fi / Folk"
+}`;
+
+  try {
+    const response = await fetch(GROQ_ENDPOINT, {
+      method: "POST",
+      headers: {
+        "Authorization": `Bearer ${GROQ_API_KEY}`,
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        model: GROQ_MODEL,
+        messages: [
+          { role: "system", content: "You are an empathetic music therapist. Recommend real, soothing, peaceful songs." },
+          { role: "user", content: prompt }
+        ],
+        temperature: 0.7
+      })
+    });
+
+    if (!response.ok) throw new Error(`Groq status ${response.status}`);
+    const data = await response.json();
+    const song = extractJSON(data.choices[0].message.content);
+    return song;
+  } catch (err) {
+    console.warn("Song recommendation fallback:", err);
+    return {
+      title: "Holocene",
+      artist: "Bon Iver",
+      album: "Bon Iver",
+      why: "Its delicate acoustic fingerpicking and airy horn textures remind you that you are part of something vast and peaceful.",
+      lyrics: "And at once I knew I was not magnificent... High above the highway river.",
+      genre: "Ambient Folk"
+    };
   }
 }
 

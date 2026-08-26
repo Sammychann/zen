@@ -1,7 +1,7 @@
 import { themeManager } from './themes.js';
 import { sound } from './sound.js';
 import { worldRadio, WORLD_STATIONS } from './radio.js';
-import { fetchGroqContent, fetchAnotherFunFact } from './groq.js';
+import { fetchGroqContent, fetchAnotherFunFact, recommendSong } from './groq.js';
 import { highwayGame } from './game-highway.js';
 import { fireflyGame } from './game-fireflies.js';
 
@@ -107,7 +107,6 @@ class App {
       if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
       if (countrySelect) countrySelect.value = station.id;
 
-      // Update active map pin
       const pins = document.querySelectorAll('.map-pin');
       pins.forEach(pin => {
         if (pin.getAttribute('data-station-id') === station.id) {
@@ -155,15 +154,12 @@ class App {
   switchView(viewName) {
     if (this.currentView === viewName) return;
 
-    // Stop currently running active activity
     if (this.currentView === 'highway') highwayGame.stop();
     if (this.currentView === 'fireflies') fireflyGame.stop();
 
-    // Close any open completion modal
     const modal = document.getElementById('completion-modal');
     if (modal) modal.classList.add('hidden');
 
-    // Hide old view
     const oldViewEl = this.views[this.currentView];
     if (oldViewEl) {
       oldViewEl.classList.remove('active');
@@ -172,17 +168,15 @@ class App {
       }, 350);
     }
 
-    // Show new view
     const newViewEl = this.views[viewName];
     if (newViewEl) {
       newViewEl.classList.remove('hidden');
-      void newViewEl.offsetWidth; // trigger reflow
+      void newViewEl.offsetWidth;
       newViewEl.classList.add('active');
     }
 
     this.currentView = viewName;
 
-    // Start target activity
     if (viewName === 'highway') highwayGame.start();
     if (viewName === 'fireflies') fireflyGame.start();
   }
@@ -194,20 +188,20 @@ class App {
       themeManager.toggleTheme();
     });
 
-    // Sound Toggle
-    const soundBtn = document.getElementById('sound-toggle');
-    const soundOff = soundBtn?.querySelector('.sound-off');
-    const soundOn = soundBtn?.querySelector('.sound-on');
+    // Rain Sound Toggle
+    const rainBtn = document.getElementById('toggle-rain-sound');
+    rainBtn?.addEventListener('click', async () => {
+      const isPlaying = await sound.toggleRain();
+      if (isPlaying) rainBtn.classList.add('active');
+      else rainBtn.classList.remove('active');
+    });
 
-    soundBtn?.addEventListener('click', async () => {
-      const isUnmuted = await sound.toggle();
-      if (isUnmuted) {
-        soundOff?.classList.add('hidden');
-        soundOn?.classList.remove('hidden');
-      } else {
-        soundOff?.classList.remove('hidden');
-        soundOn?.classList.add('hidden');
-      }
+    // Waves Sound Toggle
+    const wavesBtn = document.getElementById('toggle-waves-sound');
+    wavesBtn?.addEventListener('click', async () => {
+      const isPlaying = await sound.toggleWaves();
+      if (isPlaying) wavesBtn.classList.add('active');
+      else wavesBtn.classList.remove('active');
     });
 
     // Why This Quote Accordion
@@ -234,6 +228,48 @@ class App {
       this.renderFunFact(fact);
       nextFactBtn.textContent = "Another fact ✨";
       sound.playChime(329.63, 3);
+    });
+
+    // Song Recommendation Form
+    const discoverSongBtn = document.getElementById('btn-discover-song');
+    discoverSongBtn?.addEventListener('click', async () => {
+      const mood = document.getElementById('song-mood')?.value || 'Exhausted';
+      const vibe = document.getElementById('song-vibe')?.value || 'Soft acoustic';
+      const energy = document.getElementById('song-energy')?.value || 'Low';
+      const preference = document.getElementById('song-style')?.value || 'Atmospheric';
+
+      discoverSongBtn.textContent = "Finding your song... ✨";
+      discoverSongBtn.disabled = true;
+
+      try {
+        const rec = await recommendSong({ mood, vibe, energy, preference });
+
+        const resultCard = document.getElementById('song-result-card');
+        const titleEl = document.getElementById('song-result-title');
+        const artistEl = document.getElementById('song-result-artist');
+        const whyEl = document.getElementById('song-result-why');
+        const lyricsEl = document.getElementById('song-result-lyrics');
+        const genreEl = document.getElementById('song-result-genre');
+        const linkEl = document.getElementById('song-result-link');
+
+        if (titleEl) titleEl.textContent = rec.title;
+        if (artistEl) artistEl.textContent = `by ${rec.artist}`;
+        if (whyEl) whyEl.textContent = rec.why;
+        if (lyricsEl) lyricsEl.textContent = rec.lyrics ? `“${rec.lyrics}”` : '';
+        if (genreEl) genreEl.textContent = rec.genre || 'Comfort Song';
+        if (linkEl) {
+          linkEl.href = `https://open.spotify.com/search/${encodeURIComponent(rec.title + ' ' + rec.artist)}`;
+          linkEl.textContent = `🎧 Listen to "${rec.title}" on Spotify`;
+        }
+
+        resultCard?.classList.remove('hidden');
+        sound.playChime(392.00, 4);
+      } catch (err) {
+        console.warn("Song recommendation error:", err);
+      } finally {
+        discoverSongBtn.textContent = "✨ Find Another Song";
+        discoverSongBtn.disabled = false;
+      }
     });
 
     // Activity Navigation Cards
@@ -269,14 +305,12 @@ class App {
       if (this.currentView === 'fireflies') fireflyGame.start();
     });
 
-    // Keyboard Shortcuts (Escape to return to Sanctuary, T for Theme, M for Mute)
+    // Keyboard Shortcuts
     window.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
         this.switchView('home');
       } else if (e.key.toLowerCase() === 't' && !e.ctrlKey && !e.metaKey) {
         themeManager.toggleTheme();
-      } else if (e.key.toLowerCase() === 'm' && !e.ctrlKey && !e.metaKey) {
-        soundBtn?.click();
       }
     });
 

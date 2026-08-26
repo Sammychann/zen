@@ -4,7 +4,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
   <title>A Little Place to Breathe 🌸</title>
-  <meta name="description" content="A digital sanctuary with worldwide interactive radio map, Groq AI daily quotes, and daily cortisol-lowering goal games." />
+  <meta name="description" content="A digital sanctuary with worldwide radio map, procedural rain and waves, AI daily quotes, song recommendations, and calming games." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 
@@ -25,16 +25,26 @@
   <!-- Main Sanctuary View (Home) -->
   <main id="view-home" class="view active">
     <div class="sanctuary-card">
+      <!-- Top Row with Theme & Dual Rain / Waves Sound Toggles -->
       <div class="sanctuary-top-row">
         <span class="sanctuary-badge">🌸 Digital Sanctuary</span>
         <div class="controls-group">
+          <!-- Theme Toggle -->
           <button id="theme-toggle" class="icon-btn" aria-label="Toggle Theme" title="Toggle Sakura / Midnight Theme">
             <span class="theme-icon light-icon">🌸</span>
             <span class="theme-icon dark-icon">🌊</span>
           </button>
-          <button id="sound-toggle" class="icon-btn" aria-label="Toggle Zen Ambient Sound" title="Toggle Zen Soundscape">
-            <span class="sound-icon sound-off">🔇</span>
-            <span class="sound-icon sound-on hidden">🔊</span>
+
+          <!-- Rain Sound Toggle -->
+          <button id="toggle-rain-sound" class="sound-pill-btn" aria-label="Toggle Rain Sound" title="Toggle Procedural Rain">
+            <span class="sound-emoji">🌧️</span>
+            <span class="sound-label">Rain</span>
+          </button>
+
+          <!-- Waves Sound Toggle -->
+          <button id="toggle-waves-sound" class="sound-pill-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
+            <span class="sound-emoji">🌊</span>
+            <span class="sound-label">Waves</span>
           </button>
         </div>
       </div>
@@ -80,7 +90,6 @@
           </div>
 
           <div class="world-map-svg-wrap" id="world-map-wrap">
-            <!-- Stylized World Map SVG with interactive clickable station pins -->
             <svg class="world-map-svg" viewBox="0 0 800 400">
               <path class="map-land" d="M120,80 Q160,60 220,90 Q260,140 230,190 Q180,220 120,180 Q80,130 120,80 Z" />
               <path class="map-land" d="M220,220 Q260,240 280,310 Q240,360 200,320 Q190,260 220,220 Z" />
@@ -90,8 +99,6 @@
               <path class="map-land" d="M560,170 Q620,160 630,230 Q580,260 550,220 Z" />
               <path class="map-land" d="M640,260 Q720,250 740,320 Q680,360 630,310 Z" />
             </svg>
-
-            <!-- Clickable Interactive Radio Pins -->
             <div id="map-pins-container" class="map-pins-overlay"></div>
           </div>
         </div>
@@ -135,7 +142,81 @@
 
       <hr class="soft-divider" />
 
-      <!-- 2 Cortisol-Lowering Goal Games -->
+      <!-- AI Personalized Song Recommendation Section -->
+      <section class="song-rec-section">
+        <span class="section-label">🎵 Today's Song Recommendation</span>
+        <div class="song-input-card">
+          <p class="song-input-subtitle">Tell me what your heart feels right now, and I'll find the perfect comforting song.</p>
+          
+          <div class="song-form-grid">
+            <div class="input-group">
+              <label for="song-mood" class="input-label">1. How are you feeling?</label>
+              <select id="song-mood" class="select-field">
+                <option value="Drained & overwhelmed">Exhausted & overwhelmed</option>
+                <option value="Quiet, lonely & contemplative">Quiet & lonely</option>
+                <option value="Restless & anxious">Restless & anxious</option>
+                <option value="Seeking comfort and a warm hug">Seeking comfort & warmth</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="song-vibe" class="input-label">2. What vibe do you need?</label>
+              <select id="song-vibe" class="select-field">
+                <option value="Soft acoustic guitar & gentle warmth">Soft acoustic guitar</option>
+                <option value="Dreamy lo-fi & ambient soundscape">Dreamy Lo-Fi & ambient</option>
+                <option value="Gentle soothing piano melody">Gentle piano melody</option>
+                <option value="Warm indie folk & soft vocals">Warm indie folk</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="song-energy" class="input-label">3. Energy level?</label>
+              <select id="song-energy" class="select-field">
+                <option value="10% - Barely keeping eyes open">10% • Barely keeping eyes open</option>
+                <option value="30% - Need gentle comfort">30% • Need a gentle hug</option>
+                <option value="50% - Peaceful reflection">50% • Quiet contemplation</option>
+              </select>
+            </div>
+
+            <div class="input-group">
+              <label for="song-style" class="input-label">4. Preferred style?</label>
+              <select id="song-style" class="select-field">
+                <option value="Any / Atmospheric & Calm">Atmospheric & Calm</option>
+                <option value="English Indie / Folk">English Indie / Folk</option>
+                <option value="Instrumental only">Instrumental only</option>
+                <option value="Japanese / French / World">World / Acoustic</option>
+              </select>
+            </div>
+          </div>
+
+          <button id="btn-discover-song" class="discover-song-btn">
+            ✨ Find My Comfort Song
+          </button>
+
+          <!-- Song Recommendation Result Card -->
+          <div id="song-result-card" class="song-result-card hidden">
+            <div class="song-result-header">
+              <span class="song-result-badge">✨ Your Comfort Melody</span>
+              <span id="song-result-genre" class="song-genre-tag">Ambient Folk</span>
+            </div>
+            <h3 id="song-result-title" class="song-title">Holocene</h3>
+            <span id="song-result-artist" class="song-artist">by Bon Iver</span>
+            <p id="song-result-why" class="song-why">
+              Its delicate acoustic fingerpicking and airy horn textures remind you that you are part of something vast and peaceful.
+            </p>
+            <blockquote id="song-result-lyrics" class="song-lyrics">
+              “And at once I knew I was not magnificent...”
+            </blockquote>
+            <a id="song-result-link" href="#" target="_blank" rel="noopener noreferrer" class="song-listen-btn">
+              🎧 Listen on Spotify / Web
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <hr class="soft-divider" />
+
+      <!-- 2 Daily Goal Games -->
       <section class="activities-section">
         <span class="section-label">🌙 Daily Cortisol-Lowering Games</span>
         <div class="games-nav-grid two-cards">
