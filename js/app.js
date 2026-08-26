@@ -19,10 +19,10 @@ class App {
 
     // User Mood Selection State
     this.songSelections = {
-      mood: 'Drained & overwhelmed',
-      vibe: 'Soft acoustic guitar & gentle warmth',
-      energy: '10% - Barely keeping eyes open',
-      style: 'Any / Atmospheric & Calm'
+      mood: 'Chill & vibing',
+      vibe: 'Niche, trendy & aesthetic indie groove',
+      energy: 'Medium - Smooth groove',
+      style: 'Niche & underground hidden gems'
     };
   }
 

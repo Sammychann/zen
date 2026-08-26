@@ -146,23 +146,26 @@ Return pure JSON:
 }
 
 /**
- * Recommend a personalized comfort song based on user inputs
+ * Recommend any music genre (trendy, niche, underground, indie, electronic, r&b, etc.)
  */
 export async function recommendSong({ mood, vibe, energy, preference }) {
-  const prompt = `The user is feeling: "${mood}".
-Their heart needs: "${vibe}".
-Current energy level: "${energy}".
-Preferred musical style: "${preference}".
+  const prompt = `User mood: "${mood}".
+Desired vibe: "${vibe}".
+Energy level: "${energy}".
+Preferred style / flavor: "${preference}".
 
-Recommend ONE real, genuinely comforting, beautiful song that will soothe them and lower their stress.
-Return pure JSON in this structure:
+Recommend ONE real, awesome song that matches this mood & vibe.
+It can be ANY genre (Indie Rock, Synthwave / Dreampop, R&B / Neo-Soul, Electronic / French House, Shoegaze, Hyperpop, Hip-Hop, Alt-Pop, Japanese City Pop, etc.).
+If preference mentions "Niche / Trendy" or "Underground", pick an acclaimed, cool, aesthetic, or viral gem (e.g. Men I Trust, Beach House, PinkPantheress, Fred again.., Laufey, Magdalena Bay, Frank Ocean, Kaytranada, boygenius, Clairo, Steve Lacy, etc.).
+
+Return pure JSON in this format:
 {
   "title": "Song Title",
   "artist": "Artist Name",
   "album": "Album Name or Year",
-  "why": "1-2 warm, deeply understanding sentences on why this song is perfect for how they feel right now",
-  "lyrics": "1 gentle, heartwarming line from the lyrics",
-  "genre": "Acoustic / Ambient / Lo-Fi / Folk"
+  "why": "1-2 engaging sentences on why this song fits their exact vibe and energy right now",
+  "lyrics": "1 memorable line from the song",
+  "genre": "Genre tag (e.g. Dreampop, Indie Pop, French Touch, Neo-Soul, Alt-R&B)"
 }`;
 
   try {
@@ -175,10 +178,10 @@ Return pure JSON in this structure:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are an empathetic music therapist. Recommend real, soothing, peaceful songs." },
+          { role: "system", content: "You are a tastemaker music curator with deep knowledge across all modern, indie, trendy, underground, and classic genres. Output pure JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.7
+        temperature: 0.85
       })
     });
 
@@ -189,12 +192,12 @@ Return pure JSON in this structure:
   } catch (err) {
     console.warn("Song recommendation fallback:", err);
     return {
-      title: "Holocene",
-      artist: "Bon Iver",
-      album: "Bon Iver",
-      why: "Its delicate acoustic fingerpicking and airy horn textures remind you that you are part of something vast and peaceful.",
-      lyrics: "And at once I knew I was not magnificent... High above the highway river.",
-      genre: "Ambient Folk"
+      title: "Show Me How",
+      artist: "Men I Trust",
+      album: "Oncle Jazz",
+      why: "A smooth, buttery indie dreampop groove with effortless basslines and warm ethereal vocals.",
+      lyrics: "Show me how you care, tell me how you were loved before...",
+      genre: "Indie Dreampop"
     };
   }
 }

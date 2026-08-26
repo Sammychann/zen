@@ -172,15 +172,15 @@
           </p>
         </section>
 
-        <!-- 4. Personalized Comfort Song Recommender Card -->
+        <!-- 4. Personalized Song Recommender Card (Any Genre & Niche / Trendy) -->
         <section class="sanctuary-card song-hero-card">
           <div class="card-header-row">
-            <span class="card-eyebrow">🎵 Music Sanctuary</span>
+            <span class="card-eyebrow">🎵 Song Recommender</span>
             <span class="song-header-icon">🎧</span>
           </div>
 
           <p class="song-hero-subtitle">
-            Tell me what your heart feels right now, and I'll find the perfect comforting song for you.
+            Pick your current vibe, and I'll find an awesome track across any genre or niche taste.
           </p>
 
           <!-- Interactive Visual Mood & Energy Chips -->
@@ -188,68 +188,68 @@
             <div class="chip-group">
               <label class="chip-group-label">How are you feeling?</label>
               <div class="chips-row" data-input="song-mood">
-                <button class="mood-chip active" data-value="Drained & overwhelmed">🌧️ Exhausted</button>
-                <button class="mood-chip" data-value="Quiet, lonely & contemplative">🌙 Quiet</button>
-                <button class="mood-chip" data-value="Restless & anxious">⚡ Anxious</button>
-                <button class="mood-chip" data-value="Seeking comfort and a warm hug">🤍 Need a Hug</button>
+                <button class="mood-chip active" data-value="Chill & vibing">✨ Chill & Vibing</button>
+                <button class="mood-chip" data-value="Drained & overwhelmed">🌧️ Exhausted</button>
+                <button class="mood-chip" data-value="Late night thoughts & nostalgic">🌙 Nostalgic</button>
+                <button class="mood-chip" data-value="Need energy & good vibes">⚡ Need Good Vibes</button>
               </div>
             </div>
 
             <div class="chip-group">
-              <label class="chip-group-label">What vibe does your heart need?</label>
+              <label class="chip-group-label">What vibe do you want?</label>
               <div class="chips-row" data-input="song-vibe">
-                <button class="mood-chip active" data-value="Soft acoustic guitar & gentle warmth">🎸 Acoustic</button>
-                <button class="mood-chip" data-value="Dreamy lo-fi & ambient soundscape">🎧 Dreamy Lo-Fi</button>
-                <button class="mood-chip" data-value="Gentle soothing piano melody">🎹 Piano</button>
-                <button class="mood-chip" data-value="Warm indie folk & soft vocals">🌿 Indie Folk</button>
+                <button class="mood-chip active" data-value="Niche, trendy & aesthetic indie groove">🔥 Trendy & Aesthetic</button>
+                <button class="mood-chip" data-value="Dreamy dreampop & synthwave">🌌 Dreamy Synth / Pop</button>
+                <button class="mood-chip" data-value="Smooth R&B / Neo-Soul & chillhop">🍸 Smooth R&B / Soul</button>
+                <button class="mood-chip" data-value="Warm acoustic indie & folk">🌿 Warm Indie Folk</button>
               </div>
             </div>
 
             <div class="chip-group">
               <label class="chip-group-label">Energy Level?</label>
               <div class="chips-row" data-input="song-energy">
-                <button class="mood-chip active" data-value="10% - Barely keeping eyes open">10% • Sleepy</button>
-                <button class="mood-chip" data-value="30% - Need gentle comfort">30% • Low</button>
-                <button class="mood-chip" data-value="50% - Peaceful reflection">50% • Restful</button>
+                <button class="mood-chip" data-value="Low - Mellow & cozy">Low • Mellow</button>
+                <button class="mood-chip active" data-value="Medium - Smooth groove">Medium • Groovy</button>
+                <button class="mood-chip" data-value="High - Upbeat & rhythmic">High • Upbeat</button>
               </div>
             </div>
 
             <div class="chip-group">
-              <label class="chip-group-label">Style Preference?</label>
+              <label class="chip-group-label">Flavor / Discovery?</label>
               <div class="chips-row" data-input="song-style">
-                <button class="mood-chip active" data-value="Any / Atmospheric & Calm">Atmospheric</button>
-                <button class="mood-chip" data-value="English Indie / Folk">Indie / Folk</button>
-                <button class="mood-chip" data-value="Instrumental only">Instrumental</button>
-                <button class="mood-chip" data-value="Japanese / French / World">World</button>
+                <button class="mood-chip active" data-value="Niche & underground hidden gems">✨ Niche & Underground</button>
+                <button class="mood-chip" data-value="Trendy viral hits & modern alt">🔥 Modern Alt / Viral</button>
+                <button class="mood-chip" data-value="Electronic & House / French Touch">🎧 Electronic / House</button>
+                <button class="mood-chip" data-value="Japanese City Pop & Global Grooves">🗾 City Pop / World</button>
               </div>
             </div>
           </div>
 
           <button id="btn-discover-song" class="btn-discover-song-primary">
-            <span>✨ Find My Comfort Song</span>
+            <span>✨ Discover Song</span>
           </button>
 
           <!-- Song Recommendation Result Preview Card -->
           <div id="song-result-card" class="song-result-glass-card hidden">
             <div class="song-card-badge-row">
-              <span class="rec-song-badge">✨ Your Comfort Song</span>
-              <span id="song-result-genre" class="rec-song-genre">Ambient Folk</span>
+              <span class="rec-song-badge">✨ Song Match</span>
+              <span id="song-result-genre" class="rec-song-genre">Indie Dreampop</span>
             </div>
 
             <div class="song-player-mockup">
               <div class="song-disc-icon">💿</div>
               <div class="song-disc-details">
-                <h4 id="song-result-title" class="rec-song-title">Holocene</h4>
-                <p id="song-result-artist" class="rec-song-artist">by Bon Iver</p>
+                <h4 id="song-result-title" class="rec-song-title">Show Me How</h4>
+                <p id="song-result-artist" class="rec-song-artist">by Men I Trust</p>
               </div>
             </div>
 
             <p id="song-result-why" class="rec-song-why">
-              Its delicate acoustic fingerpicking and airy horn textures remind you that you are part of something vast and peaceful.
+              A smooth, buttery indie dreampop groove with effortless basslines and warm ethereal vocals.
             </p>
 
             <blockquote id="song-result-lyrics" class="rec-song-lyrics">
-              “And at once I knew I was not magnificent...”
+              “Show me how you care, tell me how you were loved before...”
             </blockquote>
 
             <a id="song-result-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-spotify-direct">
@@ -287,11 +287,6 @@
             </button>
           </div>
         </section>
-
-        <!-- Gentle Footer Note -->
-        <footer class="sanctuary-footer">
-          <p class="footer-quote">Take all the time you need. 🌸</p>
-        </footer>
 
       </div>
     </div>
