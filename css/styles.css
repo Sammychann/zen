@@ -988,71 +988,43 @@ html, body {
   letter-spacing: 0.02em;
 }
 
-/* Sleepy Cat Easter Egg */
+/* Sleepy Cartoon Cat Easter Egg */
 .sleepy-cat-dock {
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  margin: 6px auto 14px;
+  margin: 12px auto 6px;
   cursor: pointer;
   user-select: none;
+  width: 90px;
+  height: 65px;
   transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
 }
 
 .sleepy-cat-dock:active {
   transform: scale(0.92);
 }
 
-.cat-body {
-  display: inline-flex;
-  align-items: center;
-  gap: 6px;
-  background: var(--card-bg-elevated);
-  border: 1px solid var(--card-border);
-  backdrop-filter: var(--glass-blur);
-  padding: 6px 14px;
-  border-radius: 999px;
-  box-shadow: var(--card-shadow);
-  transition: all 0.2s ease;
+.cat-svg-illustration {
+  width: 100%;
+  height: 100%;
+  animation: catGentleBreathe 4s ease-in-out infinite;
+  transform-origin: center bottom;
 }
 
-.cat-emoji {
-  font-size: 1.25rem;
-  animation: gentleBreathe 3.5s ease-in-out infinite;
-}
-
-.cat-zzz {
-  font-size: 0.72rem;
-  font-weight: 700;
-  color: var(--accent);
-  letter-spacing: 0.05em;
-  animation: zzzFloat 2s ease-in-out infinite;
-}
-
-@keyframes gentleBreathe {
+@keyframes catGentleBreathe {
   0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.08) translateY(-1px); }
+  50% { transform: scale(1.04) translateY(-1px); }
 }
 
-@keyframes zzzFloat {
-  0%, 100% { transform: translateY(0); opacity: 0.5; }
-  50% { transform: translateY(-3px); opacity: 1; }
+.sleepy-cat-dock.purring .cat-svg-illustration {
+  animation: catPurrVibrate 0.15s ease-in-out infinite;
 }
 
-.cat-message-bubble {
-  margin-top: 8px;
-  background: var(--card-bg-elevated);
-  border: 1px solid var(--card-border);
-  backdrop-filter: var(--glass-blur);
-  padding: 8px 16px;
-  border-radius: 14px;
-  font-size: 0.78rem;
-  color: var(--text-secondary);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
-  animation: fadeIn 0.3s ease;
-  text-align: center;
-  max-width: 280px;
+@keyframes catPurrVibrate {
+  0%, 100% { transform: translateY(0) scale(1); }
+  50% { transform: translateY(-1.5px) scale(1.02); }
 }
 
 /* Footer Note */

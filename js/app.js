@@ -241,30 +241,21 @@ class App {
       }
     });
 
-    // 2. Easter Egg: Sleepy Sanctuary Cat (Purrs & Floating Message)
+    // 2. Easter Egg: Sleepy Cartoon Cat (Only purrs when selected, no text, no emoji)
     const catDock = document.getElementById('sleepy-cat-dock');
-    const catBubble = document.getElementById('cat-message-bubble');
-    const catText = document.getElementById('cat-message-text');
-    let bubbleTimeout = null;
+    let purrTimer = null;
 
     catDock?.addEventListener('click', (e) => {
       e.stopPropagation();
       sound.playPurr(3.5);
 
-      if (catText) {
-        catText.textContent = this.catMessages[this.catMsgIndex];
-        this.catMsgIndex = (this.catMsgIndex + 1) % this.catMessages.length;
-      }
+      catDock.classList.add('purring');
+      if (purrTimer) clearTimeout(purrTimer);
+      purrTimer = setTimeout(() => {
+        catDock.classList.remove('purring');
+      }, 3500);
 
-      if (catBubble) {
-        catBubble.classList.remove('hidden');
-        if (bubbleTimeout) clearTimeout(bubbleTimeout);
-        bubbleTimeout = setTimeout(() => {
-          catBubble.classList.add('hidden');
-        }, 4000);
-      }
-
-      if (navigator.vibrate) navigator.vibrate([15, 30, 15]);
+      if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
     });
   }
 
