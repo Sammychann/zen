@@ -23,16 +23,6 @@ class App {
       genre: 'Indie & Alternative',
       discovery: 'Underground / Niche'
     };
-
-    // Cat message cycle
-    this.catMessages = [
-      "The night is quiet. Rest deeply. 🌸",
-      "Purrrr... You're safe and warm right here. 🤍",
-      "Nothing is demanded of you tonight. Sleep peacefully. 🌙",
-      "Breathe with the steady rhythm of the room. ✨",
-      "You carried today so well. Let it all rest now. 🐱"
-    ];
-    this.catMsgIndex = 0;
   }
 
   init() {
@@ -211,7 +201,7 @@ class App {
   }
 
   initEasterEggs() {
-    // 1. Easter Egg: Long-press / Triple-tap Theme Button to unlock Aurora Borealis
+    // Easter Egg: Long-press / Triple-tap Theme Button to unlock Aurora Borealis
     const themeBtn = document.getElementById('theme-toggle');
     let pressTimer = null;
     let tapCount = 0;
@@ -239,23 +229,6 @@ class App {
         themeManager.unlockAurora();
         tapCount = 0;
       }
-    });
-
-    // 2. Easter Egg: Sleepy Cartoon Cat (Only purrs when selected, no text, no emoji)
-    const catDock = document.getElementById('sleepy-cat-dock');
-    let purrTimer = null;
-
-    catDock?.addEventListener('click', (e) => {
-      e.stopPropagation();
-      sound.playPurr(3.5);
-
-      catDock.classList.add('purring');
-      if (purrTimer) clearTimeout(purrTimer);
-      purrTimer = setTimeout(() => {
-        catDock.classList.remove('purring');
-      }, 3500);
-
-      if (navigator.vibrate) navigator.vibrate([20, 40, 20]);
     });
   }
 

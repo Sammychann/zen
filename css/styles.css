@@ -988,45 +988,6 @@ html, body {
   letter-spacing: 0.02em;
 }
 
-/* Sleepy Cartoon Cat Easter Egg */
-.sleepy-cat-dock {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  margin: 12px auto 6px;
-  cursor: pointer;
-  user-select: none;
-  width: 90px;
-  height: 65px;
-  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  filter: drop-shadow(0 4px 12px rgba(0, 0, 0, 0.08));
-}
-
-.sleepy-cat-dock:active {
-  transform: scale(0.92);
-}
-
-.cat-svg-illustration {
-  width: 100%;
-  height: 100%;
-  animation: catGentleBreathe 4s ease-in-out infinite;
-  transform-origin: center bottom;
-}
-
-@keyframes catGentleBreathe {
-  0%, 100% { transform: scale(1); }
-  50% { transform: scale(1.04) translateY(-1px); }
-}
-
-.sleepy-cat-dock.purring .cat-svg-illustration {
-  animation: catPurrVibrate 0.15s ease-in-out infinite;
-}
-
-@keyframes catPurrVibrate {
-  0%, 100% { transform: translateY(0) scale(1); }
-  50% { transform: translateY(-1.5px) scale(1.02); }
-}
-
 /* Footer Note */
 .sanctuary-footer {
   text-align: center;
