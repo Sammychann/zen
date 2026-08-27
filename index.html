@@ -3,12 +3,12 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover" />
-  <title>A Little Place to Breathe 🌸</title>
-  <meta name="description" content="A digital sanctuary for deep calm, worldwide radio, daily wisdom, comfort music, and gentle flow games." />
+  <title>Sanctuary</title>
+  <meta name="description" content="A quiet space for ambient radio, literary thought, music discovery, and calm focus." />
   <link rel="icon" type="image/svg+xml" href="favicon.svg" />
   <link rel="stylesheet" href="css/styles.css" />
 
-  <!-- Import map for modern Three.js ES Modules -->
+  <!-- Import map for Three.js ES Modules -->
   <script type="importmap">
   {
     "imports": {
@@ -23,39 +23,39 @@
   <canvas id="bg-canvas"></canvas>
   <div class="vignette-overlay"></div>
 
-  <!-- Main Sanctuary View (Home) -->
+  <!-- Main Sanctuary View -->
   <main id="view-home" class="view active">
     <div class="sanctuary-scroll-container">
       
-      <!-- Minimalist Floating Control Bar (Clean & Decluttered) -->
+      <!-- Minimalist Floating Control Bar -->
       <header class="top-floating-bar-wrapper">
         <div class="floating-control-pill">
           <!-- Theme Switcher -->
-          <button id="theme-toggle" class="ctrl-icon-btn" aria-label="Toggle Theme" title="Toggle Theme (🌸 Sakura / 🌌 Midnight)">
-            <span class="theme-icon light-icon">🌸</span>
-            <span class="theme-icon dark-icon">🌌</span>
+          <button id="theme-toggle" class="ctrl-icon-btn" aria-label="Toggle Theme" title="Toggle Theme">
+            <span class="theme-icon light-icon">Light</span>
+            <span class="theme-icon dark-icon">Dark</span>
           </button>
 
           <span class="ctrl-bar-divider"></span>
 
           <!-- Rain Sound -->
-          <button id="toggle-rain-sound" class="ctrl-sound-btn" aria-label="Toggle Rain Sound" title="Toggle Gentle Rain">
-            <span class="ctrl-sound-icon">🌧️</span>
+          <button id="toggle-rain-sound" class="ctrl-sound-btn" aria-label="Toggle Rain Sound" title="Toggle Rain">
+            <span class="ctrl-dot"></span>
             <span class="ctrl-sound-text">Rain</span>
           </button>
 
           <!-- Waves Sound -->
           <button id="toggle-waves-sound" class="ctrl-sound-btn" aria-label="Toggle Waves Sound" title="Toggle Ocean Waves">
-            <span class="ctrl-sound-icon">🌊</span>
+            <span class="ctrl-dot"></span>
             <span class="ctrl-sound-text">Waves</span>
           </button>
         </div>
       </header>
 
-      <!-- Main Content Cards Stream -->
+      <!-- Main Content Feed -->
       <div class="stream-content">
 
-        <!-- 1. Worldwide Ambient Radio Card -->
+        <!-- 1. Real Worldwide Radio Broadcasts -->
         <section class="sanctuary-card radio-hero-card">
           <div class="card-top-tag">
             <span class="tag-pulse"></span>
@@ -64,7 +64,7 @@
 
           <div class="radio-main-player">
             <div class="radio-station-visual">
-              <span id="radio-station-emoji" class="station-emoji-large">🗾</span>
+              <div class="station-indicator-dot"></div>
               <div class="audio-wave-bars" id="audio-wave-visualizer">
                 <span class="bar bar-1"></span>
                 <span class="bar bar-2"></span>
@@ -73,21 +73,21 @@
               </div>
             </div>
             <div class="radio-meta-info">
-              <h3 id="radio-station-name" class="radio-title">Tokyo Midnight Lo-Fi</h3>
-              <p id="radio-station-city" class="radio-subtitle">Tokyo, Japan • Lo-Fi Beats & City Pop</p>
+              <h3 id="radio-station-name" class="radio-title">NTS Radio 1</h3>
+              <p id="radio-station-city" class="radio-subtitle">London, United Kingdom • Underground & Eclectic</p>
             </div>
-            <button id="btn-radio-play" class="radio-hero-play-btn" aria-label="Play Radio" title="Play / Pause Radio">
-              <span id="radio-play-icon">▶</span>
+            <button id="btn-radio-play" class="radio-hero-play-btn" aria-label="Play Radio" title="Play / Pause">
+              <span id="radio-play-icon">Play</span>
             </button>
           </div>
 
           <div class="radio-sub-controls">
             <div class="station-nav-group">
-              <button id="btn-radio-prev" class="radio-nav-btn" title="Previous Station">⏮ Prev</button>
-              <button id="btn-radio-next" class="radio-nav-btn" title="Next Station">Next ⏭</button>
+              <button id="btn-radio-prev" class="radio-nav-btn" title="Previous Station">Prev</button>
+              <button id="btn-radio-next" class="radio-nav-btn" title="Next Station">Next</button>
             </div>
             <div class="radio-vol-group">
-              <span class="vol-icon">🔉</span>
+              <span class="vol-label">Vol</span>
               <input type="range" id="radio-volume" min="0" max="1" step="0.05" value="0.85" class="volume-slider" title="Radio Volume" />
             </div>
           </div>
@@ -95,18 +95,16 @@
           <!-- Interactive World Map Selector -->
           <div class="map-interactive-section">
             <div class="map-section-header">
-              <span class="map-label">🌍 Tap a City on the Globe</span>
-              <select id="radio-country-select" class="country-dropdown-select" title="Choose Country">
-                <option value="tokyo">🇯🇵 Tokyo, Japan</option>
-                <option value="paris">🇫🇷 Paris, France</option>
-                <option value="london">🇬🇧 London, UK</option>
-                <option value="sf">🇺🇸 San Francisco, USA</option>
-                <option value="ny">🇺🇸 New York, USA</option>
-                <option value="reykjavik">🇮🇸 Reykjavik, Iceland</option>
-                <option value="rio">🇧🇷 Rio de Janeiro, Brazil</option>
-                <option value="berlin">🇩🇪 Berlin, Germany</option>
-                <option value="goa">🇮🇳 Goa, India</option>
-                <option value="sydney">🇦🇺 Sydney, Australia</option>
+              <span class="map-label">Global Broadcasters</span>
+              <select id="radio-country-select" class="country-dropdown-select" title="Choose Station">
+                <option value="nts-london">NTS Radio 1 • London</option>
+                <option value="fip-paris">FIP Radio (Radio France) • Paris</option>
+                <option value="groove-salad">SomaFM Groove Salad • San Francisco</option>
+                <option value="drone-zone">SomaFM Drone Zone • Space Ambient</option>
+                <option value="secret-agent">SomaFM Secret Agent • Lounge & Bossa</option>
+                <option value="lush">SomaFM Lush • Electronic Chill</option>
+                <option value="suburbs-goa">SomaFM Suburbs of Goa • Asian Beats</option>
+                <option value="indie-pop">SomaFM Indie Pop Rocks • Indie</option>
               </select>
             </div>
 
@@ -125,10 +123,10 @@
           </div>
         </section>
 
-        <!-- 2. Today's Literary Wisdom Card (Groq AI) -->
+        <!-- 2. Literary Thought Card -->
         <section class="sanctuary-card quote-hero-card">
           <div class="card-header-row">
-            <span class="card-eyebrow">📖 Daily Wisdom</span>
+            <span class="card-eyebrow">Daily Reading</span>
             <span class="quote-watermark">“</span>
           </div>
 
@@ -143,27 +141,26 @@
 
           <div class="reflection-drawer">
             <button id="btn-why-this" class="btn-reflection-toggle" aria-expanded="false">
-              <span>Why this quote for you?</span>
+              <span>Context & Reflection</span>
               <span class="toggle-arrow">▾</span>
             </button>
             <div id="quote-reflection" class="quote-reflection-panel hidden">
               <p class="reflection-text">
-                Letting go of perfection makes room for genuine goodness, breath, and peace.
+                Letting go of perfection makes room for genuine goodness and peace.
               </p>
             </div>
           </div>
         </section>
 
-        <!-- 3. On This Day in History Card (Groq AI) -->
+        <!-- 3. Historical Record Card -->
         <section class="sanctuary-card history-hero-card">
           <div class="card-header-row">
             <div class="history-badge-group">
-              <span class="card-eyebrow">📅 On This Day</span>
-              <span id="funfact-tag" class="funfact-year-pill">🚀 Space • 1977</span>
+              <span class="card-eyebrow">On This Day</span>
+              <span id="funfact-tag" class="funfact-year-pill">1977 • Space Exploration</span>
             </div>
-            <button id="btn-next-fact" class="btn-spin-fact" title="Discover another milestone">
-              <span>Another Fact</span>
-              <span class="spin-icon">✨</span>
+            <button id="btn-next-fact" class="btn-spin-fact" title="Read another historical entry">
+              <span>Next Entry</span>
             </button>
           </div>
 
@@ -172,70 +169,69 @@
           </p>
         </section>
 
-        <!-- 4. Personalized Song Recommender Card (3 Simple Inputs) -->
+        <!-- 4. Music Selector Card (Editorial & Niche) -->
         <section class="sanctuary-card song-hero-card">
           <div class="card-header-row">
-            <span class="card-eyebrow">🎵 Song Recommender</span>
-            <span class="song-header-icon">🎧</span>
+            <span class="card-eyebrow">Music Selection</span>
+            <span class="section-counter">Curated</span>
           </div>
 
-          <!-- 3 Clean Focused Inputs -->
           <div class="mood-chips-container">
-            <!-- 1. Feeling -->
+            <!-- 1. State of Mind -->
             <div class="chip-group">
-              <label class="chip-group-label">1. How are you feeling?</label>
+              <label class="chip-group-label">State of Mind</label>
               <div class="chips-row" data-input="song-mood">
-                <button class="mood-chip active" data-value="Exhausted & overwhelmed">🌧️ Exhausted</button>
-                <button class="mood-chip" data-value="Chill & vibing">✨ Chill</button>
-                <button class="mood-chip" data-value="High energy & upbeat">⚡ Energetic</button>
-                <button class="mood-chip" data-value="Late night & nostalgic">🌙 Late Night</button>
+                <button class="mood-chip active" data-value="Exhausted & overwhelmed">Exhausted</button>
+                <button class="mood-chip" data-value="Quiet & reflective">Reflective</button>
+                <button class="mood-chip" data-value="Smooth & steady">Chill</button>
+                <button class="mood-chip" data-value="Focused & late night">Late Night</button>
               </div>
             </div>
 
             <!-- 2. Genre -->
             <div class="chip-group">
-              <label class="chip-group-label">2. Pick a Genre</label>
+              <label class="chip-group-label">Genre</label>
               <div class="chips-row" data-input="song-genre">
-                <button class="mood-chip active" data-value="Indie & Alt Rock">🎸 Indie / Alt</button>
-                <button class="mood-chip" data-value="R&B, Soul & Chillhop">🍸 R&B / Soul</button>
-                <button class="mood-chip" data-value="Pop & Dreampop">🌌 Pop / Dreampop</button>
-                <button class="mood-chip" data-value="Electronic & House">🎧 Electronic</button>
-                <button class="mood-chip" data-value="Acoustic & Folk">🌿 Acoustic</button>
-                <button class="mood-chip" data-value="City Pop & World">🗾 City Pop</button>
+                <button class="mood-chip active" data-value="Indie & Alternative">Indie / Alt</button>
+                <button class="mood-chip" data-value="R&B, Soul & Downtempo">R&B / Soul</button>
+                <button class="mood-chip" data-value="Ambient & Dream Pop">Ambient / Pop</button>
+                <button class="mood-chip" data-value="Electronic & House">Electronic</button>
+                <button class="mood-chip" data-value="Acoustic & Folk">Acoustic</button>
+                <button class="mood-chip" data-value="City Pop & Global">World / City Pop</button>
               </div>
             </div>
 
-            <!-- 3. Niche vs Trendy -->
+            <!-- 3. Profile -->
             <div class="chip-group">
-              <label class="chip-group-label">3. Niche or Trendy?</label>
+              <label class="chip-group-label">Profile</label>
               <div class="chips-row" data-input="song-discovery">
-                <button class="mood-chip active" data-value="Niche Underground Gem">✨ Niche Gem</button>
-                <button class="mood-chip" data-value="Trendy & Viral">🔥 Trendy / Viral</button>
+                <button class="mood-chip active" data-value="Underground / Niche">Underground / Niche</button>
+                <button class="mood-chip" data-value="Current Trends">Current Trends</button>
               </div>
             </div>
           </div>
 
           <button id="btn-discover-song" class="btn-discover-song-primary">
-            <span>✨ Discover Song</span>
+            <span>Find Track</span>
           </button>
 
-          <!-- Song Recommendation Result Preview Card -->
+          <!-- Song Recommendation Result Card -->
           <div id="song-result-card" class="song-result-glass-card hidden">
             <div class="song-card-badge-row">
-              <span class="rec-song-badge">✨ Song Match</span>
-              <span id="song-result-genre" class="rec-song-genre">Indie Dreampop</span>
+              <span class="rec-song-badge">Curated Pick</span>
+              <span id="song-result-genre" class="rec-song-genre">Dream Pop</span>
             </div>
 
             <div class="song-player-mockup">
-              <div class="song-disc-icon">💿</div>
+              <div class="song-vinyl-badge"></div>
               <div class="song-disc-details">
                 <h4 id="song-result-title" class="rec-song-title">Show Me How</h4>
-                <p id="song-result-artist" class="rec-song-artist">by Men I Trust</p>
+                <p id="song-result-artist" class="rec-song-artist">Men I Trust</p>
               </div>
             </div>
 
             <p id="song-result-why" class="rec-song-why">
-              A smooth, buttery indie dreampop groove with effortless basslines and warm ethereal vocals.
+              A smooth, understated indie dream-pop recording defined by warm bass lines and restrained guitar work.
             </p>
 
             <blockquote id="song-result-lyrics" class="rec-song-lyrics">
@@ -243,37 +239,35 @@
             </blockquote>
 
             <a id="song-result-link" href="#" target="_blank" rel="noopener noreferrer" class="btn-spotify-direct">
-              <span>🎧 Listen on Spotify / Web</span>
+              <span>Listen on Spotify</span>
             </a>
           </div>
         </section>
 
-        <!-- 5. Daily Cortisol-Lowering Flow Games -->
+        <!-- 5. Focus Activities -->
         <section class="sanctuary-card games-hero-card">
           <div class="card-header-row">
-            <span class="card-eyebrow">🌙 Daily Flow Games</span>
-            <span class="games-subtitle-pill">Zero Stress • Pure Flow</span>
+            <span class="card-eyebrow">Mindful Focus</span>
+            <span class="games-subtitle-pill">Daily Interaction</span>
           </div>
 
           <div class="daily-games-grid">
             <button class="game-launch-card" data-game="highway">
               <div class="game-card-bg-glow glow-highway"></div>
-              <div class="game-launch-icon">🚗</div>
               <div class="game-launch-meta">
-                <span class="game-launch-title">Midnight Cruise</span>
-                <span class="game-launch-desc">Glide smoothly to the 1000m ocean overlook</span>
+                <span class="game-launch-title">Midnight Highway</span>
+                <span class="game-launch-desc">Glide steadily across 1,000m of coastal road</span>
               </div>
-              <div class="game-launch-badge">Daily Scenery 🌟</div>
+              <div class="game-launch-badge">Drive</div>
             </button>
 
             <button class="game-launch-card" data-game="fireflies">
               <div class="game-card-bg-glow glow-fireflies"></div>
-              <div class="game-launch-icon">✨</div>
               <div class="game-launch-meta">
-                <span class="game-launch-title">Constellation Weaver</span>
-                <span class="game-launch-desc">Guide fireflies to ignite 7 celestial stars</span>
+                <span class="game-launch-title">Constellation Align</span>
+                <span class="game-launch-desc">Guide celestial particles into 7 astronomical stars</span>
               </div>
-              <div class="game-launch-badge">Daily Stars ⭐</div>
+              <div class="game-launch-badge">Align</div>
             </button>
           </div>
         </section>
@@ -282,57 +276,56 @@
     </div>
   </main>
 
-  <!-- Game 1: Midnight Highway Glide Screen -->
+  <!-- Game 1: Highway View -->
   <section id="view-highway" class="view game-view hidden">
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
       <div class="game-goal-badge">
-        <span id="highway-status-text">Cruising smoothly • 1000m to overlook</span>
-        <span id="highway-orb-count" class="badge-count">0/10 ⭐</span>
+        <span id="highway-status-text">Cruising • 1000m remaining</span>
+        <span id="highway-orb-count" class="badge-count">0/10</span>
       </div>
     </div>
     <div class="game-progress-bar-container">
       <div id="highway-progress-fill" class="game-progress-bar-fill"></div>
     </div>
 
-    <!-- On-Screen Thumb Steering Controls for Mobile -->
+    <!-- On-Screen Thumb Steering Controls -->
     <div class="mobile-game-touch-dock">
-      <button id="btn-highway-left" class="thumb-control-btn" aria-label="Steer Left">◀ Glide Left</button>
-      <button id="btn-highway-right" class="thumb-control-btn" aria-label="Steer Right">Glide Right ▶</button>
+      <button id="btn-highway-left" class="thumb-control-btn" aria-label="Steer Left">◀ Left</button>
+      <button id="btn-highway-right" class="thumb-control-btn" aria-label="Steer Right">Right ▶</button>
     </div>
 
-    <div class="game-hint-overlay">Tap sides or thumb buttons to glide smoothly.</div>
+    <div class="game-hint-overlay">Tap sides or use buttons to navigate smoothly.</div>
     <canvas id="highway-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Game 2: Firefly Constellation Weaver Screen -->
+  <!-- Game 2: Constellation View -->
   <section id="view-fireflies" class="view game-view hidden">
     <div class="game-top-bar">
       <button class="back-btn" data-back="home">← Sanctuary</button>
       <div class="game-goal-badge">
-        <span id="fireflies-status-text">Guide fireflies to ignite stars</span>
-        <span id="fireflies-star-count" class="badge-count">0/7 ⭐</span>
+        <span id="fireflies-status-text">Guide particles into star nodes</span>
+        <span id="fireflies-star-count" class="badge-count">0/7</span>
       </div>
     </div>
     <div class="game-progress-bar-container">
       <div id="fireflies-progress-fill" class="game-progress-bar-fill"></div>
     </div>
-    <div class="game-hint-overlay">Move finger/cursor to guide fireflies into unlit star rings.</div>
+    <div class="game-hint-overlay">Move finger across screen to guide stellar light.</div>
     <canvas id="fireflies-canvas" class="game-canvas"></canvas>
   </section>
 
-  <!-- Completion Popup Modal -->
+  <!-- Completion Modal -->
   <div id="completion-modal" class="modal-backdrop hidden">
     <div class="completion-modal-card">
-      <div class="modal-sparkle-icon">🌟</div>
-      <span id="modal-badge" class="modal-badge-tag">Daily Goal Completed</span>
-      <h2 id="modal-title" class="modal-title">✨ Overlook Reached!</h2>
+      <span id="modal-badge" class="modal-badge-tag">Sequence Complete</span>
+      <h2 id="modal-title" class="modal-title">Overlook Reached</h2>
       <p id="modal-desc" class="modal-desc">
         You navigated today with quiet resilience. Rest deeply now, nothing is demanded of you.
       </p>
       <div class="modal-actions">
-        <button id="btn-modal-return" class="modal-btn-primary">🌸 Return to Sanctuary</button>
-        <button id="btn-modal-again" class="modal-btn-secondary">🔄 Play Again</button>
+        <button id="btn-modal-return" class="modal-btn-primary">Return to Sanctuary</button>
+        <button id="btn-modal-again" class="modal-btn-secondary">Repeat</button>
       </div>
     </div>
   </div>

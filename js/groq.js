@@ -1,7 +1,7 @@
 /**
- * Groq AI Client for Dynamic Daily Quotes, Historical Facts, and Song Recommendations.
+ * Groq AI Client for Daily Literary Quotes, Historical Milestones, and Music Selection.
  * Model: qwen/qwen3.8-27b
- * Guaranteed unique daily variation across 365 days a year.
+ * Clean, editorial output without AI emojis.
  */
 
 const _p1 = "gsk_4cN01lsnxkeSj0FFZUB5";
@@ -10,38 +10,25 @@ const GROQ_API_KEY = _p1 + _p2;
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "qwen/qwen3.8-27b";
 
-// Vast 365-day deterministic rotation fallback database
 const CURATED_DAILY_QUOTES = [
-  { text: "And now that you don't have to be perfect, you can be good.", author: "John Steinbeck", source: "East of Eden", reflection: "Letting go of perfection makes room for genuine goodness, breath, and peace." },
-  { text: "There are years that ask questions and years that answer.", author: "Zora Neale Hurston", source: "Their Eyes Were Watching God", reflection: "Not every day needs immediate clarity; some days are simply for being." },
-  { text: "I am not afraid of storms, for I am learning how to sail my ship.", author: "Louisa May Alcott", source: "Little Women", reflection: "Every small challenge you navigated today built your quiet inner strength." },
-  { text: "What is that feeling when you're driving away from people and they recede on the plain till you see their specks dispersing? - it's the too-huge world vaulting us, and it's good-bye. But we lean forward to the next crazy venture beneath the skies.", author: "Jack Kerouac", source: "On the Road", reflection: "The horizon is always wide open and welcoming you onward." },
-  { text: "It is only with the heart that one can see rightly; what is essential is invisible to the eye.", author: "Antoine de Saint-Exupéry", source: "The Little Prince", reflection: "The warmth, care, and peace you feel inside matter far more than outer hustle." },
-  { text: "Beware; for I am fearless, and therefore powerful.", author: "Mary Shelley", source: "Frankenstein", reflection: "When you stop fearing the unknown, your authentic power quietly returns." },
-  { text: "The only way out of the labyrinth of suffering is to forgive.", author: "John Green", source: "Looking for Alaska", reflection: "Release what you cannot control, and grant yourself gentle forgiveness." },
-  { text: "Tomorrow is always fresh, with no mistakes in it yet.", author: "L.M. Montgomery", source: "Anne of Green Gables", reflection: "Sleep peacefully tonight knowing tomorrow offers a completely blank page." },
-  { text: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", author: "Dr. Seuss", source: "Oh, the Places You'll Go!", reflection: "You hold the gentle freedom to choose your own peace." },
-  { text: "We are all in the gutter, but some of us are looking at the stars.", author: "Oscar Wilde", source: "Lady Windermere's Fan", reflection: "Look upward tonight; the cosmos is vast, timeless, and calm." },
-  { text: "Real courage is when you know you're licked before you begin, but you begin anyway and see it through no matter what.", author: "Harper Lee", source: "To Kill a Mockingbird", reflection: "You showed up today, and that quiet courage is everything." },
-  { text: "Nothing is impossible, the word itself says 'I'm possible'!", author: "Audrey Hepburn", source: "Reflections", reflection: "Gentle possibilities are unfolding around you every day." },
-  { text: "There is some good in this world, and it's worth fighting for.", author: "J.R.R. Tolkien", source: "The Lord of the Rings", reflection: "Hold on to the small moments of beauty, laughter, and light." },
-  { text: "She was not fragile like a flower; she was fragile like a bomb.", author: "Frida Kahlo", source: "Diaries", reflection: "Your softness holds a deep, unstoppable resilience." }
+  { text: "And now that you don't have to be perfect, you can be good.", author: "John Steinbeck", source: "East of Eden", reflection: "Letting go of perfection makes room for genuine goodness and peace." },
+  { text: "There are years that ask questions and years that answer.", author: "Zora Neale Hurston", source: "Their Eyes Were Watching God", reflection: "Not every day requires immediate clarity; some are simply meant for observing." },
+  { text: "I am not afraid of storms, for I am learning how to sail my ship.", author: "Louisa May Alcott", source: "Little Women", reflection: "Quiet resilience builds with every small step you take." },
+  { text: "What is that feeling when you're driving away from people and they recede on the plain till you see their specks dispersing? - it's the too-huge world vaulting us, and it's good-bye. But we lean forward to the next crazy venture beneath the skies.", author: "Jack Kerouac", source: "On the Road", reflection: "The horizon remains open and welcoming." },
+  { text: "It is only with the heart that one can see rightly; what is essential is invisible to the eye.", author: "Antoine de Saint-Exupéry", source: "The Little Prince", reflection: "Quiet clarity and presence matter far more than outward momentum." },
+  { text: "Beware; for I am fearless, and therefore powerful.", author: "Mary Shelley", source: "Frankenstein", reflection: "When you release fear of the unknown, quiet composure returns." },
+  { text: "Tomorrow is always fresh, with no mistakes in it yet.", author: "L.M. Montgomery", source: "Anne of Green Gables", reflection: "Rest tonight knowing tomorrow offers a completely clean slate." },
+  { text: "We are all in the gutter, but some of us are looking at the stars.", author: "Oscar Wilde", source: "Lady Windermere's Fan", reflection: "The night sky is vast, steady, and indifferent to trivial worries." }
 ];
 
 const CURATED_FACTS = [
-  { year: 1920, category: "Milestone", emoji: "🗳️", text: "The 19th Amendment was certified, guaranteeing American women the right to vote after decades of tireless advocacy." },
-  { year: 1977, category: "Cosmos", emoji: "🚀", text: "NASA's Voyager 2 spacecraft launched on its grand tour of the outer solar system, carrying the Golden Record of Earth's music and laughter." },
-  { year: 1910, category: "Invention", emoji: "🎬", text: "Thomas Edison demonstrated the world's first talking motion picture in his West Orange laboratory." },
-  { year: 1989, category: "Space", emoji: "🪐", text: "Voyager 2 made its closest approach to Neptune, discovering six new moons and the iconic Great Dark Spot." },
-  { year: 1609, category: "Science", emoji: "🔭", text: "Galileo Galilei demonstrated his first astronomical telescope to Venetian lawmakers, opening our eyes to Jupiter's moons." },
-  { year: 1990, category: "Wonder", emoji: "🌍", text: "Voyager 1 captured the iconic 'Pale Blue Dot' photograph of Earth from 6 billion km away, reminding us of our shared home." },
-  { year: 1969, category: "Space", emoji: "🌕", text: "Humans walked on the Moon for the first time, transmitting peaceful greetings back across the cosmos." },
-  { year: 1940, category: "Art", emoji: "🎨", text: "Four teenagers and their playful dog discovered the ancient Lascaux cave paintings in France, preserved for 17,000 years." },
-  { year: 1983, category: "Milestone", emoji: "👩‍🚀", text: "Sally Ride became the first American woman to soar into space aboard the Space Shuttle Challenger." },
-  { year: 1953, category: "Adventure", emoji: "🏔️", text: "Sir Edmund Hillary and Tenzing Norgay stood together atop the summit of Mount Everest." },
-  { year: 1970, category: "Tech", emoji: "🖱️", text: "Douglas Engelbart was granted the official patent for the computer mouse, revolutionizing human-computer interaction." },
-  { year: 1892, category: "Hope", emoji: "🗽", text: "Ellis Island opened in New York Harbor, welcoming over 12 million hopeful souls to new beginnings." },
-  { year: 1954, category: "Peace", emoji: "🕊️", text: "Scientists ran an algorithm to find the most peaceful day in history—April 11, 1954, when no disasters or wars occurred worldwide." }
+  { year: 1977, category: "Space", text: "NASA's Voyager 2 spacecraft launched on its grand tour of the outer solar system, carrying the Golden Record of Earth's music and ambient sounds." },
+  { year: 1920, category: "Milestone", text: "The 19th Amendment was officially certified, securing voting rights for millions of women after decades of sustained effort." },
+  { year: 1989, category: "Astronomy", text: "Voyager 2 completed its closest approach to Neptune, discovering six previously unknown moons and active atmospheric storms." },
+  { year: 1609, category: "Science", text: "Galileo Galilei demonstrated his first astronomical telescope, providing humankind with its first direct view of the Moon's craters." },
+  { year: 1990, category: "Perspective", text: "Voyager 1 captured the famous 'Pale Blue Dot' portrait of Earth from six billion kilometers away." },
+  { year: 1969, category: "Exploration", text: "Apollo 11 landed on the lunar surface, marking humankind's first direct footsteps beyond Earth." },
+  { year: 1970, category: "Technology", text: "Douglas Engelbart was granted the patent for the computer mouse, fundamentally reshaping human interaction with machines." }
 ];
 
 let factOffset = 0;
@@ -58,9 +45,6 @@ function extractJSON(rawText) {
   }
 }
 
-/**
- * Computes day of year (0 to 364) for deterministic 365-day rotation
- */
 function getDayOfYear(date) {
   const start = new Date(date.getFullYear(), 0, 0);
   const diff = date - start;
@@ -68,16 +52,11 @@ function getDayOfYear(date) {
   return Math.floor(diff / oneDay);
 }
 
-/**
- * Fetch daily quote and historical milestone powered by Groq AI
- * Cache key is strictly unique per calendar date (YYYY-MM-DD)
- */
 export async function fetchGroqContent() {
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
-  const cacheKey = `groq_daily_${today.getFullYear()}_${today.getMonth() + 1}_${today.getDate()}`;
+  const cacheKey = `groq_editorial_${today.getFullYear()}_${today.getMonth() + 1}_${today.getDate()}`;
 
-  // Check today's local cache
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     try {
@@ -88,19 +67,18 @@ export async function fetchGroqContent() {
   }
 
   const prompt = `Today is ${dateStr}.
-Provide a unique daily JSON object:
+Provide a clean JSON object without any emojis:
 {
   "quote": {
-    "text": "A comforting, profound quote from a famous literature book",
+    "text": "A thoughtful quote from classic literature",
     "author": "Author Name",
     "source": "Book Title",
-    "reflection": "1 calming sentence tailored for today"
+    "reflection": "One sentence commentary"
   },
   "funfact": {
-    "year": 1920,
-    "category": "Milestone",
-    "emoji": "✨",
-    "text": "1-2 uplifting sentences about an inspiring historical event on ${today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} in history"
+    "year": 1977,
+    "category": "Space Exploration",
+    "text": "1-2 sentences describing an authentic historical event on this calendar day"
   }
 }`;
 
@@ -114,10 +92,10 @@ Provide a unique daily JSON object:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are a gentle sanctuary curator. Generate unique, fresh content every single day. Output pure valid JSON." },
+          { role: "system", content: "You are a literary and historical editor. Write in a sophisticated, calm, minimalist tone. Do not use any emojis in your response. Output pure JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.8
+        temperature: 0.75
       })
     });
 
@@ -129,27 +107,23 @@ Provide a unique daily JSON object:
       localStorage.setItem(cacheKey, JSON.stringify(content));
       return content;
     }
-    throw new Error("Invalid format from Groq");
+    throw new Error("Invalid format");
   } catch (err) {
     console.warn("Groq daily fetch fallback:", err);
     return getDailyRotatedContent(today);
   }
 }
 
-/**
- * Fetch another dynamic historical fact for today
- */
 export async function fetchAnotherFunFact() {
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
 
-  const prompt = `Tell me a different, fascinating, inspiring historical event that happened on ${dateStr} in history.
-Return pure JSON:
+  const prompt = `Provide an authentic historical event that occurred on ${dateStr}.
+No emojis. Return pure JSON:
 {
-  "year": 1977,
-  "category": "Space",
-  "emoji": "🚀",
-  "text": "1-2 sentences about what happened and why it's inspiring"
+  "year": 1989,
+  "category": "Science",
+  "text": "1-2 concise, engaging sentences about the event"
 }`;
 
   try {
@@ -162,10 +136,10 @@ Return pure JSON:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are a historical milestone curator. Output pure JSON." },
+          { role: "system", content: "You are an archivist. Write clean, editorial prose with zero emojis. Output pure JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.85
+        temperature: 0.8
       })
     });
 
@@ -178,33 +152,31 @@ Return pure JSON:
     }
     throw new Error("Invalid fact format");
   } catch (err) {
-    console.warn("Groq another fact fallback:", err);
+    console.warn("Groq fallback:", err);
     factOffset++;
     const dayIndex = (getDayOfYear(today) + factOffset) % CURATED_FACTS.length;
     return CURATED_FACTS[dayIndex];
   }
 }
 
-/**
- * Recommend a song based on: 1. Feeling, 2. Genre, 3. Niche vs Trendy
- */
 export async function recommendSong({ mood, genre, discovery }) {
-  const prompt = `User Feeling: "${mood}".
-Desired Genre: "${genre}".
-Discovery Preference: "${discovery}".
+  const prompt = `State of Mind: "${mood}".
+Genre: "${genre}".
+Flavor: "${discovery}".
 
-Recommend ONE real, exceptional song matching these 3 criteria.
-If "${discovery}" is "Niche Underground Gem", pick an acclaimed, critically-loved hidden gem or indie cult track.
-If "${discovery}" is "Trendy & Viral", pick a current viral, aesthetic, or popular trendy hit.
+Recommend ONE authentic, acclaimed music track fitting this mood and genre.
+If "${discovery}" is "Underground / Niche", select a critically respected indie, deep cut, or cult record.
+If "${discovery}" is "Current Trends", select a high-quality modern release or contemporary classic.
+Do not use any emojis in your response.
 
-Return pure JSON in this format:
+Return pure JSON:
 {
   "title": "Song Title",
   "artist": "Artist Name",
-  "album": "Album Name or Year",
-  "why": "1-2 sentences on why this track fits their exact mood and genre choice",
-  "lyrics": "1 memorable line from the song",
-  "genre": "Exact genre label"
+  "album": "Album Title",
+  "why": "1-2 sentences explaining why this track matches the listener's state of mind",
+  "lyrics": "One notable lyric from the track",
+  "genre": "Precise genre classification"
 }`;
 
   try {
@@ -217,10 +189,10 @@ Return pure JSON in this format:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are a music curator with encyclopedic taste across all genres, underground gems, and viral trends. Output pure JSON." },
+          { role: "system", content: "You are a seasoned music journalist and selector. Write clean, precise editorial notes without any emojis. Output pure JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.85
+        temperature: 0.8
       })
     });
 
@@ -230,30 +202,17 @@ Return pure JSON in this format:
     return song;
   } catch (err) {
     console.warn("Song recommendation fallback:", err);
-    if (discovery && discovery.includes("Trendy")) {
-      return {
-        title: "Birds of a Feather",
-        artist: "Billie Eilish",
-        album: "HIT ME HARD AND SOFT",
-        why: "A breezy, infectious dream-pop anthem with shimmering synths and soaring vocals.",
-        lyrics: "Birds of a feather, we should stick together...",
-        genre: "Dream Pop"
-      };
-    }
     return {
       title: "Show Me How",
       artist: "Men I Trust",
       album: "Oncle Jazz",
-      why: "An irresistible underground indie dreampop groove with effortless basslines and warm ethereal vocals.",
+      why: "A measured, understated dream-pop recording defined by warm bass lines and restrained guitar work.",
       lyrics: "Show me how you care, tell me how you were loved before...",
-      genre: "Indie Dreampop"
+      genre: "Dream Pop"
     };
   }
 }
 
-/**
- * Guarantees every single day of the year gets a completely unique quote and fact
- */
 function getDailyRotatedContent(date) {
   const dayOfYear = getDayOfYear(date);
   const quoteIndex = dayOfYear % CURATED_DAILY_QUOTES.length;

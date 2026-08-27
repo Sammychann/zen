@@ -17,11 +17,11 @@ class App {
       fireflies: document.getElementById('view-fireflies')
     };
 
-    // User Mood Selection State (3 inputs)
+    // User Mood Selection State (3 clean inputs)
     this.songSelections = {
       mood: 'Exhausted & overwhelmed',
-      genre: 'Indie & Alt Rock',
-      discovery: 'Niche Underground Gem'
+      genre: 'Indie & Alternative',
+      discovery: 'Underground / Niche'
     };
   }
 
@@ -38,7 +38,7 @@ class App {
     // 4. Immediately Bind All Event Listeners & Modals (Synchronously)
     this.bindEvents();
 
-    // 5. Asynchronously Load Groq AI Daily Quote & Historical Fun Fact in background
+    // 5. Asynchronously Load Daily Reading & Historical Milestone
     this.loadGroqContent();
   }
 
@@ -75,7 +75,7 @@ class App {
         this.renderFunFact(content.funfact);
       }
     } catch (e) {
-      console.warn("Error rendering Groq content:", e);
+      console.warn("Error rendering editorial content:", e);
     }
   }
 
@@ -99,7 +99,7 @@ class App {
     const tagEl = document.getElementById('funfact-tag');
     const textEl = document.getElementById('funfact-text');
 
-    if (tagEl) tagEl.textContent = `${fact.emoji || '✨'} ${fact.category || 'Milestone'} • ${fact.year || '1920'}`;
+    if (tagEl) tagEl.textContent = `${fact.year || '1977'} • ${fact.category || 'Historical Record'}`;
     if (textEl && fact.text) textEl.textContent = fact.text;
   }
 
@@ -110,7 +110,6 @@ class App {
     const nextBtn = document.getElementById('btn-radio-next');
     const nameEl = document.getElementById('radio-station-name');
     const cityEl = document.getElementById('radio-station-city');
-    const emojiEl = document.getElementById('radio-station-emoji');
     const volSlider = document.getElementById('radio-volume');
     const countrySelect = document.getElementById('radio-country-select');
     const pinsContainer = document.getElementById('map-pins-container');
@@ -124,7 +123,7 @@ class App {
         pin.className = `map-pin ${idx === 0 ? 'active' : ''}`;
         pin.style.left = `${station.mapX}%`;
         pin.style.top = `${station.mapY}%`;
-        pin.title = `${station.emoji} ${station.city}, ${station.country} (${station.name})`;
+        pin.title = `${station.name} (${station.city}, ${station.country})`;
         pin.setAttribute('data-station-id', station.id);
 
         pin.addEventListener('click', (e) => {
@@ -142,8 +141,7 @@ class App {
       if (!station) return;
       if (nameEl) nameEl.textContent = station.name;
       if (cityEl) cityEl.textContent = `${station.city}, ${station.country} • ${station.genre}`;
-      if (emojiEl) emojiEl.textContent = station.emoji;
-      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
+      if (playIcon) playIcon.textContent = isPlaying ? "Pause" : "Play";
       if (countrySelect) countrySelect.value = station.id;
 
       if (waveBars) {
@@ -165,7 +163,7 @@ class App {
 
     worldRadio.onStateChange = ({ isPlaying, loading }) => {
       const station = worldRadio.getCurrentStation();
-      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : (loading ? "⏳" : "▶");
+      if (playIcon) playIcon.textContent = isPlaying ? "Pause" : (loading ? "Connecting..." : "Play");
       updateRadioUI(station, isPlaying);
     };
 
@@ -271,14 +269,14 @@ class App {
       }
     });
 
-    // Next Fun Fact Button (Groq AI Powered)
+    // Next Fact Button
     const nextFactBtn = document.getElementById('btn-next-fact');
     nextFactBtn?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      nextFactBtn.querySelector('span:first-child').textContent = "Fetching...";
+      nextFactBtn.querySelector('span').textContent = "Loading...";
       const fact = await fetchAnotherFunFact();
       this.renderFunFact(fact);
-      nextFactBtn.querySelector('span:first-child').textContent = "Another Fact";
+      nextFactBtn.querySelector('span').textContent = "Next Entry";
       sound.playChime(329.63, 3);
     });
 
@@ -290,7 +288,7 @@ class App {
       const genre = this.songSelections.genre;
       const discovery = this.songSelections.discovery;
 
-      discoverSongBtn.textContent = "Finding your song... ✨";
+      discoverSongBtn.textContent = "Selecting...";
       discoverSongBtn.disabled = true;
 
       try {
@@ -305,13 +303,13 @@ class App {
         const linkEl = document.getElementById('song-result-link');
 
         if (titleEl) titleEl.textContent = rec.title;
-        if (artistEl) artistEl.textContent = `by ${rec.artist}`;
+        if (artistEl) artistEl.textContent = rec.artist;
         if (whyEl) whyEl.textContent = rec.why;
         if (lyricsEl) lyricsEl.textContent = rec.lyrics ? `“${rec.lyrics}”` : '';
-        if (genreEl) genreEl.textContent = rec.genre || 'Song Match';
+        if (genreEl) genreEl.textContent = rec.genre || 'Selected Track';
         if (linkEl) {
           linkEl.href = `https://open.spotify.com/search/${encodeURIComponent(rec.title + ' ' + rec.artist)}`;
-          linkEl.textContent = `🎧 Listen to "${rec.title}" on Spotify`;
+          linkEl.textContent = `Listen to "${rec.title}" on Spotify`;
         }
 
         resultCard?.classList.remove('hidden');
@@ -320,7 +318,7 @@ class App {
       } catch (err) {
         console.warn("Song recommendation error:", err);
       } finally {
-        discoverSongBtn.textContent = "✨ Find Another Song";
+        discoverSongBtn.textContent = "Find Track";
         discoverSongBtn.disabled = false;
       }
     });
@@ -335,7 +333,7 @@ class App {
       });
     });
 
-    // Universal Back to Sanctuary Buttons
+    // Back to Sanctuary Buttons
     const backButtons = document.querySelectorAll('.back-btn[data-back="home"]');
     backButtons.forEach(btn => {
       btn.addEventListener('click', (e) => {
