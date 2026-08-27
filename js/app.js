@@ -17,12 +17,22 @@ class App {
       fireflies: document.getElementById('view-fireflies')
     };
 
-    // User Mood Selection State (3 clean inputs)
+    // User Mood Selection State
     this.songSelections = {
       mood: 'Exhausted & overwhelmed',
       genre: 'Indie & Alternative',
       discovery: 'Underground / Niche'
     };
+
+    // Cat message cycle
+    this.catMessages = [
+      "The night is quiet. Rest deeply. 🌸",
+      "Purrrr... You're safe and warm right here. 🤍",
+      "Nothing is demanded of you tonight. Sleep peacefully. 🌙",
+      "Breathe with the steady rhythm of the room. ✨",
+      "You carried today so well. Let it all rest now. 🐱"
+    ];
+    this.catMsgIndex = 0;
   }
 
   init() {
@@ -38,7 +48,10 @@ class App {
     // 4. Immediately Bind All Event Listeners & Modals (Synchronously)
     this.bindEvents();
 
-    // 5. Asynchronously Load Daily Reading & Historical Milestone
+    // 5. Setup Easter Eggs (Aurora Long-press & Sleepy Cat)
+    this.initEasterEggs();
+
+    // 6. Asynchronously Load Daily Reading & Historical Milestone
     this.loadGroqContent();
   }
 
@@ -141,7 +154,8 @@ class App {
       if (!station) return;
       if (nameEl) nameEl.textContent = station.name;
       if (cityEl) cityEl.textContent = `${station.city}, ${station.country} • ${station.genre}`;
-      if (playIcon) playIcon.textContent = isPlaying ? "Pause" : "Play";
+      // Clean symbol only, no text
+      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : "▶";
       if (countrySelect) countrySelect.value = station.id;
 
       if (waveBars) {
@@ -163,7 +177,7 @@ class App {
 
     worldRadio.onStateChange = ({ isPlaying, loading }) => {
       const station = worldRadio.getCurrentStation();
-      if (playIcon) playIcon.textContent = isPlaying ? "Pause" : (loading ? "Connecting..." : "Play");
+      if (playIcon) playIcon.textContent = isPlaying ? "⏸" : (loading ? "⏳" : "▶");
       updateRadioUI(station, isPlaying);
     };
 
@@ -193,6 +207,64 @@ class App {
       worldRadio.play();
       updateRadioUI(s, true);
       sound.playChime(392.00, 2);
+    });
+  }
+
+  initEasterEggs() {
+    // 1. Easter Egg: Long-press / Triple-tap Theme Button to unlock Aurora Borealis
+    const themeBtn = document.getElementById('theme-toggle');
+    let pressTimer = null;
+    let tapCount = 0;
+    let tapTimeout = null;
+
+    themeBtn?.addEventListener('pointerdown', (e) => {
+      pressTimer = setTimeout(() => {
+        themeManager.unlockAurora();
+      }, 1100);
+    });
+
+    const cancelPress = () => {
+      if (pressTimer) clearTimeout(pressTimer);
+    };
+
+    themeBtn?.addEventListener('pointerup', cancelPress);
+    themeBtn?.addEventListener('pointerleave', cancelPress);
+
+    themeBtn?.addEventListener('click', (e) => {
+      tapCount++;
+      if (tapTimeout) clearTimeout(tapTimeout);
+      tapTimeout = setTimeout(() => { tapCount = 0; }, 400);
+
+      if (tapCount >= 3) {
+        themeManager.unlockAurora();
+        tapCount = 0;
+      }
+    });
+
+    // 2. Easter Egg: Sleepy Sanctuary Cat (Purrs & Floating Message)
+    const catDock = document.getElementById('sleepy-cat-dock');
+    const catBubble = document.getElementById('cat-message-bubble');
+    const catText = document.getElementById('cat-message-text');
+    let bubbleTimeout = null;
+
+    catDock?.addEventListener('click', (e) => {
+      e.stopPropagation();
+      sound.playPurr(3.5);
+
+      if (catText) {
+        catText.textContent = this.catMessages[this.catMsgIndex];
+        this.catMsgIndex = (this.catMsgIndex + 1) % this.catMessages.length;
+      }
+
+      if (catBubble) {
+        catBubble.classList.remove('hidden');
+        if (bubbleTimeout) clearTimeout(bubbleTimeout);
+        bubbleTimeout = setTimeout(() => {
+          catBubble.classList.add('hidden');
+        }, 4000);
+      }
+
+      if (navigator.vibrate) navigator.vibrate([15, 30, 15]);
     });
   }
 
@@ -273,10 +345,10 @@ class App {
     const nextFactBtn = document.getElementById('btn-next-fact');
     nextFactBtn?.addEventListener('click', async (e) => {
       e.stopPropagation();
-      nextFactBtn.querySelector('span').textContent = "Loading...";
+      nextFactBtn.querySelector('span:first-child').textContent = "Loading...";
       const fact = await fetchAnotherFunFact();
       this.renderFunFact(fact);
-      nextFactBtn.querySelector('span').textContent = "Next Entry";
+      nextFactBtn.querySelector('span:first-child').textContent = "Another Fact";
       sound.playChime(329.63, 3);
     });
 
@@ -288,7 +360,7 @@ class App {
       const genre = this.songSelections.genre;
       const discovery = this.songSelections.discovery;
 
-      discoverSongBtn.textContent = "Selecting...";
+      discoverSongBtn.textContent = "Finding your track... ✨";
       discoverSongBtn.disabled = true;
 
       try {
@@ -303,13 +375,13 @@ class App {
         const linkEl = document.getElementById('song-result-link');
 
         if (titleEl) titleEl.textContent = rec.title;
-        if (artistEl) artistEl.textContent = rec.artist;
+        if (artistEl) artistEl.textContent = `by ${rec.artist}`;
         if (whyEl) whyEl.textContent = rec.why;
         if (lyricsEl) lyricsEl.textContent = rec.lyrics ? `“${rec.lyrics}”` : '';
-        if (genreEl) genreEl.textContent = rec.genre || 'Selected Track';
+        if (genreEl) genreEl.textContent = rec.genre || 'Curated Match';
         if (linkEl) {
           linkEl.href = `https://open.spotify.com/search/${encodeURIComponent(rec.title + ' ' + rec.artist)}`;
-          linkEl.textContent = `Listen to "${rec.title}" on Spotify`;
+          linkEl.textContent = `🎧 Listen to "${rec.title}" on Spotify`;
         }
 
         resultCard?.classList.remove('hidden');
@@ -318,7 +390,7 @@ class App {
       } catch (err) {
         console.warn("Song recommendation error:", err);
       } finally {
-        discoverSongBtn.textContent = "Find Track";
+        discoverSongBtn.textContent = "✨ Find My Track";
         discoverSongBtn.disabled = false;
       }
     });

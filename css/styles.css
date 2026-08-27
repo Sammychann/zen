@@ -68,6 +68,37 @@
   --glass-blur: blur(28px);
 }
 
+[data-theme="aurora"] {
+  /* Secret Easter Egg Theme (Emerald & Violet Northern Lights) */
+  --bg-base: #01120e;
+  --bg-gradient: linear-gradient(180deg, #01120e 0%, #031c15 45%, #0d061f 100%);
+  --card-bg: rgba(4, 28, 22, 0.78);
+  --card-bg-elevated: rgba(6, 40, 32, 0.9);
+  --card-border: rgba(52, 211, 153, 0.25);
+  --card-shadow: 0 14px 40px rgba(0, 0, 0, 0.8), 0 0 1px rgba(52, 211, 153, 0.2);
+  --card-shadow-hover: 0 22px 50px rgba(0, 0, 0, 0.9), 0 0 18px rgba(52, 211, 153, 0.35);
+  
+  --text-primary: #f0fdf4;
+  --text-secondary: #a7f3d0;
+  --text-muted: #6ee7b7;
+  
+  --accent: #34d399;
+  --accent-strong: #059669;
+  --accent-soft: rgba(52, 211, 153, 0.18);
+  --accent-glow: rgba(52, 211, 153, 0.5);
+  
+  --chip-bg: rgba(6, 40, 32, 0.72);
+  --chip-border: rgba(52, 211, 153, 0.28);
+  --chip-active-bg: #34d399;
+  --chip-active-text: #022c22;
+  
+  --map-land: rgba(52, 211, 153, 0.28);
+  --map-water: rgba(2, 24, 18, 0.75);
+  --divider: rgba(52, 211, 153, 0.18);
+  
+  --glass-blur: blur(28px);
+}
+
 /* Base Reset */
 *, *::before, *::after {
   margin: 0;
@@ -893,7 +924,7 @@ html, body {
   position: relative;
   background: var(--card-bg-elevated);
   border: 1px solid var(--card-border);
-  border-radius: 16px;
+  border-radius: 18px;
   padding: 14px 16px;
   display: flex;
   align-items: center;
@@ -902,7 +933,7 @@ html, body {
   text-align: left;
   color: var(--text-primary);
   overflow: hidden;
-  transition: transform 0.22s ease, border-color 0.22s ease;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.2s ease, box-shadow 0.2s ease;
 }
 
 .game-launch-card:active {
@@ -917,6 +948,8 @@ html, body {
 
 .game-launch-meta {
   flex: 1;
+  min-width: 0;
+  padding-right: 6px;
 }
 
 .game-launch-title {
@@ -924,6 +957,9 @@ html, body {
   font-size: 0.92rem;
   font-weight: 700;
   color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .game-launch-desc {
@@ -932,18 +968,91 @@ html, body {
   color: var(--text-muted);
   line-height: 1.25;
   margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .game-launch-badge {
-  font-size: 0.68rem;
+  margin-left: auto;
+  align-self: center;
+  font-size: 0.7rem;
   font-weight: 700;
   color: var(--accent);
   background: var(--accent-soft);
-  padding: 4px 10px;
+  border: 1px solid var(--chip-border);
+  padding: 5px 12px;
   border-radius: 999px;
   flex-shrink: 0;
-  text-transform: uppercase;
-  letter-spacing: 0.04em;
+  white-space: nowrap;
+  letter-spacing: 0.02em;
+}
+
+/* Sleepy Cat Easter Egg */
+.sleepy-cat-dock {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 6px auto 14px;
+  cursor: pointer;
+  user-select: none;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.sleepy-cat-dock:active {
+  transform: scale(0.92);
+}
+
+.cat-body {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--card-bg-elevated);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  padding: 6px 14px;
+  border-radius: 999px;
+  box-shadow: var(--card-shadow);
+  transition: all 0.2s ease;
+}
+
+.cat-emoji {
+  font-size: 1.25rem;
+  animation: gentleBreathe 3.5s ease-in-out infinite;
+}
+
+.cat-zzz {
+  font-size: 0.72rem;
+  font-weight: 700;
+  color: var(--accent);
+  letter-spacing: 0.05em;
+  animation: zzzFloat 2s ease-in-out infinite;
+}
+
+@keyframes gentleBreathe {
+  0%, 100% { transform: scale(1); }
+  50% { transform: scale(1.08) translateY(-1px); }
+}
+
+@keyframes zzzFloat {
+  0%, 100% { transform: translateY(0); opacity: 0.5; }
+  50% { transform: translateY(-3px); opacity: 1; }
+}
+
+.cat-message-bubble {
+  margin-top: 8px;
+  background: var(--card-bg-elevated);
+  border: 1px solid var(--card-border);
+  backdrop-filter: var(--glass-blur);
+  padding: 8px 16px;
+  border-radius: 14px;
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.1);
+  animation: fadeIn 0.3s ease;
+  text-align: center;
+  max-width: 280px;
 }
 
 /* Footer Note */

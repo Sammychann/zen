@@ -225,6 +225,47 @@ class SoundEngine {
     return this.isWavesPlaying;
   }
 
+  playPurr(duration = 4) {
+    if (!this.ctx) return;
+    if (this.ctx.state === 'suspended') this.ctx.resume();
+
+    const now = this.ctx.currentTime;
+    
+    // Low frequency rumble oscillator (cat purr ~26Hz)
+    const purrLFO = this.ctx.createOscillator();
+    purrLFO.type = 'sawtooth';
+    purrLFO.frequency.setValueAtTime(26, now);
+
+    const purrFilter = this.ctx.createBiquadFilter();
+    purrFilter.type = 'lowpass';
+    purrFilter.frequency.setValueAtTime(140, now);
+
+    const purrGain = this.ctx.createGain();
+    purrGain.gain.setValueAtTime(0.0001, now);
+    purrGain.gain.linearRampToValueAtTime(0.18, now + 0.5);
+    purrGain.gain.setValueAtTime(0.18, now + duration - 0.5);
+    purrGain.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+    // Warm sub-harmonic tone
+    const subOsc = this.ctx.createOscillator();
+    subOsc.type = 'sine';
+    subOsc.frequency.setValueAtTime(75, now);
+    const subGain = this.ctx.createGain();
+    subGain.gain.setValueAtTime(0.08, now);
+
+    subOsc.connect(subGain);
+    subGain.connect(purrFilter);
+
+    purrLFO.connect(purrFilter);
+    purrFilter.connect(purrGain);
+    purrGain.connect(this.masterLimiter);
+
+    purrLFO.start(now);
+    subOsc.start(now);
+    purrLFO.stop(now + duration + 0.1);
+    subOsc.stop(now + duration + 0.1);
+  }
+
   playChime(fundamental = 261.63, duration = 5) {
     if (!this.ctx) return;
     if (this.ctx.state === 'suspended') this.ctx.resume();
