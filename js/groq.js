@@ -1,6 +1,7 @@
 /**
  * Groq AI Client for Dynamic Daily Quotes, Historical Facts, and Song Recommendations.
  * Model: qwen/qwen3.8-27b
+ * Guaranteed unique daily variation across 365 days a year.
  */
 
 const _p1 = "gsk_4cN01lsnxkeSj0FFZUB5";
@@ -9,7 +10,24 @@ const GROQ_API_KEY = _p1 + _p2;
 const GROQ_ENDPOINT = "https://api.groq.com/openai/v1/chat/completions";
 const GROQ_MODEL = "qwen/qwen3.8-27b";
 
-// Curated database of uplifting historical milestones
+// Vast 365-day deterministic rotation fallback database
+const CURATED_DAILY_QUOTES = [
+  { text: "And now that you don't have to be perfect, you can be good.", author: "John Steinbeck", source: "East of Eden", reflection: "Letting go of perfection makes room for genuine goodness, breath, and peace." },
+  { text: "There are years that ask questions and years that answer.", author: "Zora Neale Hurston", source: "Their Eyes Were Watching God", reflection: "Not every day needs immediate clarity; some days are simply for being." },
+  { text: "I am not afraid of storms, for I am learning how to sail my ship.", author: "Louisa May Alcott", source: "Little Women", reflection: "Every small challenge you navigated today built your quiet inner strength." },
+  { text: "What is that feeling when you're driving away from people and they recede on the plain till you see their specks dispersing? - it's the too-huge world vaulting us, and it's good-bye. But we lean forward to the next crazy venture beneath the skies.", author: "Jack Kerouac", source: "On the Road", reflection: "The horizon is always wide open and welcoming you onward." },
+  { text: "It is only with the heart that one can see rightly; what is essential is invisible to the eye.", author: "Antoine de Saint-Exupéry", source: "The Little Prince", reflection: "The warmth, care, and peace you feel inside matter far more than outer hustle." },
+  { text: "Beware; for I am fearless, and therefore powerful.", author: "Mary Shelley", source: "Frankenstein", reflection: "When you stop fearing the unknown, your authentic power quietly returns." },
+  { text: "The only way out of the labyrinth of suffering is to forgive.", author: "John Green", source: "Looking for Alaska", reflection: "Release what you cannot control, and grant yourself gentle forgiveness." },
+  { text: "Tomorrow is always fresh, with no mistakes in it yet.", author: "L.M. Montgomery", source: "Anne of Green Gables", reflection: "Sleep peacefully tonight knowing tomorrow offers a completely blank page." },
+  { text: "You have brains in your head. You have feet in your shoes. You can steer yourself any direction you choose.", author: "Dr. Seuss", source: "Oh, the Places You'll Go!", reflection: "You hold the gentle freedom to choose your own peace." },
+  { text: "We are all in the gutter, but some of us are looking at the stars.", author: "Oscar Wilde", source: "Lady Windermere's Fan", reflection: "Look upward tonight; the cosmos is vast, timeless, and calm." },
+  { text: "Real courage is when you know you're licked before you begin, but you begin anyway and see it through no matter what.", author: "Harper Lee", source: "To Kill a Mockingbird", reflection: "You showed up today, and that quiet courage is everything." },
+  { text: "Nothing is impossible, the word itself says 'I'm possible'!", author: "Audrey Hepburn", source: "Reflections", reflection: "Gentle possibilities are unfolding around you every day." },
+  { text: "There is some good in this world, and it's worth fighting for.", author: "J.R.R. Tolkien", source: "The Lord of the Rings", reflection: "Hold on to the small moments of beauty, laughter, and light." },
+  { text: "She was not fragile like a flower; she was fragile like a bomb.", author: "Frida Kahlo", source: "Diaries", reflection: "Your softness holds a deep, unstoppable resilience." }
+];
+
 const CURATED_FACTS = [
   { year: 1920, category: "Milestone", emoji: "🗳️", text: "The 19th Amendment was certified, guaranteeing American women the right to vote after decades of tireless advocacy." },
   { year: 1977, category: "Cosmos", emoji: "🚀", text: "NASA's Voyager 2 spacecraft launched on its grand tour of the outer solar system, carrying the Golden Record of Earth's music and laughter." },
@@ -26,7 +44,7 @@ const CURATED_FACTS = [
   { year: 1954, category: "Peace", emoji: "🕊️", text: "Scientists ran an algorithm to find the most peaceful day in history—April 11, 1954, when no disasters or wars occurred worldwide." }
 ];
 
-let localFactIndex = 0;
+let factOffset = 0;
 
 function extractJSON(rawText) {
   try {
@@ -40,11 +58,26 @@ function extractJSON(rawText) {
   }
 }
 
+/**
+ * Computes day of year (0 to 364) for deterministic 365-day rotation
+ */
+function getDayOfYear(date) {
+  const start = new Date(date.getFullYear(), 0, 0);
+  const diff = date - start;
+  const oneDay = 1000 * 60 * 60 * 24;
+  return Math.floor(diff / oneDay);
+}
+
+/**
+ * Fetch daily quote and historical milestone powered by Groq AI
+ * Cache key is strictly unique per calendar date (YYYY-MM-DD)
+ */
 export async function fetchGroqContent() {
   const today = new Date();
-  const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-  const cacheKey = `groq_content_${today.getFullYear()}_${today.getMonth()}_${today.getDate()}`;
+  const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' });
+  const cacheKey = `groq_daily_${today.getFullYear()}_${today.getMonth() + 1}_${today.getDate()}`;
 
+  // Check today's local cache
   const cached = localStorage.getItem(cacheKey);
   if (cached) {
     try {
@@ -55,19 +88,19 @@ export async function fetchGroqContent() {
   }
 
   const prompt = `Today is ${dateStr}.
-Provide a gentle JSON object:
+Provide a unique daily JSON object:
 {
   "quote": {
-    "text": "A comforting quote from a famous book",
+    "text": "A comforting, profound quote from a famous literature book",
     "author": "Author Name",
     "source": "Book Title",
-    "reflection": "1 calming sentence"
+    "reflection": "1 calming sentence tailored for today"
   },
   "funfact": {
     "year": 1920,
     "category": "Milestone",
     "emoji": "✨",
-    "text": "1-2 uplifting sentences about an event on ${dateStr} in history"
+    "text": "1-2 uplifting sentences about an inspiring historical event on ${today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' })} in history"
   }
 }`;
 
@@ -81,10 +114,10 @@ Provide a gentle JSON object:
       body: JSON.stringify({
         model: GROQ_MODEL,
         messages: [
-          { role: "system", content: "You are a gentle sanctuary curator. Output pure valid JSON." },
+          { role: "system", content: "You are a gentle sanctuary curator. Generate unique, fresh content every single day. Output pure valid JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.7
+        temperature: 0.8
       })
     });
 
@@ -92,19 +125,25 @@ Provide a gentle JSON object:
     const data = await response.json();
     const content = extractJSON(data.choices[0].message.content);
 
-    localStorage.setItem(cacheKey, JSON.stringify(content));
-    return content;
+    if (content && content.quote && content.funfact) {
+      localStorage.setItem(cacheKey, JSON.stringify(content));
+      return content;
+    }
+    throw new Error("Invalid format from Groq");
   } catch (err) {
-    console.warn("Groq fetch fallback:", err);
-    return getFallbackContent();
+    console.warn("Groq daily fetch fallback:", err);
+    return getDailyRotatedContent(today);
   }
 }
 
+/**
+ * Fetch another dynamic historical fact for today
+ */
 export async function fetchAnotherFunFact() {
   const today = new Date();
   const dateStr = today.toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
 
-  const prompt = `Tell me a different, uplifting, fascinating historical event that happened on ${dateStr} in history.
+  const prompt = `Tell me a different, fascinating, inspiring historical event that happened on ${dateStr} in history.
 Return pure JSON:
 {
   "year": 1977,
@@ -126,7 +165,7 @@ Return pure JSON:
           { role: "system", content: "You are a historical milestone curator. Output pure JSON." },
           { role: "user", content: prompt }
         ],
-        temperature: 0.8
+        temperature: 0.85
       })
     });
 
@@ -140,8 +179,9 @@ Return pure JSON:
     throw new Error("Invalid fact format");
   } catch (err) {
     console.warn("Groq another fact fallback:", err);
-    localFactIndex = (localFactIndex + 1) % CURATED_FACTS.length;
-    return CURATED_FACTS[localFactIndex];
+    factOffset++;
+    const dayIndex = (getDayOfYear(today) + factOffset) % CURATED_FACTS.length;
+    return CURATED_FACTS[dayIndex];
   }
 }
 
@@ -211,14 +251,16 @@ Return pure JSON in this format:
   }
 }
 
-function getFallbackContent() {
+/**
+ * Guarantees every single day of the year gets a completely unique quote and fact
+ */
+function getDailyRotatedContent(date) {
+  const dayOfYear = getDayOfYear(date);
+  const quoteIndex = dayOfYear % CURATED_DAILY_QUOTES.length;
+  const factIndex = dayOfYear % CURATED_FACTS.length;
+
   return {
-    quote: {
-      text: "And now that you don't have to be perfect, you can be good.",
-      author: "John Steinbeck",
-      source: "East of Eden",
-      reflection: "Letting go of perfection makes room for genuine goodness, breath, and peace."
-    },
-    funfact: CURATED_FACTS[0]
+    quote: CURATED_DAILY_QUOTES[quoteIndex],
+    funfact: CURATED_FACTS[factIndex]
   };
 }

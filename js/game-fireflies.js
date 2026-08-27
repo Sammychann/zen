@@ -2,71 +2,120 @@ import * as THREE from 'three';
 import { sound } from './sound.js';
 
 /**
- * Daily Constellations with mobile-responsive normalized coordinates
+ * Detailed Astronomical Constellations with Real Star Catalog Data
  */
-const DAILY_CONSTELLATIONS = [
+const DETAILED_CONSTELLATIONS = [
   {
     day: "Sunday",
-    name: "Corona Borealis (Northern Crown)",
+    name: "Corona Borealis",
+    title: "The Celestial Crown",
+    myth: "A celestial wreath of jewel stars cast into the heavens.",
+    affirmation: "The golden crown of stars shines for you. Your peace is your greatest power.",
     stars: [
-      { x: -0.7, y: 0.2 }, { x: -0.4, y: 0.65 }, { x: -0.05, y: 0.8 },
-      { x: 0.35, y: 0.7 }, { x: 0.65, y: 0.35 }, { x: 0.75, y: -0.1 }, { x: 0.45, y: -0.5 }
-    ],
-    affirmation: "The golden crown of stars shines for you. Your peace is your greatest power."
+      { name: "Alphecca (Gemma)", greek: "α CrB", type: "Binary White", color: 0x93c5fd, x: -0.05, y: 0.8 },
+      { name: "Nusakan", greek: "β CrB", type: "Magnetic Star", color: 0xfef08a, x: -0.4, y: 0.65 },
+      { name: "Gamma CrB", greek: "γ CrB", type: "White Dwarf System", color: 0xe0f2fe, x: -0.7, y: 0.2 },
+      { name: "Delta CrB", greek: "δ CrB", type: "Yellow Giant", color: 0xfde047, x: 0.35, y: 0.7 },
+      { name: "Epsilon CrB", greek: "ε CrB", type: "Orange Giant", color: 0xfba047, x: 0.65, y: 0.35 },
+      { name: "Zeta CrB", greek: "ζ CrB", type: "Blue-White Pair", color: 0x67e8f9, x: 0.75, y: -0.1 },
+      { name: "Theta CrB", greek: "θ CrB", type: "Be Star", color: 0x38bdf8, x: 0.45, y: -0.5 }
+    ]
   },
   {
     day: "Monday",
-    name: "Cassiopeia (The Queen's Throne)",
+    name: "Cassiopeia",
+    title: "The Queen's Throne",
+    myth: "The legendary royal 'W' etched permanently in northern skies.",
+    affirmation: "Cassiopeia glimmers in quiet majesty. You have guided every light home.",
     stars: [
-      { x: -0.8, y: 0.6 }, { x: -0.45, y: 0.25 }, { x: -0.05, y: 0.55 },
-      { x: 0.4, y: 0.15 }, { x: 0.8, y: 0.45 }, { x: 0.5, y: -0.45 }, { x: -0.3, y: -0.45 }
-    ],
-    affirmation: "Cassiopeia glimmers in quiet majesty. You have guided every light home."
+      { name: "Schedar", greek: "α Cas", type: "Orange Giant", color: 0xfbbf24, x: -0.45, y: 0.25 },
+      { name: "Caph", greek: "β Cas", type: "Yellow-White Subgiant", color: 0xfef08a, x: -0.8, y: 0.6 },
+      { name: "Navi (Gamma)", greek: "γ Cas", type: "Variable Eruptive", color: 0x38bdf8, x: -0.05, y: 0.55 },
+      { name: "Ruchbah", greek: "δ Cas", type: "Eclipsing Binary", color: 0x93c5fd, x: 0.4, y: 0.15 },
+      { name: "Segin", greek: "ε Cas", type: "Blue-White Giant", color: 0x67e8f9, x: 0.8, y: 0.45 },
+      { name: "Achird", greek: "η Cas", type: "Solar Analog", color: 0xfde047, x: 0.5, y: -0.45 },
+      { name: "Marfak", greek: "θ Cas", type: "Subgiant Star", color: 0xe0f2fe, x: -0.3, y: -0.45 }
+    ]
   },
   {
     day: "Tuesday",
-    name: "Ursa Major (The Great Dipper)",
+    name: "Ursa Major",
+    title: "The Great Celestial Dipper",
+    myth: "The cosmic compass that points travelers to the true North Star.",
+    affirmation: "The Great Dipper pours stillness across the night sky. Breathe and rest.",
     stars: [
-      { x: -0.75, y: -0.15 }, { x: -0.5, y: 0.1 }, { x: -0.2, y: 0.15 },
-      { x: 0.15, y: 0.2 }, { x: 0.2, y: 0.65 }, { x: 0.65, y: 0.7 }, { x: 0.6, y: 0.25 }
-    ],
-    affirmation: "The Great Dipper pours stillness across the night sky. Breathe and rest."
+      { name: "Dubhe", greek: "α UMa", type: "Red Giant", color: 0xf87171, x: 0.65, y: 0.7 },
+      { name: "Merak", greek: "β UMa", type: "White Main-Seq", color: 0xe0f2fe, x: 0.6, y: 0.25 },
+      { name: "Phecda", greek: "γ UMa", type: "A-type Star", color: 0x93c5fd, x: 0.15, y: 0.2 },
+      { name: "Megrez", greek: "δ UMa", type: "Connecting Pivot", color: 0x67e8f9, x: 0.2, y: 0.65 },
+      { name: "Alioth", greek: "ε UMa", type: "Brightest in Dipper", color: 0x38bdf8, x: -0.2, y: 0.15 },
+      { name: "Mizar", greek: "ζ UMa", type: "Historic Double Star", color: 0x93c5fd, x: -0.5, y: 0.1 },
+      { name: "Alkaid", greek: "η UMa", type: "Young Blue Star", color: 0x60a5fa, x: -0.75, y: -0.15 }
+    ]
   },
   {
     day: "Wednesday",
-    name: "Orion's Radiant Belt",
+    name: "Orion's Belt & Shield",
+    title: "The Stellar Hunter",
+    myth: "The luminous giant whose belt guides astronomers across the galaxy.",
+    affirmation: "The celestial hunter rests. The night is gentle, quiet, and warm.",
     stars: [
-      { x: -0.65, y: 0.65 }, { x: 0.65, y: 0.6 }, { x: -0.3, y: 0.1 },
-      { x: 0.0, y: 0.0 }, { x: 0.3, y: -0.1 }, { x: -0.6, y: -0.65 }, { x: 0.6, y: -0.6 }
-    ],
-    affirmation: "The celestial hunter rests. The night is gentle, quiet, and warm."
+      { name: "Betelgeuse", greek: "α Ori", type: "Red Supergiant", color: 0xf87171, x: -0.65, y: 0.65 },
+      { name: "Bellatrix", greek: "γ Ori", type: "Blue Giant", color: 0x67e8f9, x: 0.65, y: 0.6 },
+      { name: "Alnitak", greek: "ζ Ori", type: "Triple Star System", color: 0x38bdf8, x: -0.3, y: 0.1 },
+      { name: "Alnilam", greek: "ε Ori", type: "Supergiant Center", color: 0x93c5fd, x: 0.0, y: 0.0 },
+      { name: "Mintaka", greek: "δ Ori", type: "Multiple Blue Star", color: 0x60a5fa, x: 0.3, y: -0.1 },
+      { name: "Saiph", greek: "κ Ori", type: "Supergiant Foot", color: 0x38bdf8, x: -0.6, y: -0.65 },
+      { name: "Rigel", greek: "β Ori", type: "Blue Supergiant", color: 0x93c5fd, x: 0.6, y: -0.6 }
+    ]
   },
   {
     day: "Thursday",
-    name: "Pleiades (The Seven Sisters)",
+    name: "Pleiades",
+    title: "The Seven Sisters",
+    myth: "An open cluster of newborn stars glowing in blue reflection nebulae.",
+    affirmation: "Seven sister stars watch over you in gentle harmony. Sleep peacefully.",
     stars: [
-      { x: -0.6, y: 0.4 }, { x: -0.3, y: 0.55 }, { x: -0.08, y: 0.3 },
-      { x: 0.25, y: 0.35 }, { x: 0.55, y: 0.15 }, { x: 0.15, y: -0.25 }, { x: -0.25, y: -0.15 }
-    ],
-    affirmation: "Seven sister stars watch over you in gentle harmony. Sleep peacefully."
+      { name: "Alcyone", greek: "η Tau", type: "Eclipsing System", color: 0x67e8f9, x: 0.25, y: 0.35 },
+      { name: "Maia", greek: "20 Tau", type: "Mercury-Manganese", color: 0x93c5fd, x: -0.08, y: 0.3 },
+      { name: "Electra", greek: "17 Tau", type: "Fast-Spinning Be", color: 0x38bdf8, x: -0.3, y: 0.55 },
+      { name: "Taygeta", greek: "19 Tau", type: "Triple System", color: 0xe0f2fe, x: -0.6, y: 0.4 },
+      { name: "Celaeno", greek: "16 Tau", type: "Subgiant Star", color: 0x60a5fa, x: -0.25, y: -0.15 },
+      { name: "Sterope", greek: "21 Tau", type: "Double Star", color: 0x93c5fd, x: 0.15, y: -0.25 },
+      { name: "Merope", greek: "23 Tau", type: "Nebula Illuminator", color: 0x38bdf8, x: 0.55, y: 0.15 }
+    ]
   },
   {
     day: "Friday",
-    name: "Cygnus (The Swan of Starlight)",
+    name: "Cygnus",
+    title: "The Swan of Starlight",
+    myth: "The soaring celestial swan flying down the Milky Way's galactic plane.",
+    affirmation: "The star swan glides across the cosmic ocean. Let your mind drift into dreamland.",
     stars: [
-      { x: 0.0, y: 0.75 }, { x: 0.0, y: 0.25 }, { x: 0.0, y: -0.3 },
-      { x: 0.0, y: -0.75 }, { x: -0.65, y: 0.25 }, { x: 0.65, y: 0.25 }, { x: 0.35, y: -0.15 }
-    ],
-    affirmation: "The star swan glides across the cosmic ocean. Let your mind drift into dreamland."
+      { name: "Deneb", greek: "α Cyg", type: "White Supergiant", color: 0xe0f2fe, x: 0.0, y: 0.75 },
+      { name: "Sadr", greek: "γ Cyg", type: "Milky Way Heart", color: 0xfef08a, x: 0.0, y: 0.25 },
+      { name: "Gienah", greek: "ε Cyg", type: "Orange Giant", color: 0xfba047, x: 0.65, y: 0.25 },
+      { name: "Delta Cygni", greek: "δ Cyg", type: "Triple System", color: 0x93c5fd, x: -0.65, y: 0.25 },
+      { name: "Albireo", greek: "β Cyg", type: "Golden/Sapphire Pair", color: 0xfbbf24, x: 0.0, y: -0.75 },
+      { name: "Fawaris", greek: "δ2 Cyg", type: "Subgiant", color: 0x67e8f9, x: 0.35, y: -0.15 },
+      { name: "Eta Cygni", greek: "η Cyg", type: "Variable Giant", color: 0x38bdf8, x: 0.0, y: -0.3 }
+    ]
   },
   {
     day: "Saturday",
-    name: "Pegasus (The Winged Stardust)",
+    name: "Pegasus",
+    title: "The Winged Steed",
+    myth: "The Great Square in the autumn sky carrying celestial dreams.",
+    affirmation: "Wings of stardust carry away every worry from this week. You are completely safe.",
     stars: [
-      { x: -0.55, y: 0.5 }, { x: 0.5, y: 0.55 }, { x: 0.6, y: -0.4 },
-      { x: -0.55, y: -0.45 }, { x: -0.8, y: 0.1 }, { x: 0.8, y: 0.15 }, { x: 0.0, y: 0.7 }
-    ],
-    affirmation: "Wings of stardust carry away every worry from this week. You are completely safe."
+      { name: "Alpheratz", greek: "α And", type: "Mercury-Manganese", color: 0x93c5fd, x: 0.5, y: 0.55 },
+      { name: "Scheat", greek: "β Peg", type: "Red Giant Variable", color: 0xf87171, x: -0.55, y: 0.5 },
+      { name: "Markab", greek: "α Peg", type: "Blue-White Main", color: 0x67e8f9, x: -0.55, y: -0.45 },
+      { name: "Algenib", greek: "γ Peg", type: "Beta Cephei", color: 0x38bdf8, x: 0.6, y: -0.4 },
+      { name: "Enif", greek: "ε Peg", type: "Supergiant Nose", color: 0xfba047, x: -0.8, y: 0.1 },
+      { name: "Matar", greek: "η Peg", type: "Binary System", color: 0xfef08a, x: 0.8, y: 0.15 },
+      { name: "Homam", greek: "ζ Peg", type: "Slow Pulsating B", color: 0xe0f2fe, x: 0.0, y: 0.7 }
+    ]
   }
 ];
 
@@ -83,9 +132,10 @@ export class FireflyGame {
     this.fireflies = [];
     this.constellationNodes = [];
     this.lines = [];
+    this.nebulaMesh = null;
     this.pointer = new THREE.Vector3(999, 999, 0);
 
-    this.currentConstellation = DAILY_CONSTELLATIONS[new Date().getDay()];
+    this.currentConstellation = DETAILED_CONSTELLATIONS[new Date().getDay()];
     this.litStarsCount = 0;
     this.totalStars = 7;
     this.isCompleted = false;
@@ -101,11 +151,11 @@ export class FireflyGame {
   init() {
     if (this.isInitialized) return;
 
-    this.currentConstellation = DAILY_CONSTELLATIONS[new Date().getDay()];
+    this.currentConstellation = DETAILED_CONSTELLATIONS[new Date().getDay()];
 
     this.scene = new THREE.Scene();
     
-    // Dynamic Mobile Viewport Distance
+    // Mobile-First Perspective Distance
     const isMobile = window.innerWidth < 640;
     const camZ = isMobile ? 22 : 18;
     this.camera = new THREE.PerspectiveCamera(55, window.innerWidth / window.innerHeight, 0.1, 100);
@@ -123,28 +173,73 @@ export class FireflyGame {
     const ambient = new THREE.AmbientLight(0x060f1e, 2.5);
     this.scene.add(ambient);
 
-    // Setup Daily Constellation Star Nodes
+    // 1. Cosmic Stardust Nebula Cloud
+    this.createNebulaCloud();
+
+    // 2. Setup Detailed Astronomical Constellation Star Nodes
     this.setupConstellation();
 
-    // Spawn gentle fireflies
+    // 3. Spawn Ambient Fireflies
     this.spawnFireflies(isMobile ? 26 : 22);
 
     this.setupEvents();
     this.isInitialized = true;
   }
 
+  createNebulaCloud() {
+    const count = 180;
+    const geo = new THREE.BufferGeometry();
+    const pos = new Float32Array(count * 3);
+    const colors = new Float32Array(count * 3);
+
+    const isMobile = window.innerWidth < 640;
+    const radius = isMobile ? 8 : 12;
+
+    const baseColor1 = new THREE.Color(0x38bdf8);
+    const baseColor2 = new THREE.Color(0xa855f7);
+
+    for (let i = 0; i < count; i++) {
+      const theta = Math.random() * Math.PI * 2;
+      const r = Math.sqrt(Math.random()) * radius;
+
+      pos[i * 3 + 0] = Math.cos(theta) * r;
+      pos[i * 3 + 1] = Math.sin(theta) * r * (isMobile ? 1.4 : 0.8);
+      pos[i * 3 + 2] = -2 - Math.random() * 4;
+
+      const mixed = baseColor1.clone().lerp(baseColor2, Math.random());
+      colors[i * 3 + 0] = mixed.r;
+      colors[i * 3 + 1] = mixed.g;
+      colors[i * 3 + 2] = mixed.b;
+    }
+
+    geo.setAttribute('position', new THREE.BufferAttribute(pos, 3));
+    geo.setAttribute('color', new THREE.BufferAttribute(colors, 3));
+
+    const mat = new THREE.PointsMaterial({
+      size: isMobile ? 1.8 : 2.4,
+      vertexColors: true,
+      transparent: true,
+      opacity: 0.45,
+      blending: THREE.AdditiveBlending
+    });
+
+    this.nebulaMesh = new THREE.Points(geo, mat);
+    this.scene.add(this.nebulaMesh);
+  }
+
   setupConstellation() {
     const isMobile = window.innerWidth < 640;
-    const scaleX = isMobile ? 4.2 : 6.8;
+    const scaleX = isMobile ? 4.4 : 6.8;
     const scaleY = isMobile ? 7.2 : 4.8;
 
-    const starCoords = this.currentConstellation.stars;
+    const stars = this.currentConstellation.stars;
 
-    starCoords.forEach((c) => {
+    stars.forEach((starData) => {
       const group = new THREE.Group();
-      const x = c.x * scaleX;
-      const y = c.y * scaleY;
+      const x = starData.x * scaleX;
+      const y = starData.y * scaleY;
 
+      // 1. Outer target ring
       const ringGeo = new THREE.RingGeometry(0.55, 0.72, 32);
       const ringMat = new THREE.MeshBasicMaterial({
         color: 0x475569,
@@ -155,9 +250,22 @@ export class FireflyGame {
       const ring = new THREE.Mesh(ringGeo, ringMat);
       group.add(ring);
 
+      // 2. Outer shimmering lens flare halo
+      const flareGeo = new THREE.RingGeometry(0.1, 1.3, 24);
+      const flareMat = new THREE.MeshBasicMaterial({
+        color: starData.color,
+        transparent: true,
+        opacity: 0.0,
+        side: THREE.DoubleSide,
+        blending: THREE.AdditiveBlending
+      });
+      const flare = new THREE.Mesh(flareGeo, flareMat);
+      group.add(flare);
+
+      // 3. Inner glowing celestial stellar core
       const coreGeo = new THREE.SphereGeometry(0.38, 16, 16);
       const coreMat = new THREE.MeshBasicMaterial({
-        color: 0xfef08a,
+        color: starData.color,
         transparent: true,
         opacity: 0.0
       });
@@ -171,11 +279,14 @@ export class FireflyGame {
         group,
         ring,
         core,
+        flare,
+        data: starData,
         pos: new THREE.Vector3(x, y, 0),
         isLit: false
       });
     });
 
+    // Connecting Celestial Starlight Lines
     for (let i = 0; i < this.constellationNodes.length - 1; i++) {
       const lineGeo = new THREE.BufferGeometry().setFromPoints([
         this.constellationNodes[i].pos,
@@ -184,7 +295,8 @@ export class FireflyGame {
       const lineMat = new THREE.LineBasicMaterial({
         color: 0x38bdf8,
         transparent: true,
-        opacity: 0.15
+        opacity: 0.15,
+        linewidth: 2
       });
       const line = new THREE.Line(lineGeo, lineMat);
       this.scene.add(line);
@@ -205,7 +317,8 @@ export class FireflyGame {
       color: 0x67e8f9,
       transparent: true,
       opacity: 0.45,
-      side: THREE.DoubleSide
+      side: THREE.DoubleSide,
+      blending: THREE.AdditiveBlending
     });
     const halo = new THREE.Mesh(haloGeo, haloMat);
     group.add(halo);
@@ -260,22 +373,23 @@ export class FireflyGame {
   igniteStar(node) {
     node.isLit = true;
     node.core.material.opacity = 1.0;
-    node.ring.material.color.setHex(0xfef08a);
-    node.ring.material.opacity = 0.9;
+    node.flare.material.opacity = 0.65;
+    node.ring.material.color.setHex(node.data.color);
+    node.ring.material.opacity = 0.95;
     this.litStarsCount++;
 
-    sound.playChime(329.63 + this.litStarsCount * 45, 5);
-    if (navigator.vibrate) navigator.vibrate(18);
+    sound.playChime(329.63 + this.litStarsCount * 48, 5);
+    if (navigator.vibrate) navigator.vibrate(20);
     this.updateUI();
 
     if (this.litStarsCount >= this.totalStars) {
       this.isCompleted = true;
       this.lines.forEach(l => {
-        l.material.opacity = 0.9;
+        l.material.opacity = 0.95;
         l.material.color.setHex(0xfef08a);
       });
       sound.playChime(523.25, 8);
-      if (navigator.vibrate) navigator.vibrate([30, 50, 40]);
+      if (navigator.vibrate) navigator.vibrate([40, 60, 40]);
       setTimeout(() => this.showCompletionModal(), 600);
     }
   }
@@ -287,9 +401,9 @@ export class FireflyGame {
     const badgeEl = document.getElementById('modal-badge');
 
     if (modal && titleEl && descEl) {
-      titleEl.textContent = `✨ ${this.currentConstellation.name} Awakened!`;
-      descEl.textContent = this.currentConstellation.affirmation;
-      if (badgeEl) badgeEl.textContent = `✨ ${this.currentConstellation.day} Constellation Completed • 7 Stars Lit`;
+      titleEl.textContent = `✨ ${this.currentConstellation.name} (${this.currentConstellation.title}) Awakened!`;
+      descEl.textContent = `${this.currentConstellation.myth} ${this.currentConstellation.affirmation}`;
+      if (badgeEl) badgeEl.textContent = `✨ ${this.currentConstellation.day} Constellation Completed • All 7 Stars Identified`;
       modal.classList.remove('hidden');
     }
   }
@@ -306,7 +420,9 @@ export class FireflyGame {
       if (this.isCompleted) {
         this.statusText.textContent = `✨ ${this.currentConstellation.name} awakened!`;
       } else {
-        this.statusText.textContent = `${this.currentConstellation.name} • ${this.litStarsCount}/${this.totalStars} lit`;
+        const nextStar = this.constellationNodes.find(n => !n.isLit);
+        const nextStarName = nextStar ? `${nextStar.data.name} (${nextStar.data.greek})` : 'All stars';
+        this.statusText.textContent = `${this.currentConstellation.name} • Ignite ${nextStarName} (${this.litStarsCount}/${this.totalStars})`;
       }
     }
   }
@@ -328,6 +444,11 @@ export class FireflyGame {
     const isMobile = window.innerWidth < 640;
     const boundX = isMobile ? 7 : 13;
     const boundY = isMobile ? 11 : 9;
+
+    // Rotate subtle cosmic nebula in background
+    if (this.nebulaMesh) {
+      this.nebulaMesh.rotation.z = time * 0.02;
+    }
 
     this.fireflies.forEach(f => {
       f.pos.x += f.vel.x + Math.sin(time * 0.8 + f.seed) * 0.01;
@@ -355,9 +476,10 @@ export class FireflyGame {
 
     this.constellationNodes.forEach(node => {
       if (node.isLit) {
-        node.group.rotation.z += 0.01;
+        node.group.rotation.z += 0.008;
         const scale = 1.0 + Math.sin(time * 2.0) * 0.15;
         node.core.scale.set(scale, scale, scale);
+        node.flare.scale.set(1.0 + Math.cos(time * 1.5) * 0.2, 1.0 + Math.cos(time * 1.5) * 0.2, 1);
       }
     });
 
