@@ -917,7 +917,7 @@ html, body {
 .daily-games-grid {
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 12px;
 }
 
 .game-launch-card {
@@ -925,7 +925,7 @@ html, body {
   background: var(--card-bg-elevated);
   border: 1px solid var(--card-border);
   border-radius: 18px;
-  padding: 14px 16px;
+  padding: 16px 16px;
   display: flex;
   align-items: center;
   gap: 14px;
@@ -941,7 +941,7 @@ html, body {
 }
 
 .game-launch-icon {
-  font-size: 1.8rem;
+  font-size: 1.9rem;
   line-height: 1;
   flex-shrink: 0;
 }
@@ -949,39 +949,39 @@ html, body {
 .game-launch-meta {
   flex: 1;
   min-width: 0;
-  padding-right: 6px;
+}
+
+.game-launch-title-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 4px;
 }
 
 .game-launch-title {
-  display: block;
-  font-size: 0.92rem;
+  font-size: 0.95rem;
   font-weight: 700;
   color: var(--text-primary);
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.25;
+  white-space: normal;
 }
 
 .game-launch-desc {
   display: block;
-  font-size: 0.74rem;
+  font-size: 0.76rem;
   color: var(--text-muted);
-  line-height: 1.25;
-  margin-top: 2px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
+  line-height: 1.35;
+  white-space: normal;
 }
 
 .game-launch-badge {
-  margin-left: auto;
-  align-self: center;
-  font-size: 0.7rem;
+  font-size: 0.68rem;
   font-weight: 700;
   color: var(--accent);
   background: var(--accent-soft);
   border: 1px solid var(--chip-border);
-  padding: 5px 12px;
+  padding: 4px 10px;
   border-radius: 999px;
   flex-shrink: 0;
   white-space: nowrap;
