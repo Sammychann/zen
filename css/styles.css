@@ -932,7 +932,15 @@ html, body {
   padding: 0;
   display: flex;
   flex-direction: column;
-  background: transparent;
+  background: #010409;
+}
+
+#view-fireflies {
+  background: radial-gradient(circle at center, #030a16 0%, #02060e 55%, #000205 100%);
+}
+
+#view-highway {
+  background: radial-gradient(circle at center, #050a18 0%, #02040b 60%, #000104 100%);
 }
 
 .game-top-bar {
